@@ -1,15 +1,21 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
 
+import { SUPABASE_ANON_KEY, SUPABASE_URL, isSupabaseConfigured } from './env';
+
 /**
  * Refreshes the auth cookie on every request and keeps /admin/* private.
  */
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  // Without credentials there is no session to refresh and nothing to guard —
+  // the admin pages then render their own "not configured" state.
+  if (!isSupabaseConfigured()) return response;
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    SUPABASE_URL!,
+    SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {

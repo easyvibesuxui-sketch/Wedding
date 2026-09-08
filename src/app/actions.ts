@@ -1,6 +1,7 @@
 'use server';
 
 import { createClient } from '@/lib/supabase/server';
+import { isSupabaseConfigured } from '@/lib/supabase/env';
 
 export type RsvpState = {
   status: 'idle' | 'success' | 'error';
@@ -46,6 +47,14 @@ export async function submitRsvp(_prevState: RsvpState, formData: FormData): Pro
 
   if (Object.keys(fieldErrors).length > 0) {
     return { status: 'error', message: 'Please check the highlighted fields.', fieldErrors };
+  }
+
+  if (!isSupabaseConfigured()) {
+    return {
+      status: 'error',
+      message:
+        'This invitation is not connected to a database yet, so the RSVP was not saved.',
+    };
   }
 
   const supabase = createClient();

@@ -5,6 +5,7 @@ import { signOut } from '@/app/admin/actions';
 import { GuestTable } from '@/components/admin/GuestTable';
 import { StatCard } from '@/components/admin/StatCard';
 import { createClient } from '@/lib/supabase/server';
+import { isSupabaseConfigured } from '@/lib/supabase/env';
 import type { Guest } from '@/lib/supabase/types';
 import { coupleNames } from '@/lib/site-config';
 
@@ -17,6 +18,21 @@ export const metadata: Metadata = {
 export const dynamic = 'force-dynamic';
 
 export default async function DashboardPage() {
+  if (!isSupabaseConfigured()) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-cream-200 px-6">
+        <div className="max-w-md rounded-xl border border-cream-400 bg-white p-8 text-center shadow-sm">
+          <h1 className="font-serif text-2xl text-ink-700">Dashboard not connected</h1>
+          <p className="mt-3 text-sm leading-relaxed text-ink-500">
+            Set <code className="text-gold-600">NEXT_PUBLIC_SUPABASE_URL</code> and{' '}
+            <code className="text-gold-600">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>, then run the SQL in{' '}
+            <code className="text-gold-600">supabase/schema.sql</code>, to see RSVPs here.
+          </p>
+        </div>
+      </main>
+    );
+  }
+
   const supabase = createClient();
 
   const {
