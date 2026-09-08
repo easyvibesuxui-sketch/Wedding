@@ -5,34 +5,64 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        ivory: {
-          50: '#fdfcf8',
-          100: '#faf7f0',
-          200: '#f2ece0',
-          300: '#e8dfcd',
-        },
-        sage: {
-          50: '#f4f6f2',
-          100: '#e3e9dd',
-          200: '#c7d3bd',
-          300: '#a8b99a',
-          400: '#8b9e7c',
-          500: '#6f8264',
-          600: '#57674e',
-          700: '#424e3c',
-          800: '#2f382b',
+        // Warm paper tones sampled from the reference invitation.
+        cream: {
+          50: '#fdfaf4',
+          100: '#faf3e8',
+          200: '#f8ece0',
+          300: '#f0e2d2',
+          400: '#e8dcc8',
+          500: '#dccbb2',
         },
         gold: {
-          100: '#f6ecd9',
-          200: '#e9d5ad',
-          300: '#d9bb7f',
-          400: '#c8a15a',
-          500: '#b08847',
+          100: '#f2e4c4',
+          200: '#e5cf9a',
+          300: '#d4b169',
+          400: '#c19a45',
+          500: '#a8842f',
+          600: '#8a6a20',
+        },
+        wine: {
+          400: '#9a3540',
+          500: '#7a1f2b',
+          600: '#5c161f',
+          700: '#3d0e15',
+        },
+        ink: {
+          300: '#b0a08c',
+          400: '#9a8b78',
+          500: '#7a6a58',
+          600: '#5c4f42',
+          700: '#43392f',
+        },
+        sage: {
+          200: '#cdd6c0',
+          300: '#b3bfa3',
+          400: '#94a385',
+          500: '#74856a',
+          600: '#586a50',
         },
       },
+      fontFamily: {
+        script: ['var(--font-script)', 'cursive'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        sans: ['var(--font-serif)', 'Georgia', 'serif'],
+      },
       letterSpacing: {
-        widest: '0.2em',
-        wider: '0.12em',
+        widest: '0.22em',
+      },
+      keyframes: {
+        shimmer: {
+          '0%, 100%': { opacity: '0.55' },
+          '50%': { opacity: '1' },
+        },
+        drift: {
+          '0%': { transform: 'translateY(-10vh) translateX(0) rotate(0deg)' },
+          '100%': { transform: 'translateY(110vh) translateX(6vw) rotate(320deg)' },
+        },
+      },
+      animation: {
+        shimmer: 'shimmer 3.5s ease-in-out infinite',
       },
     },
   },

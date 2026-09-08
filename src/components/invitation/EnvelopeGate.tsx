@@ -1,0 +1,143 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+
+import { WaxSeal } from '@/components/art/WaxSeal';
+import { siteConfig } from '@/lib/site-config';
+
+/**
+ * Full-screen closed envelope shown before the invitation. Tapping the seal
+ * lifts the flap, floods the screen with warm light and reveals the page.
+ * The page underneath cannot scroll until it is opened.
+ */
+export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
+  const [opening, setOpening] = useState(false);
+  const [gone, setGone] = useState(false);
+
+  useEffect(() => {
+    document.body.dataset.sealed = 'true';
+    return () => {
+      delete document.body.dataset.sealed;
+    };
+  }, []);
+
+  function open() {
+    if (opening) return;
+    setOpening(true);
+    delete document.body.dataset.sealed;
+    onOpen();
+    window.setTimeout(() => setGone(true), 1900);
+  }
+
+  return (
+    <AnimatePresence>
+      {gone ? null : (
+        <motion.div
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-cream-300"
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          {/* Embossed floral paper. */}
+          <svg className="absolute inset-0 h-full w-full" aria-hidden="true">
+            <defs>
+              <pattern id="emboss" width="120" height="120" patternUnits="userSpaceOnUse">
+                <g fill="none" stroke="#ffffff" strokeOpacity="0.85" strokeWidth="1.6">
+                  <path d="M18 96c14-10 20-26 18-44" />
+                  <path d="M36 52c-10 2-18-4-20-14M36 62c10 0 16-8 16-18M32 74c-11 1-19-6-20-16M34 84c10 1 17-6 18-16" />
+                  <circle cx="86" cy="34" r="7" />
+                  <circle cx="86" cy="34" r="3" />
+                  <path d="M74 24c-6-4-6-12 0-16M98 24c6-4 6-12 0-16" />
+                  <path d="M96 78c8-6 12-16 10-26" />
+                </g>
+                <g fill="none" stroke="#c8b493" strokeOpacity="0.32" strokeWidth="1.6">
+                  <path d="M17 95c14-10 20-26 18-44" />
+                  <path d="M35 51c-10 2-18-4-20-14M35 61c10 0 16-8 16-18M31 73c-11 1-19-6-20-16M33 83c10 1 17-6 18-16" />
+                  <circle cx="85" cy="33" r="7" />
+                  <circle cx="85" cy="33" r="3" />
+                  <path d="M73 23c-6-4-6-12 0-16M97 23c6-4 6-12 0-16" />
+                  <path d="M95 77c8-6 12-16 10-26" />
+                </g>
+              </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#emboss)" opacity="0.55" />
+          </svg>
+
+          {/* Warm light escaping from inside the envelope. */}
+          <motion.div
+            className="pointer-events-none absolute inset-0"
+            style={{
+              background:
+                'radial-gradient(60% 45% at 50% 46%, rgba(255,226,164,0.95), rgba(255,226,164,0) 70%)',
+            }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: opening ? 1 : 0 }}
+            transition={{ duration: 1.1, delay: opening ? 0.25 : 0 }}
+          />
+
+          {/* Envelope body: side and bottom panels, then the lifting top flap. */}
+          <div className="absolute inset-0" style={{ perspective: '1600px' }}>
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(135deg, #efe2cd 0%, #e3d3ba 55%, #d9c7ab 100%)',
+                clipPath: 'polygon(0 0, 0 100%, 50% 52%)',
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(225deg, #efe2cd 0%, #e3d3ba 55%, #d9c7ab 100%)',
+                clipPath: 'polygon(100% 0, 100% 100%, 50% 52%)',
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(0deg, #e7d8c0 0%, #dbc9ad 70%, #cfbb9c 100%)',
+                clipPath: 'polygon(0 100%, 100% 100%, 50% 52%)',
+              }}
+            />
+
+            <motion.div
+              className="absolute inset-0 origin-top"
+              style={{
+                transformStyle: 'preserve-3d',
+                background: 'linear-gradient(180deg, #f6ecdc 0%, #eadfc9 70%, #dfd0b6 100%)',
+                clipPath: 'polygon(0 0, 100% 0, 50% 52%)',
+                boxShadow: '0 12px 30px rgba(93, 70, 42, 0.18)',
+              }}
+              initial={{ rotateX: 0 }}
+              animate={{ rotateX: opening ? -172 : 0 }}
+              transition={{ duration: 1.2, ease: [0.65, 0, 0.35, 1] }}
+            />
+          </div>
+
+          {/* Seal + prompt. */}
+          <motion.button
+            type="button"
+            onClick={open}
+            className="group relative z-10 flex translate-y-[1vh] flex-col items-center gap-6 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-4 focus-visible:ring-offset-cream-300"
+            animate={{ opacity: opening ? 0 : 1, scale: opening ? 1.35 : 1 }}
+            transition={{ duration: 0.7 }}
+            aria-label="Open the invitation"
+          >
+            <span
+              className="absolute -inset-10 rounded-full opacity-70 blur-2xl"
+              style={{ background: 'radial-gradient(circle, rgba(255,205,120,0.75), transparent 70%)' }}
+              aria-hidden="true"
+            />
+            <motion.span
+              className="relative"
+              animate={{ scale: [1, 1.035, 1] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <WaxSeal label={siteConfig.couple.monogram} size={148} />
+            </motion.span>
+            <span className="relative font-script text-2xl text-gold-600">Click to open</span>
+          </motion.button>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}

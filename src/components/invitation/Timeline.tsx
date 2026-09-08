@@ -1,25 +1,63 @@
+'use client';
+
+import { useRef } from 'react';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+
+import { Flourish } from '@/components/art/Flourish';
+import { SingleBloom } from '@/components/art/FloralSpray';
 import { Reveal } from '@/components/Reveal';
-import { Section } from '@/components/invitation/Section';
+import { TornEdge } from '@/components/art/TornEdge';
 import { siteConfig } from '@/lib/site-config';
 
 export function Timeline() {
+  const ref = useRef<HTMLOListElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['start 80%', 'end 60%'],
+  });
+  const eased = useSpring(scrollYProgress, { stiffness: 90, damping: 22, mass: 0.4 });
+  // Travels between the first and last node rather than the full column.
+  const top = useTransform(eased, [0, 1], ['10%', '90%']);
+
   return (
-    <Section id="timeline" eyebrow="The Day" title="Order of Events" className="bg-ivory-50">
-      <ol className="relative mx-auto max-w-xl border-l border-gold-200 pl-8 sm:pl-12">
-        {siteConfig.timeline.map((item, index) => (
-          <li key={item.time} className="relative pb-12 last:pb-0">
-            <Reveal delay={index * 0.1}>
+    <section id="timeline" className="paper grain relative overflow-hidden px-6 py-20 sm:py-24">
+      <div className="mx-auto max-w-md">
+        <Reveal className="text-center">
+          <h2 className="script-title">Schedule of Events</h2>
+          <Flourish className="mx-auto mt-3" />
+        </Reveal>
+
+        <ol ref={ref} className="relative mt-12">
+          {/* The spine, its nodes, and the rose that travels along it. */}
+          <div className="pointer-events-none absolute inset-y-2 left-1/2 w-px -translate-x-1/2 bg-gold-300/60" />
+          <motion.div
+            className="pointer-events-none absolute left-1/2 z-10 -translate-x-1/2 -translate-y-1/2"
+            style={{ top }}
+            aria-hidden="true"
+          >
+            <SingleBloom className="h-11 w-11 drop-shadow-sm" />
+          </motion.div>
+
+          {siteConfig.timeline.map((item, index) => (
+            <li key={item.time} className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-4 py-5">
+              <Reveal delay={index * 0.08} className="text-right">
+                <span className="text-2xl text-ink-600 sm:text-3xl">{item.time}</span>
+              </Reveal>
+
               <span
-                className="absolute -left-[2.3rem] top-2 h-2 w-2 rotate-45 bg-gold-300 sm:-left-[3.3rem]"
+                className="h-2.5 w-2.5 rotate-45 bg-gold-400/90 ring-4 ring-cream-200"
                 aria-hidden="true"
               />
-              <p className="font-serif text-2xl text-gold-500">{item.time}</p>
-              <h3 className="mt-1 text-sm uppercase tracking-wider text-sage-800">{item.title}</h3>
-              <p className="mt-2 text-sm text-sage-500">{item.description}</p>
-            </Reveal>
-          </li>
-        ))}
-      </ol>
-    </Section>
+
+              <Reveal delay={index * 0.08 + 0.05} className="text-left">
+                <span className="text-lg leading-snug text-ink-500 sm:text-xl">{item.title}</span>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <TornEdge position="bottom" color="#faf3e8" />
+    </section>
   );
 }

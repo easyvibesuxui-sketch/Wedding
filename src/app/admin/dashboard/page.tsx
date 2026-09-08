@@ -38,19 +38,19 @@ export default async function DashboardPage() {
   const totalAttending = attendingGuests.reduce((sum, guest) => sum + guest.guest_count, 0);
 
   return (
-    <main className="min-h-screen bg-ivory-100 px-6 py-10">
+    <main className="min-h-screen bg-cream-200 px-6 py-10">
       <div className="mx-auto max-w-6xl">
         <header className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs uppercase tracking-widest text-gold-500">{coupleNames}</p>
-            <h1 className="mt-2 font-serif text-3xl text-sage-800">RSVP dashboard</h1>
-            <p className="mt-1 text-sm text-sage-400">Signed in as {user.email}</p>
+            <h1 className="mt-2 font-serif text-3xl text-ink-700">RSVP dashboard</h1>
+            <p className="mt-1 text-sm text-ink-400">Signed in as {user.email}</p>
           </div>
 
           <form action={signOut}>
             <button
               type="submit"
-              className="rounded-md border border-sage-200 bg-white px-4 py-2 text-sm text-sage-600 transition-colors hover:border-sage-400 hover:text-sage-800"
+              className="rounded-md border border-cream-500 bg-white px-4 py-2 text-sm text-ink-500 transition-colors hover:border-gold-400 hover:text-ink-700"
             >
               Sign out
             </button>

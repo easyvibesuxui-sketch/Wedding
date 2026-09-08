@@ -3,81 +3,80 @@
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
+import { ArchScene } from '@/components/art/ArchScene';
 import { siteConfig } from '@/lib/site-config';
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0 },
+const rise = {
+  hidden: { opacity: 0, y: 26 },
+  show: (i: number) => ({
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.9, delay: 0.15 + i * 0.18, ease: [0.22, 1, 0.36, 1] as const },
+  }),
 };
 
-export function Hero() {
-  const { couple, invitationLine, dateLabel, venue, heroImage } = siteConfig;
+export function Hero({ start }: { start: boolean }) {
+  const { couple, dateLabel, heroArt } = siteConfig;
 
   return (
-    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden bg-sage-700">
-      {/* Placeholder romantic background — swap `heroImage` for your own photo. */}
-      <Image
-        src={heroImage}
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="object-cover"
-      />
-      {/* Keeps the text legible over any photo. */}
-      <div className="absolute inset-0 bg-sage-800/55" aria-hidden="true" />
-      {/* Soft fade into the ivory page below, confined to the bottom edge. */}
+    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
+      {heroArt ? (
+        <Image src={heroArt} alt="" fill priority sizes="100vw" className="object-cover" />
+      ) : (
+        <ArchScene className="absolute inset-0 h-full w-full" />
+      )}
+
+      {/* Lifts the lettering off the artwork without dulling it. */}
       <div
-        className="absolute inset-0 bg-gradient-to-b from-transparent from-85% to-ivory-100"
+        className="absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(70% 42% at 50% 34%, rgba(253,248,238,0.92), rgba(253,248,238,0.35) 62%, rgba(248,236,224,0) 82%)',
+        }}
         aria-hidden="true"
       />
 
       <motion.div
-        className="relative mx-auto max-w-2xl px-6 py-24 text-center text-ivory-50"
+        className="relative z-10 px-6 pb-24 pt-16 text-center"
         initial="hidden"
-        animate="show"
-        transition={{ staggerChildren: 0.18, delayChildren: 0.15 }}
+        animate={start ? 'show' : 'hidden'}
       >
+        <motion.p custom={0} variants={rise} className="font-script text-3xl text-gold-500">
+          Wedding Day
+        </motion.p>
         <motion.p
-          variants={fadeUp}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-xs uppercase tracking-widest text-gold-200 sm:text-sm"
+          custom={1}
+          variants={rise}
+          className="mt-1 text-xl tracking-[0.3em] text-ink-500 sm:text-2xl"
         >
-          {invitationLine}
+          {dateLabel}
         </motion.p>
 
-        <motion.h1
-          variants={fadeUp}
-          transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-8 font-serif text-5xl font-light leading-tight tracking-wide sm:text-7xl"
-        >
-          <span className="block">{couple.partnerOne}</span>
-          <span className="my-3 block text-2xl text-gold-200 sm:my-4 sm:text-3xl">&amp;</span>
-          <span className="block">{couple.partnerTwo}</span>
+        <motion.h1 custom={2} variants={rise} className="mt-10 font-script text-gold-600">
+          <span className="block text-6xl leading-[1.05] sm:text-7xl">{couple.partnerOne}</span>
+          <span className="my-2 block text-4xl text-gold-400 sm:text-5xl">&amp;</span>
+          <span className="block text-6xl leading-[1.05] sm:text-7xl">{couple.partnerTwo}</span>
         </motion.h1>
 
-        <motion.div
-          variants={fadeUp}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-10"
-        >
-          <div className="divider mb-6" aria-hidden="true">
-            <span className="text-[0.6rem]">&#9670;</span>
-          </div>
-          <p className="text-sm uppercase tracking-wider sm:text-base">{dateLabel}</p>
-          <p className="mt-2 text-sm text-ivory-200/90">{venue.name}</p>
-        </motion.div>
-
-        <motion.div
-          variants={fadeUp}
-          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="mt-12"
-        >
+        <motion.div custom={3} variants={rise} className="mt-16">
           <a
-            href="#rsvp"
-            className="inline-block border border-gold-200/80 px-8 py-3 text-xs uppercase tracking-widest text-ivory-50 transition-colors hover:bg-gold-200 hover:text-sage-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-200 focus-visible:ring-offset-2 focus-visible:ring-offset-sage-800"
+            href="#blessing"
+            className="inline-flex flex-col items-center gap-1 text-gold-500 transition-colors hover:text-gold-600"
           >
-            RSVP
+            <span className="font-script text-2xl">Scroll down</span>
+            <motion.svg
+              width="26"
+              height="14"
+              viewBox="0 0 26 14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              aria-hidden="true"
+            >
+              <path d="M2 2l11 10L24 2" strokeLinecap="round" strokeLinejoin="round" />
+            </motion.svg>
           </a>
         </motion.div>
       </motion.div>

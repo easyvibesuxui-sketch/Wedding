@@ -1,13 +1,32 @@
 # Wedding Invitation — MVP
 
-A digital wedding invitation with a public single-page invitation and a private
-RSVP dashboard.
+A digital wedding invitation — a mobile-first card you send over WhatsApp or
+Instagram — with a private RSVP dashboard behind it.
 
-- **Public** `/` — hero, event details, timeline and an RSVP form that writes to Supabase.
-- **Admin** `/admin/login` → `/admin/dashboard` — Supabase email/password auth, RSVP
-  stats and a filterable guest table.
+- **Public** `/` — a sealed envelope the guest taps to open, then a single scroll:
+  hero, blessing, live countdown, schedule, location with map, dress code, an
+  RSVP form that writes to Supabase, and a closing photo.
+- **Admin** `/admin/login` → `/admin/dashboard` — Supabase email/password auth,
+  RSVP stats and a filterable guest table.
 
 Built with Next.js (App Router), Tailwind CSS, Framer Motion and Supabase.
+
+### The invitation, section by section
+
+| Section | What it does |
+| --- | --- |
+| Envelope gate | Embossed cream envelope with a wax seal; tapping it lifts the flap, floods the screen with warm light and unlocks the page. The page cannot scroll until it is opened. |
+| Hero | Garden arch, swans on a still lake and corner florals — all inline SVG, so it stays sharp on any phone and costs no image request. |
+| Blessing | Three script lines and the invitation paragraph. |
+| Countdown | Live days / hours / minutes / seconds to `date` in site-config. |
+| Schedule | Vertical spine with diamond nodes and a rose that travels down it as you scroll. |
+| Location | Venue, a hand-drawn sketch, a live Google map in a gold frame, and an "Open in Maps" link. |
+| Dress code & gifts | Two blocks framed by florals that spill over the torn paper seam. |
+| RSVP | A wax seal reading RSVP; tapping it opens the form. |
+| Closing | "Hope to see you there", the couple, and their photo. |
+
+Every band is separated by a torn-paper edge, petals drift over the whole page,
+and a floating button plays background music when you provide a file.
 
 ## 1. Install
 
@@ -65,19 +84,28 @@ npm run build   # production build
 
 ## Customising the wedding
 
-Everything couple-specific — names, date, venue, timeline, hero photo — lives in
-[`src/lib/site-config.ts`](src/lib/site-config.ts). The hero image is a
-placeholder from Unsplash; replace `heroImage` with your own photo (drop it in
-`public/` and use `/your-photo.jpg`), and remove the credit in the footer when
-you do.
+Everything couple-specific — names, monogram, date, venue, schedule, dress code,
+wording — lives in [`src/lib/site-config.ts`](src/lib/site-config.ts).
+
+Three optional files you drop into `public/` and point at from that same file:
+
+| Setting | What it replaces |
+| --- | --- |
+| `heroArt` | Swaps the hand-drawn SVG hero for your own illustration or photo (e.g. `/art/hero.png`). |
+| `couplePhoto` | Fills the framed placeholder in the closing section. |
+| `music` | Background music. The floating play button only appears once the file loads, so leaving it absent simply hides the control. |
+
+The artwork itself lives in [`src/components/art/`](src/components/art) — the
+arch scene, floral sprays, wax seal, gold flourish, torn edges and venue sketch
+are all plain SVG components you can recolour or redraw.
 
 ## Project structure
 
 ```
 src/
 ├─ app/
-│  ├─ page.tsx                 Invitation page (hero, details, timeline, RSVP)
-│  ├─ layout.tsx  globals.css  Shell, fonts, palette
+│  ├─ page.tsx                 Invitation page (envelope gate + all sections)
+│  ├─ layout.tsx  globals.css  Shell, fonts, palette, paper textures
 │  ├─ actions.ts               `submitRsvp` server action (validate + insert)
 │  ├─ icon.svg                 Favicon
 │  ├─ admin/
@@ -86,7 +114,11 @@ src/
 │  │  └─ dashboard/page.tsx    Stats + guest table (server-rendered)
 ├─ components/
 │  ├─ Reveal.tsx               Framer Motion scroll-reveal wrapper
-│  ├─ invitation/              Hero, EventDetails, Timeline, RsvpForm, Section, Footer
+│  ├─ art/                     ArchScene, FloralSpray, WaxSeal, Flourish,
+│  │                           TornEdge, VenueSketch — all inline SVG
+│  ├─ invitation/              EnvelopeGate, Hero, Blessing, Countdown, Timeline,
+│  │                           Location, Details, RsvpSection, Closing,
+│  │                           MusicToggle, Petals
 │  └─ admin/                   LoginForm, StatCard, GuestTable (filtering)
 ├─ lib/
 │  ├─ site-config.ts           Couple, date, venue, timeline, hero image
@@ -107,3 +139,14 @@ src/
 Works as-is on Vercel: import the repo and set `NEXT_PUBLIC_SUPABASE_URL` and
 `NEXT_PUBLIC_SUPABASE_ANON_KEY` in the project's environment variables. Add your
 deployed URL to **Supabase → Authentication → URL Configuration**.
+
+## Design notes
+
+Type is Cormorant Garamond for body and Great Vibes for the script headings,
+both loaded through `next/font` so there is no layout shift. The palette is warm
+cream (`#f8ece0`) with gold (`#c19a45`) for headings and deep wine (`#7a1f2b`)
+for the seals and primary buttons — defined once in
+[`tailwind.config.ts`](tailwind.config.ts).
+
+Motion respects `prefers-reduced-motion`: petals are hidden and animations are
+reduced to a single frame for anyone who asks for less movement.
