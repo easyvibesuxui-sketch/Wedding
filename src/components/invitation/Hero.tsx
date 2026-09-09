@@ -19,25 +19,35 @@ export function Hero({ start }: { start: boolean }) {
   const { couple, dateLabel, heroArt } = siteConfig;
 
   return (
-    <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden">
+    <section className="relative flex min-h-[100svh] items-start justify-center overflow-hidden bg-cream-100">
       {heroArt ? (
-        <Image src={heroArt} alt="" fill priority sizes="100vw" className="object-cover" />
+        <Image
+          src={heroArt}
+          alt=""
+          fill
+          priority
+          sizes="(max-width: 672px) 100vw, 672px"
+          className="object-cover"
+        />
       ) : (
         <ArchScene className="absolute inset-0 h-full w-full" />
       )}
 
-      {/* Lifts the lettering off the artwork without dulling it. */}
+      {/*
+        Veils the upper half of the painting so the lettering stays readable,
+        then clears completely by the waterline so the swans keep their colour.
+      */}
       <div
         className="absolute inset-0"
         style={{
           background:
-            'radial-gradient(70% 42% at 50% 34%, rgba(253,248,238,0.92), rgba(253,248,238,0.35) 62%, rgba(248,236,224,0) 82%)',
+            'linear-gradient(180deg, rgba(250,243,232,0.42) 0%, rgba(250,243,232,0.70) 20%, rgba(250,243,232,0.72) 46%, rgba(250,243,232,0.22) 62%, rgba(250,243,232,0) 72%)',
         }}
         aria-hidden="true"
       />
 
       <motion.div
-        className="relative z-10 px-6 pb-24 pt-16 text-center"
+        className="relative z-10 px-6 pb-[8vh] pt-[12vh] text-center [text-shadow:0_1px_2px_rgba(250,243,232,0.85)]"
         initial="hidden"
         animate={start ? 'show' : 'hidden'}
       >
@@ -52,13 +62,13 @@ export function Hero({ start }: { start: boolean }) {
           {dateLabel}
         </motion.p>
 
-        <motion.h1 custom={2} variants={rise} className="mt-10 font-script text-gold-600">
+        <motion.h1 custom={2} variants={rise} className="mt-8 font-script text-gold-600">
           <span className="block text-6xl leading-[1.05] sm:text-7xl">{couple.partnerOne}</span>
           <span className="my-2 block text-4xl text-gold-400 sm:text-5xl">&amp;</span>
           <span className="block text-6xl leading-[1.05] sm:text-7xl">{couple.partnerTwo}</span>
         </motion.h1>
 
-        <motion.div custom={3} variants={rise} className="mt-16">
+        <motion.div custom={3} variants={rise} className="mt-12">
           <a
             href="#blessing"
             className="inline-flex flex-col items-center gap-1 text-gold-500 transition-colors hover:text-gold-600"

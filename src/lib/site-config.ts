@@ -46,11 +46,11 @@ export const siteConfig = {
   closingLine: 'Hope to see you there!',
 
   /**
-   * Optional drop-in artwork. Leave `null` to use the hand-drawn SVG scene in
-   * `src/components/art/`. Set to a path under `public/` (e.g. '/art/hero.png')
-   * and that image is used instead — same for the closing photo.
+   * Drop-in artwork. `heroArt` points at the painted illustration in
+   * `public/art/`; set it to `null` to fall back to the hand-drawn SVG scene in
+   * `src/components/art/ArchScene.tsx`. `couplePhoto` fills the closing frame.
    */
-  heroArt: null as string | null,
+  heroArt: '/art/hero.webp' as string | null,
   couplePhoto: null as string | null,
 
   /**
