@@ -91,31 +91,62 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
             <PaperEnvelope opening={opening} />
           )}
 
-          {/* Seal + prompt. Hidden once the gate is running. */}
+          {/*
+            With the film, the envelope on screen already carries its own seal —
+            drawing a second one over it just looks like a sticker. The whole
+            frame is the tap target instead, with the prompt over a soft scrim
+            so it stays readable against the photograph.
+          */}
           <motion.button
             type="button"
             onClick={open}
-            className="group relative z-10 flex translate-y-[1vh] flex-col items-center gap-6 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-4 focus-visible:ring-offset-cream-300"
-            animate={{ opacity: opening ? 0 : 1, scale: opening ? 1.35 : 1 }}
+            className={
+              useFilm
+                ? 'absolute inset-0 z-10 flex items-end justify-center pb-16 focus:outline-none'
+                : 'group relative z-10 flex translate-y-[1vh] flex-col items-center gap-6 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-4 focus-visible:ring-offset-cream-300'
+            }
+            animate={{ opacity: opening ? 0 : 1, scale: opening || useFilm ? 1 : 1 }}
             transition={{ duration: 0.7 }}
             style={{ pointerEvents: opening ? 'none' : 'auto' }}
             aria-label="მოწვევის გახსნა"
           >
-            <span
-              className="absolute -inset-10 rounded-full opacity-70 blur-2xl"
-              style={{ background: 'radial-gradient(circle, rgba(255,205,120,0.75), transparent 70%)' }}
-              aria-hidden="true"
-            />
-            <motion.span
-              className="relative"
-              animate={{ scale: [1, 1.035, 1] }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <Seal label={siteConfig.couple.monogram} size={148} />
-            </motion.span>
-            <span className="relative text-xs tracking-[0.3em] text-gold-600">
-              {siteConfig.copy.rsvpOpen}
-            </span>
+            {useFilm ? (
+              <>
+                <span
+                  className="absolute inset-x-0 bottom-0 h-56"
+                  style={{
+                    background:
+                      'linear-gradient(to top, rgba(38,30,24,0.82), rgba(38,30,24,0.42) 50%, transparent)',
+                  }}
+                  aria-hidden="true"
+                />
+                <motion.span
+                  className="relative text-base tracking-[0.32em] text-cream-100 [text-shadow:0_1px_6px_rgba(24,18,14,0.7)]"
+                  animate={{ opacity: [0.65, 1, 0.65] }}
+                  transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  {siteConfig.copy.rsvpOpen}
+                </motion.span>
+              </>
+            ) : (
+              <>
+                <span
+                  className="absolute -inset-10 rounded-full opacity-70 blur-2xl"
+                  style={{ background: 'radial-gradient(circle, rgba(255,205,120,0.75), transparent 70%)' }}
+                  aria-hidden="true"
+                />
+                <motion.span
+                  className="relative"
+                  animate={{ scale: [1, 1.035, 1] }}
+                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                >
+                  <Seal label={siteConfig.couple.monogram} size={148} priority />
+                </motion.span>
+                <span className="relative text-xs tracking-[0.3em] text-gold-600">
+                  {siteConfig.copy.rsvpOpen}
+                </span>
+              </>
+            )}
           </motion.button>
 
           {/* Nobody should be stuck watching an intro they have already seen. */}

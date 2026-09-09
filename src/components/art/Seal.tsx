@@ -13,11 +13,14 @@ export function Seal({
   label,
   size = 148,
   script = true,
+  priority = false,
   className = '',
 }: {
   label: string;
   size?: number;
   script?: boolean;
+  /** Set for the seal on the closed envelope, which is the first thing seen. */
+  priority?: boolean;
   className?: string;
 }) {
   if (!siteConfig.sealArt) {
@@ -30,7 +33,7 @@ export function Seal({
       alt=""
       width={size}
       height={size}
-      priority
+      priority={priority}
       className={`select-none ${className}`}
       style={{ width: size, height: size }}
     />
