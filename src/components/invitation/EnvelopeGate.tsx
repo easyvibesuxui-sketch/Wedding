@@ -134,7 +134,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
             >
               <WaxSeal label={siteConfig.couple.monogram} size={148} />
             </motion.span>
-            <span className="relative font-script text-2xl text-gold-600">Click to open</span>
+            <span className="relative text-xs tracking-[0.3em] text-gold-600">{siteConfig.copy.rsvpOpen}</span>
           </motion.button>
         </motion.div>
       )}

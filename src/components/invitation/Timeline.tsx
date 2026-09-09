@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 
 import { Flourish } from '@/components/art/Flourish';
-import { SingleBloom } from '@/components/art/FloralSpray';
+import { GrapeCluster } from '@/components/art/GrapeCluster';
 import { Reveal } from '@/components/Reveal';
 import { TornEdge } from '@/components/art/TornEdge';
 import { siteConfig } from '@/lib/site-config';
@@ -23,7 +23,7 @@ export function Timeline() {
     <section id="timeline" className="paper grain relative overflow-hidden px-6 py-20 sm:py-24">
       <div className="mx-auto max-w-md">
         <Reveal className="text-center">
-          <h2 className="script-title">Schedule of Events</h2>
+          <h2 className="section-title">{siteConfig.copy.timelineTitle}</h2>
           <Flourish className="mx-auto mt-3" />
         </Reveal>
 
@@ -35,11 +35,11 @@ export function Timeline() {
             style={{ top }}
             aria-hidden="true"
           >
-            <SingleBloom className="h-11 w-11 drop-shadow-sm" />
+            <GrapeCluster className="h-12 w-12 drop-shadow-sm" />
           </motion.div>
 
           {siteConfig.timeline.map((item, index) => (
-            <li key={item.time} className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-4 py-5">
+            <li key={item.time} className="relative grid grid-cols-[1fr_auto_1fr] items-center gap-5 py-6">
               <Reveal delay={index * 0.08} className="text-right">
                 <span className="text-2xl text-ink-600 sm:text-3xl">{item.time}</span>
               </Reveal>

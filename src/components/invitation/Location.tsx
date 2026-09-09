@@ -11,7 +11,7 @@ export function Location() {
     <section id="location" className="paper-light grain relative overflow-hidden px-6 py-20 sm:py-24">
       <div className="mx-auto max-w-lg text-center">
         <Reveal>
-          <h2 className="script-title">Location</h2>
+          <h2 className="section-title">{siteConfig.copy.locationTitle}</h2>
           <Flourish className="mx-auto mt-3" />
         </Reveal>
 
@@ -51,7 +51,7 @@ export function Location() {
             rel="noreferrer"
             className="mt-6 inline-block border border-gold-300 px-7 py-3 text-xs uppercase tracking-widest text-gold-600 transition-colors hover:bg-gold-300/25 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2"
           >
-            Open in Maps
+            {siteConfig.copy.openInMaps}
           </a>
         </Reveal>
       </div>

@@ -45,8 +45,8 @@ const config: Config = {
       },
       fontFamily: {
         script: ['var(--font-script)', 'cursive'],
-        serif: ['var(--font-serif)', 'Georgia', 'serif'],
-        sans: ['var(--font-serif)', 'Georgia', 'serif'],
+        serif: ['var(--font-serif)', 'var(--font-georgian)', 'Georgia', 'serif'],
+        sans: ['var(--font-serif)', 'var(--font-georgian)', 'Georgia', 'serif'],
       },
       letterSpacing: {
         widest: '0.22em',

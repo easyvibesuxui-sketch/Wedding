@@ -25,7 +25,7 @@ function SubmitButton() {
       disabled={pending}
       className="w-full bg-wine-500 px-10 py-4 text-xs uppercase tracking-widest text-cream-100 transition-colors hover:bg-wine-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
     >
-      {pending ? 'Sending…' : 'Send RSVP'}
+      {pending ? siteConfig.copy.submitting : siteConfig.copy.submit}
     </button>
   );
 }
@@ -41,9 +41,9 @@ export function RsvpSection() {
     <section id="rsvp" className="paper-light grain relative overflow-hidden px-6 py-20 sm:py-24">
       <div className="mx-auto max-w-md text-center">
         <Reveal>
-          <h2 className="script-title">Confirm Your Attendance</h2>
+          <h2 className="section-title">{siteConfig.copy.rsvpTitle}</h2>
           <Flourish className="mx-auto mt-3" />
-          <p className="mt-6 text-lg leading-relaxed text-ink-500">{siteConfig.rsvpIntro}</p>
+          <p className="mt-6 text-lg leading-relaxed text-ink-500">{siteConfig.copy.rsvpIntro}</p>
         </Reveal>
 
         <AnimatePresence mode="wait" initial={false}>
@@ -55,7 +55,7 @@ export function RsvpSection() {
               className="mt-12"
               role="status"
             >
-              <p className="font-script text-4xl text-gold-500">Thank you</p>
+              <p className="section-title text-3xl sm:text-4xl">{siteConfig.copy.thankYou}</p>
               <Flourish className="mx-auto mt-4" />
               <p className="mt-6 text-lg text-ink-500">{state.message}</p>
             </motion.div>
@@ -70,7 +70,7 @@ export function RsvpSection() {
             >
               <div>
                 <label htmlFor="fullName" className="eyebrow">
-                  Full name
+                  {siteConfig.copy.fieldName}
                 </label>
                 <input
                   id="fullName"
@@ -79,7 +79,7 @@ export function RsvpSection() {
                   required
                   maxLength={120}
                   autoComplete="name"
-                  placeholder="Your full name"
+                  placeholder={siteConfig.copy.fieldNamePlaceholder}
                   aria-invalid={Boolean(state.fieldErrors?.fullName)}
                   className={`mt-2 ${fieldClass}`}
                 />
@@ -89,11 +89,11 @@ export function RsvpSection() {
               </div>
 
               <fieldset>
-                <legend className="eyebrow">Will you be attending?</legend>
+                <legend className="eyebrow">{siteConfig.copy.fieldAttending}</legend>
                 <div className="mt-4 grid gap-3">
                   {[
-                    { value: 'yes', label: 'Joyfully accepts' },
-                    { value: 'no', label: 'Regretfully declines' },
+                    { value: 'yes', label: siteConfig.copy.attendingYes },
+                    { value: 'no', label: siteConfig.copy.attendingNo },
                   ].map((option) => (
                     <label
                       key={option.value}
@@ -132,7 +132,7 @@ export function RsvpSection() {
                     className="overflow-hidden"
                   >
                     <label htmlFor="guestCount" className="eyebrow">
-                      Number of guests (including you)
+                      {siteConfig.copy.fieldGuests}
                     </label>
                     <input
                       id="guestCount"
@@ -154,14 +154,15 @@ export function RsvpSection() {
 
               <div>
                 <label htmlFor="dietaryRestrictions" className="eyebrow">
-                  Dietary restrictions <span className="normal-case">(optional)</span>
+                  {siteConfig.copy.fieldDietary}{' '}
+                  <span className="normal-case">{siteConfig.copy.fieldOptional}</span>
                 </label>
                 <input
                   id="dietaryRestrictions"
                   name="dietaryRestrictions"
                   type="text"
                   maxLength={500}
-                  placeholder="Vegetarian, allergies, anything else…"
+                  placeholder="ვეგეტარიანული, ალერგია, სხვა…"
                   className={`mt-2 ${fieldClass}`}
                 />
               </div>
@@ -174,7 +175,7 @@ export function RsvpSection() {
 
               <div className="space-y-4 pt-2 text-center">
                 <SubmitButton />
-                <p className="text-sm text-ink-400">{siteConfig.rsvpDeadlineLabel}</p>
+                <p className="text-sm text-ink-400">{siteConfig.copy.rsvpDeadline}</p>
               </div>
             </motion.form>
           ) : (
@@ -193,7 +194,7 @@ export function RsvpSection() {
               <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="#c19a45" strokeWidth="1.5" aria-hidden="true">
                 <path d="M2 10L11 2l9 8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span className="font-script text-2xl text-gold-600">Click to open</span>
+              <span className="text-xs tracking-[0.28em] text-gold-600">{siteConfig.copy.rsvpOpen}</span>
             </motion.button>
           )}
         </AnimatePresence>

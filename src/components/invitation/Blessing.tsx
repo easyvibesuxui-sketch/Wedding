@@ -15,8 +15,8 @@ export function Blessing() {
 
         <Reveal delay={0.1}>
           <div className="mt-8 space-y-1">
-            {siteConfig.blessing.map((line) => (
-              <p key={line} className="font-script text-3xl text-gold-500 sm:text-4xl">
+            {siteConfig.copy.blessing.map((line: string) => (
+              <p key={line} className="section-title">
                 {line}
               </p>
             ))}
@@ -24,8 +24,8 @@ export function Blessing() {
         </Reveal>
 
         <Reveal delay={0.2}>
-          <p className="mt-10 text-lg text-ink-500">{siteConfig.invitationLine}</p>
-          <p className="mt-3 text-lg leading-relaxed text-ink-500">{siteConfig.invitationBody}</p>
+          <p className="mt-10 text-lg text-ink-500">{siteConfig.copy.invitationLine}</p>
+          <p className="mt-3 text-lg leading-relaxed text-ink-500">{siteConfig.copy.invitationBody}</p>
         </Reveal>
       </div>
 

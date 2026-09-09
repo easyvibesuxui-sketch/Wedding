@@ -1,49 +1,84 @@
 /**
- * Everything couple-specific lives here — edit this file to reuse the
- * invitation for a different wedding.
+ * Everything couple-specific lives here — names, dates, venue and every line
+ * of copy on the invitation. Edit this file to reuse the page for another
+ * wedding; no component hard-codes wording.
+ *
+ * The page is written in Georgian; the couple's names stay in Latin script so
+ * they can be set in the calligraphic display face.
  */
 export const siteConfig = {
   couple: {
-    partnerOne: 'Elena',
-    partnerTwo: 'Nikoloz',
-    /** Shown on the wax seal of the closed envelope. */
-    monogram: 'E&N',
+    partnerOne: 'Tamari',
+    partnerTwo: 'Datuna',
+    /** Stamped on the wax seal of the closed envelope. */
+    monogram: 'T&D',
   },
 
-  /** Drives the countdown. Keep the timezone offset of the venue. */
-  date: '2026-09-19T17:00:00+04:00',
-  dateLabel: '19.09.26',
-  dateLong: 'Saturday, 19 September 2026',
-  timeLabel: '17:00 — until late',
-
-  /** Three lines of the opening blessing, set in script. */
-  blessing: ['Two Souls', 'One Promise', 'One Lifetime Together'],
-  invitationLine: 'Dear Friends and Family',
-  invitationBody:
-    'Join us for an evening of love, laughter and unforgettable memories as we begin our forever.',
-
-  timeline: [
-    { time: '17:00', title: 'Guest Arrival' },
-    { time: '18:00', title: 'Ceremony' },
-    { time: '19:00', title: 'Reception' },
-    { time: '20:00', title: 'Dinner' },
-    { time: '21:00', title: 'Dancing' },
-  ],
+  /** Drives the countdown. Keep the venue's timezone offset. */
+  date: '2026-10-24T17:00:00+04:00',
+  dateLabel: '24.10.26',
+  dateLong: 'შაბათი, 24 ოქტომბერი, 2026',
+  timeLabel: '17:00 — გვიან ღამემდე',
 
   venue: {
-    name: 'The Sacred Garden',
-    address: '14 Chavchavadze Avenue, Tbilisi, Georgia',
-    /** Used for both the embedded map and the "Open in Maps" link. */
-    mapQuery: 'Chavchavadze Avenue, Tbilisi, Georgia',
+    name: 'შატო მეფის ქალაქი',
+    address: 'დავით აღმაშენებლის ქ. 10, ზემო ჭოჭეთი, კასპი',
+    /** Used for the embedded map and the "open in maps" link. */
+    mapQuery: 'Chateau Mephis Kalaki, Upper Chocheti, Kaspi, Georgia',
   },
 
-  dressCode:
-    'We kindly ask our guests to wear soft neutral, ivory or sage tones for the celebration.',
-  giftPreference: 'Your presence is the only gift we ask for.',
+  timeline: [
+    { time: '17:00', title: 'სტუმრების მიღება' },
+    { time: '18:00', title: 'ცერემონია' },
+    { time: '19:00', title: 'მისალმება' },
+    { time: '20:00', title: 'ვახშამი' },
+    { time: '21:00', title: 'ცეკვები' },
+  ],
 
-  rsvpIntro: 'To help us prepare for a joyful celebration, kindly confirm your attendance.',
-  rsvpDeadlineLabel: 'Kindly respond by 1 August 2026',
-  closingLine: 'Hope to see you there!',
+  copy: {
+    heroEyebrow: 'ჩვენი ქორწილი',
+    scrollDown: 'ჩამოსქროლეთ',
+
+    blessing: ['ორი გული', 'ერთი ბედი', 'ერთი სიცოცხლე'],
+    invitationLine: 'ძვირფასო ოჯახო და მეგობრებო',
+    invitationBody:
+      'გელოდებით ჩვენს ქორწილში — საღამოს, რომელსაც სიყვარულით, სიცილითა და დაუვიწყარი წუთებით გავივსებთ თქვენთან ერთად.',
+
+    countdownTitle: 'ზეიმამდე დარჩა',
+    countdownTitleToday: 'დღეს არის ის დღე',
+    countdownUnits: { days: 'დღე', hours: 'საათი', minutes: 'წუთი', seconds: 'წამი' },
+
+    timelineTitle: 'დღის განრიგი',
+
+    locationTitle: 'ლოკაცია',
+    openInMaps: 'რუკაზე ნახვა',
+
+    dressCodeTitle: 'დრეს-კოდი',
+    dressCode:
+      'გთხოვთ, აირჩიოთ რბილი, მიწისფერი ან ღვინისფერი ტონები — სპილოსძვლისფერი, ზეთისხილისფერი, ღრმა მწვანე ან ქლიავისფერი.',
+    giftTitle: 'საჩუქრის შესახებ',
+    giftPreference: 'თქვენი დასწრება ჩვენთვის საუკეთესო საჩუქარია.',
+
+    rsvpTitle: 'დაადასტურეთ დასწრება',
+    rsvpIntro: 'რომ ყველაფერი დროულად მოვამზადოთ, გთხოვთ გვაცნობოთ, დაესწრებით თუ არა.',
+    rsvpOpen: 'დააჭირეთ',
+    rsvpDeadline: 'გთხოვთ, გვაცნობოთ 1 ოქტომბრამდე',
+
+    fieldName: 'სახელი და გვარი',
+    fieldNamePlaceholder: 'თქვენი სახელი და გვარი',
+    fieldAttending: 'დაესწრებით?',
+    attendingYes: 'სიამოვნებით დავესწრები',
+    attendingNo: 'სამწუხაროდ, ვერ დავესწრები',
+    fieldGuests: 'სტუმრების რაოდენობა (თქვენთან ერთად)',
+    fieldDietary: 'კვების შეზღუდვები',
+    fieldOptional: '(სურვილისამებრ)',
+    submit: 'გაგზავნა',
+    submitting: 'იგზავნება…',
+    thankYou: 'გმადლობთ',
+
+    closingLine: 'გელოდებით!',
+    photoPlaceholder: 'აქ თქვენი ფოტო იქნება',
+  },
 
   /**
    * Drop-in artwork. `heroArt` points at the painted illustration in

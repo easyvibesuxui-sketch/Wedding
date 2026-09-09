@@ -16,7 +16,7 @@ const rise = {
 };
 
 export function Hero({ start }: { start: boolean }) {
-  const { couple, dateLabel, heroArt } = siteConfig;
+  const { couple, dateLabel, heroArt, copy } = siteConfig;
 
   return (
     <section className="relative flex min-h-[100svh] items-start justify-center overflow-hidden bg-cream-100">
@@ -51,8 +51,12 @@ export function Hero({ start }: { start: boolean }) {
         initial="hidden"
         animate={start ? 'show' : 'hidden'}
       >
-        <motion.p custom={0} variants={rise} className="font-script text-3xl text-gold-500">
-          Wedding Day
+        <motion.p
+          custom={0}
+          variants={rise}
+          className="text-sm tracking-[0.35em] text-gold-500 sm:text-base"
+        >
+          {copy.heroEyebrow}
         </motion.p>
         <motion.p
           custom={1}
@@ -73,7 +77,7 @@ export function Hero({ start }: { start: boolean }) {
             href="#blessing"
             className="inline-flex flex-col items-center gap-1 text-gold-500 transition-colors hover:text-gold-600"
           >
-            <span className="font-script text-2xl">Scroll down</span>
+            <span className="text-xs tracking-[0.28em]">{copy.scrollDown}</span>
             <motion.svg
               width="26"
               height="14"

@@ -6,12 +6,7 @@ import { Reveal } from '@/components/Reveal';
 import { TornEdge } from '@/components/art/TornEdge';
 import { siteConfig } from '@/lib/site-config';
 
-const UNITS = [
-  { key: 'days', label: 'Days' },
-  { key: 'hours', label: 'Hours' },
-  { key: 'minutes', label: 'Minutes' },
-  { key: 'seconds', label: 'Seconds' },
-] as const;
+const UNITS = ['days', 'hours', 'minutes', 'seconds'] as const;
 
 function remaining(target: number) {
   const diff = Math.max(0, target - Date.now());
@@ -41,14 +36,14 @@ export function Countdown() {
     <section className="paper-light grain relative overflow-hidden px-6 py-20 sm:py-24">
       <div className="mx-auto max-w-lg text-center">
         <Reveal>
-          <h2 className="script-title">
-            {done ? 'Today Is The Day' : 'The Celebration Begins In'}
+          <h2 className="section-title">
+            {done ? siteConfig.copy.countdownTitleToday : siteConfig.copy.countdownTitle}
           </h2>
         </Reveal>
 
         <Reveal delay={0.1}>
           <dl className="mt-10 flex items-start justify-center gap-3 sm:gap-6">
-            {UNITS.map(({ key, label }, i) => (
+            {UNITS.map((key, i) => (
               <div key={key} className="flex items-start gap-3 sm:gap-6">
                 {i > 0 ? (
                   <span aria-hidden="true" className="pt-1 text-4xl text-gold-300 sm:text-5xl">
@@ -59,8 +54,8 @@ export function Countdown() {
                   <dd className="font-serif text-4xl tabular-nums text-gold-500 sm:text-5xl">
                     {left ? String(left[key]).padStart(2, '0') : '––'}
                   </dd>
-                  <dt className="mt-1 text-xs uppercase tracking-wider text-gold-600/75 sm:text-sm">
-                    {label}
+                  <dt className="mt-1 text-xs tracking-wider text-gold-600/75 sm:text-sm">
+                    {siteConfig.copy.countdownUnits[key]}
                   </dt>
                 </div>
               </div>

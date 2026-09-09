@@ -24,13 +24,13 @@ export async function submitRsvp(_prevState: RsvpState, formData: FormData): Pro
   const fieldErrors: RsvpState['fieldErrors'] = {};
 
   if (!fullName) {
-    fieldErrors.fullName = 'Please tell us your name.';
+    fieldErrors.fullName = 'გთხოვთ, მიუთითოთ სახელი.';
   } else if (fullName.length > 120) {
-    fieldErrors.fullName = 'That name is a little too long.';
+    fieldErrors.fullName = 'სახელი ძალიან გრძელია.';
   }
 
   if (attending !== 'yes' && attending !== 'no') {
-    fieldErrors.attending = 'Please let us know if you can make it.';
+    fieldErrors.attending = 'გთხოვთ, აღნიშნოთ დაესწრებით თუ არა.';
   }
 
   const isAttending = attending === 'yes';
@@ -39,21 +39,20 @@ export async function submitRsvp(_prevState: RsvpState, formData: FormData): Pro
   if (isAttending) {
     const parsed = Number(guestCountRaw);
     if (!guestCountRaw || !Number.isInteger(parsed) || parsed < 1 || parsed > MAX_GUESTS) {
-      fieldErrors.guestCount = `Enter a number between 1 and ${MAX_GUESTS}.`;
+      fieldErrors.guestCount = `მიუთითეთ რიცხვი 1-დან ${MAX_GUESTS}-მდე.`;
     } else {
       guestCount = parsed;
     }
   }
 
   if (Object.keys(fieldErrors).length > 0) {
-    return { status: 'error', message: 'Please check the highlighted fields.', fieldErrors };
+    return { status: 'error', message: 'გთხოვთ, შეამოწმოთ მონიშნული ველები.', fieldErrors };
   }
 
   if (!isSupabaseConfigured()) {
     return {
       status: 'error',
-      message:
-        'This invitation is not connected to a database yet, so the RSVP was not saved.',
+      message: 'მოწვევა ჯერ ბაზასთან არაა დაკავშირებული, პასუხი ვერ შეინახა.',
     };
   }
 
@@ -69,14 +68,14 @@ export async function submitRsvp(_prevState: RsvpState, formData: FormData): Pro
     console.error('RSVP insert failed:', error.message);
     return {
       status: 'error',
-      message: 'Something went wrong saving your RSVP. Please try again in a moment.',
+      message: 'პასუხის შენახვისას შეცდომა მოხდა. გთხოვთ, სცადოთ ხელახლა.',
     };
   }
 
   return {
     status: 'success',
     message: isAttending
-      ? 'Thank you — we cannot wait to celebrate with you.'
-      : 'Thank you for letting us know. You will be missed.',
+      ? 'გმადლობთ — მოუთმენლად ველოდებით თქვენთან ერთად აღნიშვნას.'
+      : 'გმადლობთ, რომ გვაცნობეთ. მოგენატრებით.',
   };
 }

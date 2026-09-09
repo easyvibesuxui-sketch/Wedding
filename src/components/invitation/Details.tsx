@@ -19,15 +19,15 @@ export function Details() {
 
       <div className="relative mx-auto max-w-md space-y-14 text-center">
         <Reveal>
-          <h2 className="script-title">Dress Code</h2>
+          <h2 className="section-title">{siteConfig.copy.dressCodeTitle}</h2>
           <Flourish className="mx-auto mt-3" />
-          <p className="mt-6 text-lg leading-relaxed text-ink-500">{siteConfig.dressCode}</p>
+          <p className="mt-6 text-lg leading-relaxed text-ink-500">{siteConfig.copy.dressCode}</p>
         </Reveal>
 
         <Reveal delay={0.1}>
-          <h2 className="script-title">Gift Preference</h2>
+          <h2 className="section-title">{siteConfig.copy.giftTitle}</h2>
           <Flourish className="mx-auto mt-3" />
-          <p className="mt-6 text-lg leading-relaxed text-ink-500">{siteConfig.giftPreference}</p>
+          <p className="mt-6 text-lg leading-relaxed text-ink-500">{siteConfig.copy.giftPreference}</p>
         </Reveal>
       </div>
 
