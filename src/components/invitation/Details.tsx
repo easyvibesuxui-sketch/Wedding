@@ -1,5 +1,5 @@
 import { Flourish } from '@/components/art/Flourish';
-import { FloralSpray } from '@/components/art/FloralSpray';
+import { VineCorner } from '@/components/art/VineCorner';
 import { Reveal } from '@/components/Reveal';
 import { TornEdge } from '@/components/art/TornEdge';
 import { siteConfig } from '@/lib/site-config';
@@ -7,15 +7,9 @@ import { siteConfig } from '@/lib/site-config';
 export function Details() {
   return (
     <section className="paper grain relative overflow-hidden px-6 py-20 sm:py-24">
-      {/* Florals spill over the torn edge, as in the reference. */}
-      <FloralSpray
-        side="right"
-        className="pointer-events-none absolute -right-6 -top-10 w-40 opacity-90 sm:w-52"
-      />
-      <FloralSpray
-        side="left"
-        className="pointer-events-none absolute -bottom-8 -left-8 w-36 opacity-85 sm:w-48"
-      />
+      {/* The vine spills over the torn edges, as in the printed references. */}
+      <VineCorner corner="top-right" className="absolute -right-10 -top-12 w-48 sm:w-64" />
+      <VineCorner corner="bottom-left" className="absolute -bottom-10 -left-12 w-44 sm:w-60" />
 
       <div className="relative mx-auto max-w-md space-y-14 text-center">
         <Reveal>

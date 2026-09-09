@@ -111,12 +111,3 @@ export function FloralSpray({
   );
 }
 
-/** A single bloom, sized in its own 120 x 120 box (used as the timeline marker). */
-export function SingleBloom({ hue = 'blush', className = '' }: { hue?: Hue; className?: string }) {
-  return (
-    <svg viewBox="0 0 120 120" className={className} aria-hidden="true">
-      <BloomFilter />
-      <Rose x={60} y={60} r={54} hue={hue} />
-    </svg>
-  );
-}

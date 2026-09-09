@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { FloralSpray } from '@/components/art/FloralSpray';
+import { VineCorner } from '@/components/art/VineCorner';
 import { Reveal } from '@/components/Reveal';
 import { coupleNames, siteConfig } from '@/lib/site-config';
 
@@ -30,14 +30,8 @@ export function Closing() {
             </div>
           )}
 
-          <FloralSpray
-            side="left"
-            className="pointer-events-none absolute -bottom-10 -left-10 w-32 sm:w-40"
-          />
-          <FloralSpray
-            side="right"
-            className="pointer-events-none absolute -bottom-10 -right-10 w-32 sm:w-40"
-          />
+          <VineCorner corner="bottom-left" className="absolute -bottom-12 -left-14 w-40 sm:w-48" />
+          <VineCorner corner="bottom-right" className="absolute -bottom-12 -right-14 w-40 sm:w-48" />
         </div>
       </Reveal>
 

@@ -86,7 +86,7 @@ export const siteConfig = {
    * `public/art/`; set it to `null` to fall back to the hand-drawn SVG scene in
    * `src/components/art/ArchScene.tsx`. `couplePhoto` fills the closing frame.
    */
-  heroArt: '/art/hero.webp' as string | null,
+  heroArt: '/art/hero-vineyard.webp' as string | null,
   couplePhoto: null as string | null,
 
   /**
