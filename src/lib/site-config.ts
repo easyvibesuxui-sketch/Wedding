@@ -62,6 +62,7 @@ export const siteConfig = {
     rsvpTitle: 'დაადასტურეთ დასწრება',
     rsvpIntro: 'რომ ყველაფერი დროულად მოვამზადოთ, გთხოვთ გვაცნობოთ, დაესწრებით თუ არა.',
     rsvpOpen: 'დააჭირეთ',
+    skipIntro: 'გამოტოვება',
     rsvpDeadline: 'გთხოვთ, გვაცნობოთ 1 ოქტომბრამდე',
 
     fieldName: 'სახელი და გვარი',
@@ -87,6 +88,15 @@ export const siteConfig = {
    */
   heroArt: '/art/hero.webp' as string | null,
   couplePhoto: null as string | null,
+
+  /**
+   * Opening film for the envelope gate — drop the clip in `public/art/` and
+   * name it here. The guest taps to play it, and the invitation is revealed
+   * when it ends. If the file is missing or cannot play, the gate falls back
+   * to the drawn envelope, so the page is never blocked by it.
+   */
+  introVideo: '/art/envelope.mp4' as string | null,
+  introVideoPoster: '/art/envelope-poster.jpg' as string | null,
 
   /**
    * Optional background music. Drop an .mp3 in `public/` and name it here; the

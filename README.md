@@ -15,7 +15,7 @@ Built with Next.js (App Router), Tailwind CSS, Framer Motion and Supabase.
 
 | Section | What it does |
 | --- | --- |
-| Envelope gate | Embossed cream envelope with a wax seal; tapping it lifts the flap, floods the screen with warm light and unlocks the page. The page cannot scroll until it is opened. |
+| Envelope gate | A sealed envelope the guest taps to open — either the intro film, or the drawn embossed envelope whose flap lifts and floods the screen with warm light. The page cannot scroll until it is opened, and that tap is also the gesture browsers require before music may start. |
 | Hero | Garden arch, swans on a still lake and corner florals — all inline SVG, so it stays sharp on any phone and costs no image request. |
 | Blessing | Three script lines and the invitation paragraph. |
 | Countdown | Live days / hours / minutes / seconds to `date` in site-config. |
@@ -94,6 +94,7 @@ Three optional files you drop into `public/` and point at from that same file:
 | `heroArt` | Swaps the hand-drawn SVG hero for your own illustration or photo (e.g. `/art/hero.png`). |
 | `couplePhoto` | Fills the framed placeholder in the closing section. |
 | `music` | Background music. The floating play button only appears once the file loads, so leaving it absent simply hides the control. |
+| `introVideo` / `introVideoPoster` | Opening film for the envelope gate. The guest taps to play it and the invitation is revealed as it ends. If the file is missing or the browser cannot play it, the gate falls back to the drawn envelope — the page is never blocked by it. |
 
 The artwork itself lives in [`src/components/art/`](src/components/art) — the
 arch scene, floral sprays, wax seal, gold flourish, torn edges and venue sketch
