@@ -99,6 +99,13 @@ export const siteConfig = {
   introVideoPoster: '/art/envelope-poster.jpg' as string | null,
 
   /**
+   * Painted stand-ins for the two drawn pieces. Each falls back to its SVG
+   * component when set to `null`, so the page never depends on the file.
+   */
+  sealArt: null as string | null,
+  venueArt: null as string | null,
+
+  /**
    * Optional background music. Drop an .mp3 in `public/` and name it here; the
    * floating play button only appears when the file actually loads.
    */

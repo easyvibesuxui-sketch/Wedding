@@ -7,7 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Flourish } from '@/components/art/Flourish';
 import { Reveal } from '@/components/Reveal';
 import { TornEdge } from '@/components/art/TornEdge';
-import { WaxSeal } from '@/components/art/WaxSeal';
+import { Seal } from '@/components/art/Seal';
 import { submitRsvp, type RsvpState } from '@/app/actions';
 import { siteConfig } from '@/lib/site-config';
 
@@ -190,7 +190,7 @@ export function RsvpSection() {
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
             >
-              <WaxSeal label="RSVP" size={124} script={false} />
+              <Seal label="RSVP" size={124} script={false} />
               <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="#c19a45" strokeWidth="1.5" aria-hidden="true">
                 <path d="M2 10L11 2l9 8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

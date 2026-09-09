@@ -1,6 +1,8 @@
 import { Flourish } from '@/components/art/Flourish';
 import { Reveal } from '@/components/Reveal';
 import { TornEdge } from '@/components/art/TornEdge';
+import Image from 'next/image';
+
 import { VenueSketch } from '@/components/art/VenueSketch';
 import { mapEmbedUrl, mapLinkUrl, siteConfig } from '@/lib/site-config';
 
@@ -24,7 +26,17 @@ export function Location() {
         </Reveal>
 
         <Reveal delay={0.16}>
-          <VenueSketch className="mx-auto mt-10 w-full max-w-sm" />
+          {siteConfig.venueArt ? (
+            <Image
+              src={siteConfig.venueArt}
+              alt={venue.name}
+              width={900}
+              height={600}
+              className="mx-auto mt-10 w-full max-w-sm"
+            />
+          ) : (
+            <VenueSketch className="mx-auto mt-10 w-full max-w-sm" />
+          )}
         </Reveal>
 
         <Reveal delay={0.2}>

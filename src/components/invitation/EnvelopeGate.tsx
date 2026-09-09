@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { WaxSeal } from '@/components/art/WaxSeal';
+import { Seal } from '@/components/art/Seal';
 import { siteConfig } from '@/lib/site-config';
 
 /** How long the drawn-envelope animation runs before the gate clears. */
@@ -111,7 +111,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
               animate={{ scale: [1, 1.035, 1] }}
               transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
             >
-              <WaxSeal label={siteConfig.couple.monogram} size={148} />
+              <Seal label={siteConfig.couple.monogram} size={148} />
             </motion.span>
             <span className="relative text-xs tracking-[0.3em] text-gold-600">
               {siteConfig.copy.rsvpOpen}
