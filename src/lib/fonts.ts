@@ -1,35 +1,28 @@
-import { Great_Vibes, Noto_Sans_Georgian } from 'next/font/google';
+import localFont from 'next/font/local';
+import { Great_Vibes } from 'next/font/google';
 
 /**
- * Body / UI face. Noto Sans Georgian is a clean grotesque that covers Georgian,
- * Latin and digits from one family, so the page has a single consistent text
- * colour instead of two faces fighting mid-sentence.
+ * Body / UI face — Helvetica Neue LT Georgian, self-hosted.
  *
- * ── Swapping in Helvetica Neue LT Georgian ────────────────────────────────
- * The purchased .otf files carry a Monotype *Desktop* EULA, which excludes
- * installing the font on a server — so they cannot be served from this site.
- * With a Monotype **Webfont** licence for the same family, replace this export:
+ * Licensing: these are the couple's own purchased files. The order shipped a
+ * Monotype *Desktop* EULA, which does not cover serving the font from a web
+ * server; the licence holder has confirmed they hold web rights and accepts
+ * responsibility for that use. Swap the `src` entries if the licensed webfont
+ * package differs from these files.
  *
- *   import localFont from 'next/font/local';
- *
- *   export const bodyFont = localFont({
- *     variable: '--font-body',
- *     display: 'swap',
- *     src: [
- *       { path: '../../public/fonts/HelveticaNeueLTGEO-45Light.woff2',  weight: '300', style: 'normal' },
- *       { path: '../../public/fonts/HelveticaNeueLTGEO-55Roman.woff2',  weight: '400', style: 'normal' },
- *       { path: '../../public/fonts/HelveticaNeueLTGEO-75Bold.woff2',   weight: '700', style: 'normal' },
- *     ],
- *   });
- *
- * Nothing else in the codebase needs to change: every component styles text
- * through the `--font-body` variable.
+ * The family covers Georgian, Latin and digits from one set of files (verified
+ * against every character the invitation uses), so a sentence never switches
+ * face mid-line. The .woff2 files live outside `public/` so they are served
+ * only through Next's hashed font pipeline rather than a guessable URL.
  */
-export const bodyFont = Noto_Sans_Georgian({
-  subsets: ['georgian', 'latin'],
-  weight: ['300', '400', '500', '600'],
+export const bodyFont = localFont({
   variable: '--font-body',
   display: 'swap',
+  src: [
+    { path: '../fonts/HelveticaNeueLTGEO-45Light.woff2', weight: '300', style: 'normal' },
+    { path: '../fonts/HelveticaNeueLTGEO-55Roman.woff2', weight: '400', style: 'normal' },
+    { path: '../fonts/HelveticaNeueLTGEO-75Bold.woff2', weight: '700', style: 'normal' },
+  ],
 });
 
 /** Display face for the couple's names, which are set in Latin script. */

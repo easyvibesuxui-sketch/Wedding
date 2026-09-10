@@ -143,8 +143,13 @@ deployed URL to **Supabase → Authentication → URL Configuration**.
 
 ## Design notes
 
-Type is Cormorant Garamond for body and Great Vibes for the script headings,
-both loaded through `next/font` so there is no layout shift. The palette is warm
+Type is Helvetica Neue LT Georgian for everything the guest reads — Georgian,
+Latin and digits all come from that one family, so a line never switches face
+mid-sentence — with Great Vibes for the couple's names. Both are loaded through
+`next/font` so there is no layout shift, and the licensed `.woff2` files live in
+`src/fonts/` rather than `public/`, so they are only served through Next's
+hashed font pipeline. The font is commercially licensed: see the note in
+[`src/lib/fonts.ts`](src/lib/fonts.ts) before reusing this project elsewhere. The palette is warm
 cream (`#f8ece0`) with gold (`#c19a45`) for headings and deep wine (`#7a1f2b`)
 for the seals and primary buttons — defined once in
 [`tailwind.config.ts`](tailwind.config.ts).
