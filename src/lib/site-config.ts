@@ -87,7 +87,7 @@ export const siteConfig = {
    * `src/components/art/ArchScene.tsx`. `couplePhoto` fills the closing frame.
    */
   heroArt: '/art/hero-vineyard.webp' as string | null,
-  couplePhoto: null as string | null,
+  couplePhoto: '/art/couple.webp' as string | null,
 
   /**
    * Opening film for the envelope gate — drop the clip in `public/art/` and

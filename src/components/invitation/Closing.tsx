@@ -17,10 +17,12 @@ export function Closing() {
           {siteConfig.couplePhoto ? (
             <Image
               src={siteConfig.couplePhoto}
-              alt={`${coupleNames} together`}
-              width={640}
-              height={800}
-              className="w-full object-cover"
+              alt={`${coupleNames}`}
+              width={1000}
+              height={1328}
+              // The painting's own cream is a shade off the page, so a hairline
+              // frame turns that edge into an intentional printed border.
+              className="w-full border border-gold-300/50"
             />
           ) : (
             <div className="flex aspect-[4/5] w-full items-center justify-center border border-gold-300/60 bg-cream-100">
@@ -30,8 +32,14 @@ export function Closing() {
             </div>
           )}
 
-          <VineCorner corner="bottom-left" className="absolute -bottom-12 -left-14 w-40 sm:w-48" />
-          <VineCorner corner="bottom-right" className="absolute -bottom-12 -right-14 w-40 sm:w-48" />
+          {/* The painted portrait carries its own vine garland; the drawn
+              corners only frame the empty placeholder. */}
+          {siteConfig.couplePhoto ? null : (
+            <>
+              <VineCorner corner="bottom-left" className="absolute -bottom-12 -left-14 w-40 sm:w-48" />
+              <VineCorner corner="bottom-right" className="absolute -bottom-12 -right-14 w-40 sm:w-48" />
+            </>
+          )}
         </div>
       </Reveal>
 
