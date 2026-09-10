@@ -6,7 +6,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: `${coupleNames} — ${siteConfig.dateLabel}`,
-  description: `${siteConfig.copy.invitationBody} ${siteConfig.venue.name} — ${siteConfig.dateLong}.`,
+  description: `${siteConfig.copy.invitationBody[0]} ${siteConfig.venue.name} — ${siteConfig.dateLong}.`,
 };
 
 export const viewport: Viewport = {

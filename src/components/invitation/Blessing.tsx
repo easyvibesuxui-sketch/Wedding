@@ -25,7 +25,11 @@ export function Blessing() {
 
         <Reveal delay={0.2}>
           <p className="mt-10 text-lg text-ink-500">{siteConfig.copy.invitationLine}</p>
-          <p className="mt-3 text-lg leading-relaxed text-ink-500">{siteConfig.copy.invitationBody}</p>
+          {siteConfig.copy.invitationBody.map((paragraph: string) => (
+            <p key={paragraph} className="mt-4 text-lg leading-relaxed text-ink-500">
+              {paragraph}
+            </p>
+          ))}
         </Reveal>
       </div>
 
