@@ -1,10 +1,7 @@
 /**
- * Everything couple-specific lives here — names, dates, venue and every line
- * of copy on the invitation. Edit this file to reuse the page for another
- * wedding; no component hard-codes wording.
- *
- * The page is written in Georgian; the couple's names stay in Latin script so
- * they can be set in the calligraphic display face.
+ * Everything couple-specific that does not depend on language: the names, the
+ * date, the running order's clock times, the map query and the artwork.
+ * Every word the guest reads lives in `translations` below.
  */
 export const siteConfig = {
   couple: {
@@ -15,77 +12,14 @@ export const siteConfig = {
   },
 
   /** Drives the countdown. Keep the venue's timezone offset. */
-  date: '2026-10-24T17:00:00+04:00',
+  date: '2026-10-24T15:00:00+04:00',
   dateLabel: '24.10.26',
-  dateLong: 'შაბათი, 24 ოქტომბერი, 2026',
-  timeLabel: '17:00 — გვიან ღამემდე',
 
-  venue: {
-    name: 'შატო მეფის ქალაქი',
-    address: 'დავით აღმაშენებლის ქ. 10, ზემო ჭოჭეთი, კასპი',
-    /** Used for the embedded map and the "open in maps" link. */
-    mapQuery: 'Chateau Mephis Kalaki, Upper Chocheti, Kaspi, Georgia',
-  },
+  /** The map query is the venue's English name, whatever the page language. */
+  mapQuery: 'Chateau Mephis Kalaki, Upper Chocheti, Kaspi, Georgia',
 
-  timeline: [
-    { time: '17:00', title: 'სტუმრების მიღება' },
-    { time: '18:00', title: 'ცერემონია' },
-    { time: '19:00', title: 'მისალმება' },
-    { time: '20:00', title: 'ვახშამი' },
-    { time: '21:00', title: 'ცეკვები' },
-  ],
-
-  copy: {
-    heroEyebrow: 'ჩვენი ქორწილი',
-    scrollDown: 'ჩამოსქროლეთ',
-
-    // Non-breaking space before the dash so it never starts the second line
-    // when the heading wraps.
-    blessing: ['ორი გადელებული გული\u00A0— ერთი ბედი!'],
-    invitationLine: 'ჩვენო ჯიგარო ხალხო!',
-    /** Rendered as separate paragraphs, in order. */
-    invitationBody: [
-      'საქმე ისე წავიდა, რომ ვქორწინდებით! აბა, შინ ჯდომა და შორიდან ყურება არ იყოს!',
-      'გელოდებით ყოველს, რომ გუცაევის გოლივით იზეიმოს მთელმა დუნიამ! ერთად დავცხოთ, ვიცინოთ, ფეხების დაწყვეტამდე ვიცეკვოთ დევიღლიტოთ ქუსლები!',
-    ],
-
-    countdownTitle: 'ზეიმამდე დარჩა',
-    countdownTitleToday: 'დღეს არის ის დღე',
-    countdownUnits: { days: 'დღე', hours: 'საათი', minutes: 'წუთი', seconds: 'წამი' },
-
-    timelineTitle: 'დღის განრიგი',
-
-    locationTitle: 'ლოკაცია',
-    openInMaps: 'რუკაზე ნახვა',
-
-    dressCodeTitle: 'დრეს-კოდი',
-    dressCode:
-      'გთხოვთ, აირჩიოთ რბილი, მიწისფერი ან ღვინისფერი ტონები — სპილოსძვლისფერი, ზეთისხილისფერი, ღრმა მწვანე ან ქლიავისფერი.',
-    giftTitle: 'საჩუქრის შესახებ',
-    giftPreference: 'თქვენი დასწრება ჩვენთვის საუკეთესო საჩუქარია.',
-
-    rsvpTitle: 'დაადასტურეთ დასწრება',
-    rsvpIntro:
-      'არავინ არ გედირიოს და არ გედიფიქროს, თვარა წყენა იქნება და მერე თქვით „არ გავუფრთხილებივართო“!',
-    rsvpOpen: 'დააჭირეთ',
-    skipIntro: 'გამოტოვება',
-    rsvpDeadline: 'გთხოვთ, გვაცნობოთ 1 ოქტომბრამდე',
-
-    fieldName: 'სახელი და გვარი',
-    fieldNamePlaceholder: 'თქვენი სახელი და გვარი',
-    fieldAttending: 'დაესწრებით?',
-    attendingYes: 'სიამოვნებით დავესწრები',
-    attendingNo: 'სამწუხაროდ, ვერ დავესწრები',
-    fieldGuests: 'სტუმრების რაოდენობა (თქვენთან ერთად)',
-    fieldDietary: 'კვების შეზღუდვები',
-    fieldOptional: '(სურვილისამებრ)',
-    submit: 'გაგზავნა',
-    submitting: 'იგზავნება…',
-    thankYou: 'გმადლობთ',
-
-    closingLine: 'გელოდებით!',
-    photoPlaceholder: 'აქ თქვენი ფოტო იქნება',
-  },
+  /** Clock times for the running order; the labels come from `translations`. */
+  scheduleTimes: ['15:00', '16:00', '17:00'],
 
   /**
    * Whether guests can reply through the page. While this is off the RSVP
@@ -135,9 +69,9 @@ export const siteConfig = {
 export const coupleNames = `${siteConfig.couple.partnerOne} & ${siteConfig.couple.partnerTwo}`;
 
 export const mapEmbedUrl = `https://www.google.com/maps?q=${encodeURIComponent(
-  siteConfig.venue.mapQuery,
+  siteConfig.mapQuery,
 )}&output=embed`;
 
 export const mapLinkUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  siteConfig.venue.mapQuery,
+  siteConfig.mapQuery,
 )}`;

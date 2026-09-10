@@ -7,6 +7,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Flourish } from '@/components/art/Flourish';
 import { Seal } from '@/components/art/Seal';
 import { submitRsvp, type RsvpState } from '@/app/actions';
+import { useT } from '@/components/LanguageProvider';
 import { siteConfig } from '@/lib/site-config';
 
 const initialState: RsvpState = { status: 'idle', message: '' };
@@ -15,6 +16,7 @@ const fieldClass =
   'w-full border-b border-gold-300/70 bg-transparent px-1 py-3 text-lg text-ink-600 placeholder:text-ink-300 focus:border-gold-400 focus:outline-none';
 
 function SubmitButton() {
+  const t = useT();
   const { pending } = useFormStatus();
 
   return (
@@ -23,13 +25,14 @@ function SubmitButton() {
       disabled={pending}
       className="w-full bg-wine-500 px-10 py-4 text-xs uppercase tracking-widest text-cream-100 transition-colors hover:bg-wine-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
     >
-      {pending ? siteConfig.copy.submitting : siteConfig.copy.submit}
+      {pending ? t.submitting : t.submit}
     </button>
   );
 }
 
 /** The seal opens the form, the form collects the reply, the reply is thanked. */
 export function RsvpForm() {
+  const t = useT();
   const [state, formAction] = useFormState(submitRsvp, initialState);
   const [open, setOpen] = useState(false);
   const [attending, setAttending] = useState<'yes' | 'no' | ''>('');
@@ -46,7 +49,7 @@ export function RsvpForm() {
               className="mt-12"
               role="status"
             >
-              <p className="section-title text-3xl sm:text-4xl">{siteConfig.copy.thankYou}</p>
+              <p className="section-title text-3xl sm:text-4xl">{t.thankYou}</p>
               <Flourish className="mx-auto mt-4" />
               <p className="mt-6 text-lg text-ink-500">{state.message}</p>
             </motion.div>
@@ -61,7 +64,7 @@ export function RsvpForm() {
             >
               <div>
                 <label htmlFor="fullName" className="eyebrow">
-                  {siteConfig.copy.fieldName}
+                  {t.fieldName}
                 </label>
                 <input
                   id="fullName"
@@ -70,7 +73,7 @@ export function RsvpForm() {
                   required
                   maxLength={120}
                   autoComplete="name"
-                  placeholder={siteConfig.copy.fieldNamePlaceholder}
+                  placeholder={t.fieldNamePlaceholder}
                   aria-invalid={Boolean(state.fieldErrors?.fullName)}
                   className={`mt-2 ${fieldClass}`}
                 />
@@ -80,11 +83,11 @@ export function RsvpForm() {
               </div>
 
               <fieldset>
-                <legend className="eyebrow">{siteConfig.copy.fieldAttending}</legend>
+                <legend className="eyebrow">{t.fieldAttending}</legend>
                 <div className="mt-4 grid gap-3">
                   {[
-                    { value: 'yes', label: siteConfig.copy.attendingYes },
-                    { value: 'no', label: siteConfig.copy.attendingNo },
+                    { value: 'yes', label: t.attendingYes },
+                    { value: 'no', label: t.attendingNo },
                   ].map((option) => (
                     <label
                       key={option.value}
@@ -123,7 +126,7 @@ export function RsvpForm() {
                     className="overflow-hidden"
                   >
                     <label htmlFor="guestCount" className="eyebrow">
-                      {siteConfig.copy.fieldGuests}
+                      {t.fieldGuests}
                     </label>
                     <input
                       id="guestCount"
@@ -145,15 +148,15 @@ export function RsvpForm() {
 
               <div>
                 <label htmlFor="dietaryRestrictions" className="eyebrow">
-                  {siteConfig.copy.fieldDietary}{' '}
-                  <span className="normal-case">{siteConfig.copy.fieldOptional}</span>
+                  {t.fieldDietary}{' '}
+                  <span className="normal-case">{t.fieldOptional}</span>
                 </label>
                 <input
                   id="dietaryRestrictions"
                   name="dietaryRestrictions"
                   type="text"
                   maxLength={500}
-                  placeholder="ვეგეტარიანული, ალერგია, სხვა…"
+                  placeholder={t.fieldDietaryPlaceholder}
                   className={`mt-2 ${fieldClass}`}
                 />
               </div>
@@ -166,7 +169,7 @@ export function RsvpForm() {
 
               <div className="space-y-4 pt-2 text-center">
                 <SubmitButton />
-                <p className="text-sm text-ink-400">{siteConfig.copy.rsvpDeadline}</p>
+                <p className="text-sm text-ink-400">{t.rsvpDeadline}</p>
               </div>
             </motion.form>
           ) : (
@@ -185,7 +188,7 @@ export function RsvpForm() {
               <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="#c19a45" strokeWidth="1.5" aria-hidden="true">
                 <path d="M2 10L11 2l9 8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span className="text-xs tracking-[0.28em] text-gold-600">{siteConfig.copy.rsvpOpen}</span>
+              <span className="text-xs tracking-[0.28em] text-gold-600">{t.rsvpOpen}</span>
             </motion.button>
           )}
         </AnimatePresence>

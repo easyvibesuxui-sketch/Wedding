@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { Reveal } from '@/components/Reveal';
 import { TornEdge } from '@/components/art/TornEdge';
+import { useT } from '@/components/LanguageProvider';
 import { siteConfig } from '@/lib/site-config';
 
 const UNITS = ['days', 'hours', 'minutes', 'seconds'] as const;
@@ -20,6 +21,7 @@ function remaining(target: number) {
 }
 
 export function Countdown() {
+  const t = useT();
   const target = new Date(siteConfig.date).getTime();
   // Rendered empty on the server so the markup cannot mismatch the first tick.
   const [left, setLeft] = useState<ReturnType<typeof remaining> | null>(null);
@@ -37,7 +39,7 @@ export function Countdown() {
       <div className="mx-auto max-w-lg text-center">
         <Reveal>
           <h2 className="section-title">
-            {done ? siteConfig.copy.countdownTitleToday : siteConfig.copy.countdownTitle}
+            {done ? t.countdownTitleToday : t.countdownTitle}
           </h2>
         </Reveal>
 
@@ -55,7 +57,7 @@ export function Countdown() {
                     {left ? String(left[key]).padStart(2, '0') : '––'}
                   </dd>
                   <dt className="mt-1 text-xs tracking-wider text-gold-600/75 sm:text-sm">
-                    {siteConfig.copy.countdownUnits[key]}
+                    {t.countdownUnits[key]}
                   </dt>
                 </div>
               </div>

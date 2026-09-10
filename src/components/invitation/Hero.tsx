@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 import { ArchScene } from '@/components/art/ArchScene';
+import { useT } from '@/components/LanguageProvider';
 import { siteConfig } from '@/lib/site-config';
 
 /*
@@ -21,7 +22,8 @@ const rise = {
 };
 
 export function Hero({ start }: { start: boolean }) {
-  const { couple, dateLabel, heroArt, copy } = siteConfig;
+  const { couple, dateLabel, heroArt } = siteConfig;
+  const t = useT();
 
   return (
     <section className="relative flex min-h-[100svh] items-start justify-center overflow-hidden bg-cream-100">
@@ -61,7 +63,7 @@ export function Hero({ start }: { start: boolean }) {
           variants={rise}
           className="text-sm tracking-[0.35em] text-gold-500 sm:text-base"
         >
-          {copy.heroEyebrow}
+          {t.heroEyebrow}
         </motion.p>
         <motion.p
           custom={1}
@@ -82,7 +84,7 @@ export function Hero({ start }: { start: boolean }) {
             href="#blessing"
             className="inline-flex flex-col items-center gap-1 text-gold-500 transition-colors hover:text-gold-600"
           >
-            <span className="text-xs tracking-[0.28em]">{copy.scrollDown}</span>
+            <span className="text-xs tracking-[0.28em]">{t.scrollDown}</span>
             <motion.svg
               width="26"
               height="14"

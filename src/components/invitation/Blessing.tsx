@@ -1,9 +1,13 @@
+'use client';
+
 import { Flourish } from '@/components/art/Flourish';
 import { Reveal } from '@/components/Reveal';
 import { TornEdge } from '@/components/art/TornEdge';
-import { siteConfig } from '@/lib/site-config';
+import { useT } from '@/components/LanguageProvider';
 
 export function Blessing() {
+  const t = useT();
+
   return (
     <section id="blessing" className="paper grain relative overflow-hidden px-6 py-20 sm:py-24">
       <TornEdge position="top" color="#f8ece0" />
@@ -15,7 +19,7 @@ export function Blessing() {
 
         <Reveal delay={0.1}>
           <div className="mt-8 space-y-1">
-            {siteConfig.copy.blessing.map((line: string) => (
+            {t.blessing.map((line) => (
               <p key={line} className="section-title">
                 {line}
               </p>
@@ -24,8 +28,8 @@ export function Blessing() {
         </Reveal>
 
         <Reveal delay={0.2}>
-          <p className="mt-10 text-lg text-ink-500">{siteConfig.copy.invitationLine}</p>
-          {siteConfig.copy.invitationBody.map((paragraph: string) => (
+          <p className="mt-10 text-lg text-ink-500">{t.invitationLine}</p>
+          {t.invitationBody.map((paragraph) => (
             <p key={paragraph} className="mt-4 text-lg leading-relaxed text-ink-500">
               {paragraph}
             </p>

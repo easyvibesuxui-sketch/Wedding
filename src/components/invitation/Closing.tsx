@@ -1,14 +1,19 @@
+'use client';
+
 import Image from 'next/image';
 
 import { VineCorner } from '@/components/art/VineCorner';
 import { Reveal } from '@/components/Reveal';
+import { useT } from '@/components/LanguageProvider';
 import { coupleNames, siteConfig } from '@/lib/site-config';
 
 export function Closing() {
+  const t = useT();
+
   return (
     <footer className="paper grain relative overflow-hidden px-6 pb-16 pt-20 text-center">
       <Reveal>
-        <p className="section-title text-3xl sm:text-4xl">{siteConfig.copy.closingLine}</p>
+        <p className="section-title text-3xl sm:text-4xl">{t.closingLine}</p>
         <p className="mt-4 text-2xl text-ink-500">{coupleNames}</p>
       </Reveal>
 
@@ -27,7 +32,7 @@ export function Closing() {
           ) : (
             <div className="flex aspect-[4/5] w-full items-center justify-center border border-gold-300/60 bg-cream-100">
               <p className="max-w-[14rem] text-base leading-relaxed text-ink-400">
-                {siteConfig.copy.photoPlaceholder}
+                {t.photoPlaceholder}
               </p>
             </div>
           )}

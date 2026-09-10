@@ -1,7 +1,8 @@
 # Wedding Invitation — MVP
 
 A digital wedding invitation — a mobile-first card you send over WhatsApp or
-Instagram — with a private RSVP dashboard behind it.
+Instagram — in Georgian, English and Russian, with a private RSVP dashboard
+behind it.
 
 - **Public** `/` — a sealed envelope the guest taps to open, then a single scroll:
   hero, blessing, live countdown, schedule, location with map, dress code, an
@@ -19,7 +20,7 @@ Built with Next.js (App Router), Tailwind CSS, Framer Motion and Supabase.
 | Hero | Garden arch, swans on a still lake and corner florals — all inline SVG, so it stays sharp on any phone and costs no image request. |
 | Blessing | Three script lines and the invitation paragraph. |
 | Countdown | Live days / hours / minutes / seconds to `date` in site-config. |
-| Schedule | Vertical spine with diamond nodes and a rose that travels down it as you scroll. |
+| Schedule | Vertical spine with diamond nodes and a grape cluster that travels down it as you scroll. |
 | Location | Venue, a hand-drawn sketch, a live Google map in a gold frame, and an "Open in Maps" link. |
 | Dress code & gifts | Two blocks framed by florals that spill over the torn paper seam. |
 | RSVP | A wax seal reading RSVP; tapping it opens the form. |
@@ -81,6 +82,22 @@ be added to a `NEXT_PUBLIC_*` variable.
 npm run dev     # http://localhost:3000
 npm run build   # production build
 ```
+
+## Languages
+
+The page reads the guest's `Accept-Language` header on the server, so the very
+first paint is already in their language: Georgian or Russian if their phone is
+set to it, English for everyone else. A switcher in the top corner changes it
+instantly and stores the choice in a cookie, which then wins over the header on
+later visits.
+
+Every word lives in [`src/lib/translations.ts`](src/lib/translations.ts), one
+dictionary per language behind a shared `Dictionary` type — so a missing string
+is a build error, not a blank space on the page. Language-independent things —
+the names, the date, the running order's clock times, the map query, the
+artwork — stay in [`src/lib/site-config.ts`](src/lib/site-config.ts).
+
+Adding a fourth language is a new entry in `LANGS` and a new dictionary.
 
 ## Customising the wedding
 
@@ -145,7 +162,9 @@ deployed URL to **Supabase → Authentication → URL Configuration**.
 
 Type is Helvetica Neue LT Georgian for everything the guest reads — Georgian,
 Latin and digits all come from that one family, so a line never switches face
-mid-sentence — with Great Vibes for the couple's names. Both are loaded through
+mid-sentence — with Great Vibes for the couple's names. The family carries no
+Cyrillic, so Inter's Cyrillic subset sits behind it for the Russian version and
+the browser picks a face per glyph. Both are loaded through
 `next/font` so there is no layout shift, and the licensed `.woff2` files live in
 `src/fonts/` rather than `public/`, so they are only served through Next's
 hashed font pipeline. The font is commercially licensed: see the note in

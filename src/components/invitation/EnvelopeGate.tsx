@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { Seal } from '@/components/art/Seal';
+import { useT } from '@/components/LanguageProvider';
 import { siteConfig } from '@/lib/site-config';
 
 /** How long the drawn-envelope animation runs before the gate clears. */
@@ -39,6 +40,7 @@ const FILM_START_TIMEOUT_MS = 1500;
  * needs before any music may start.
  */
 export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
+  const t = useT();
   const [opening, setOpening] = useState(false);
   const [gone, setGone] = useState(false);
   // Set when the film is missing or the browser refuses it — we then draw the
@@ -202,7 +204,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
             animate={{ opacity: opening ? 0 : 1, scale: opening || useFilm ? 1 : 1 }}
             transition={{ duration: 0.7 }}
             style={{ pointerEvents: opening ? 'none' : 'auto' }}
-            aria-label="მოწვევის გახსნა"
+            aria-label={t.openInvitation}
           >
             {useFilm ? (
               <>
@@ -219,7 +221,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
                   animate={{ opacity: [0.65, 1, 0.65] }}
                   transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
                 >
-                  {siteConfig.copy.rsvpOpen}
+                  {t.rsvpOpen}
                 </motion.span>
               </>
             ) : (
@@ -237,7 +239,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
                   <Seal label={siteConfig.couple.monogram} size={148} priority />
                 </motion.span>
                 <span className="relative text-xs tracking-[0.3em] text-gold-600">
-                  {siteConfig.copy.rsvpOpen}
+                  {t.rsvpOpen}
                 </span>
               </>
             )}
@@ -250,7 +252,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
               onClick={beginHandover}
               className="absolute bottom-8 right-6 z-10 rounded-full border border-cream-100/70 px-4 py-2 text-xs tracking-[0.2em] text-cream-100 backdrop-blur-sm transition-colors hover:bg-cream-100/15"
             >
-              {siteConfig.copy.skipIntro}
+              {t.skipIntro}
             </button>
           ) : null}
         </motion.div>
