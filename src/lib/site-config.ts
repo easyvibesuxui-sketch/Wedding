@@ -88,6 +88,14 @@ export const siteConfig = {
   },
 
   /**
+   * Whether guests can reply through the page. While this is off the RSVP
+   * section keeps its heading and wording, and the wax seal sits there as an
+   * ornament — no prompt, nothing to tap, no form. Turning it back on restores
+   * the whole flow; the form and the Supabase insert behind it are untouched.
+   */
+  rsvpEnabled: false,
+
+  /**
    * Drop-in artwork. `heroArt` points at the painted illustration in
    * `public/art/`; set it to `null` to fall back to the hand-drawn SVG scene in
    * `src/components/art/ArchScene.tsx`. `couplePhoto` fills the closing frame.
