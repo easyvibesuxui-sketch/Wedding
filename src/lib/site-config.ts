@@ -96,6 +96,12 @@ export const siteConfig = {
    * to the drawn envelope, so the page is never blocked by it.
    */
   introVideo: '/art/envelope.mp4' as string | null,
+  /**
+   * WebM alongside the MP4: Chromium and Firefox builds without the
+   * proprietary H.264 decoder cannot play the MP4 at all, and would drop to
+   * the drawn envelope. The browser picks whichever it can decode.
+   */
+  introVideoWebm: '/art/envelope.webm' as string | null,
   introVideoPoster: '/art/envelope-poster.jpg' as string | null,
 
   /**

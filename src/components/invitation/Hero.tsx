@@ -6,12 +6,17 @@ import { motion } from 'framer-motion';
 import { ArchScene } from '@/components/art/ArchScene';
 import { siteConfig } from '@/lib/site-config';
 
+/*
+ * The hero starts while the gate's wash is still on screen, so the first line
+ * is held back until the wash has landed — the lettering then surfaces out of
+ * the cream instead of racing the handover.
+ */
 const rise = {
-  hidden: { opacity: 0, y: 26 },
+  hidden: { opacity: 0, y: 14 },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
-    transition: { duration: 0.9, delay: 0.15 + i * 0.18, ease: [0.22, 1, 0.36, 1] as const },
+    transition: { duration: 1.1, delay: 0.6 + i * 0.22, ease: [0.16, 1, 0.3, 1] as const },
   }),
 };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { Seal } from '@/components/art/Seal';
@@ -8,6 +8,28 @@ import { siteConfig } from '@/lib/site-config';
 
 /** How long the drawn-envelope animation runs before the gate clears. */
 const PAPER_OPEN_MS = 1900;
+
+/**
+ * The handover starts this long before the film actually ends, so it happens
+ * over moving footage. Waiting for `ended` meant the last frame froze first,
+ * and the cut to the invitation landed on a still — which is what made it snap.
+ */
+const REVEAL_LEAD_S = 1.2;
+
+/**
+ * How long the warm wash takes to cover the film. Kept short enough that the
+ * invitation is already surfacing underneath when the wash lifts, so there is
+ * no blank beat between the two.
+ */
+const WASH_MS = 1200;
+
+/**
+ * If the film has not started within this long after the tap, fall through to
+ * the drawn envelope. With <source> children a browser that can use none of
+ * them does not reliably reject play() or fire an error we can catch, so the
+ * only dependable signal that the film is running is the film running.
+ */
+const FILM_START_TIMEOUT_MS = 1500;
 
 /**
  * The invitation opens from a sealed envelope. When an intro film is provided
@@ -22,9 +44,26 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
   // Set when the film is missing or the browser refuses it — we then draw the
   // envelope instead rather than trapping the guest behind a blank screen.
   const [filmFailed, setFilmFailed] = useState(false);
+  // The wash that carries the film into the page.
+  const [washing, setWashing] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  // `timeupdate` fires several times a second, so the handover needs a latch
+  // that does not wait on a state update to land. It also guards every other
+  // route out of the gate, so the page is only revealed once.
+  const handedOver = useRef(false);
+  const filmStarted = useRef(false);
+  const startWatchdog = useRef<number | null>(null);
 
-  const useFilm = Boolean(siteConfig.introVideo) && !filmFailed;
+  const clearWatchdog = useCallback(() => {
+    if (startWatchdog.current !== null) {
+      window.clearTimeout(startWatchdog.current);
+      startWatchdog.current = null;
+    }
+  }, []);
+
+  useEffect(() => clearWatchdog, [clearWatchdog]);
+
+  const useFilm = Boolean(siteConfig.introVideo || siteConfig.introVideoWebm) && !filmFailed;
 
   useEffect(() => {
     document.body.dataset.sealed = 'true';
@@ -40,6 +79,9 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
 
   /** Opens with the drawn envelope, whatever the film did. */
   function openWithPaper() {
+    if (handedOver.current) return;
+    handedOver.current = true;
+    clearWatchdog();
     setFilmFailed(true);
     reveal();
     window.setTimeout(() => setGone(true), PAPER_OPEN_MS);
@@ -55,6 +97,9 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
       // If it will not play, drop straight through to the drawn envelope
       // rather than leaving the guest on a sealed screen.
       video.play().catch(openWithPaper);
+      startWatchdog.current = window.setTimeout(() => {
+        if (!filmStarted.current) openWithPaper();
+      }, FILM_START_TIMEOUT_MS);
       return;
     }
 
@@ -62,9 +107,35 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
     window.setTimeout(() => setGone(true), PAPER_OPEN_MS);
   }
 
-  function onFilmEnded() {
+  /**
+   * Hands the screen from the film to the invitation: the warm wash rises over
+   * the footage while the page fades up underneath it, and the gate leaves once
+   * the two have met.
+   */
+  const beginHandover = useCallback(() => {
+    if (handedOver.current) return;
+    handedOver.current = true;
+    setWashing(true);
     reveal();
-    setGone(true);
+    window.setTimeout(() => setGone(true), WASH_MS);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  function onFilmProgress() {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.currentTime > 0) {
+      filmStarted.current = true;
+      clearWatchdog();
+    }
+    if (!Number.isFinite(video.duration)) return;
+    if (video.currentTime >= video.duration - REVEAL_LEAD_S) beginHandover();
+  }
+
+  function onFilmEnded() {
+    // Hold the closing frame rather than snapping back to the first one.
+    videoRef.current?.pause();
+    beginHandover();
   }
 
   return (
@@ -73,23 +144,46 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
         <motion.div
           className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-cream-300"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.9, ease: 'easeOut' }}
         >
           {useFilm ? (
             <video
               ref={videoRef}
               className="absolute inset-0 h-full w-full object-cover"
-              src={siteConfig.introVideo ?? undefined}
               poster={siteConfig.introVideoPoster ?? undefined}
               muted
               playsInline
               preload="auto"
+              onPlaying={onFilmProgress}
+              onTimeUpdate={onFilmProgress}
               onEnded={onFilmEnded}
               onError={() => (opening ? openWithPaper() : setFilmFailed(true))}
-            />
+            >
+              {siteConfig.introVideoWebm ? (
+                <source src={siteConfig.introVideoWebm} type="video/webm" />
+              ) : null}
+              {siteConfig.introVideo ? (
+                <source src={siteConfig.introVideo} type="video/mp4" />
+              ) : null}
+            </video>
           ) : (
             <PaperEnvelope opening={opening} />
           )}
+
+          {/* The light coming out of the envelope becomes the page. */}
+          {useFilm ? (
+            <motion.div
+              className="pointer-events-none absolute inset-0"
+              style={{
+                background:
+                  'radial-gradient(120% 90% at 50% 55%, #fdf8ee 0%, #faf3e8 45%, #f8ece0 100%)',
+              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: washing ? 1 : 0 }}
+              transition={{ duration: WASH_MS / 1000, ease: [0.4, 0, 0.2, 1] }}
+              aria-hidden="true"
+            />
+          ) : null}
 
           {/*
             With the film, the envelope on screen already carries its own seal —
@@ -153,7 +247,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
           {opening && useFilm ? (
             <button
               type="button"
-              onClick={onFilmEnded}
+              onClick={beginHandover}
               className="absolute bottom-8 right-6 z-10 rounded-full border border-cream-100/70 px-4 py-2 text-xs tracking-[0.2em] text-cream-100 backdrop-blur-sm transition-colors hover:bg-cream-100/15"
             >
               {siteConfig.copy.skipIntro}
