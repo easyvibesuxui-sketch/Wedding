@@ -4,11 +4,13 @@ import { motion } from 'framer-motion';
 
 import { MonogramBadge, RosetteDivider } from '@/components/art/Ornaments';
 import { Gate } from '@/components/invitation/Gate';
-import { HeroText } from '@/components/invitation/HeroText';
+import { PaintedCorner, PaintedHero } from '@/components/invitation/PaintedHero';
 import { STACKS } from '@/templates/style';
 import type { OpeningProps, TemplateDef } from '@/templates/types';
 
-import { Balcony, Door, FretCorner, Fretwork, WOOD } from './art';
+/** The painted teal of the old wooden balconies and doors. */
+const TEAL = '#2f5d5a';
+const DOORS = '/art/tbilisi-doors.webp';
 
 /**
  * Carved double doors of an old Tbilisi courtyard. On a tap they swing
@@ -28,7 +30,17 @@ function TbilisiOpening({ onOpen }: OpeningProps) {
               animate={opening ? { rotateY: side === 'left' ? 105 : -105 } : { rotateY: 0 }}
               transition={{ duration: 1.6, ease: [0.55, 0.05, 0.25, 1] }}
             >
-              <Door side={side} />
+              {/*
+                One painting of the closed doors, cropped so its leaves meet on
+                the centre line; each leaf shows its own half, so they close
+                into one picture and part along the real join.
+              */}
+              <div className="absolute inset-0 overflow-hidden">
+                <div
+                  className={`absolute inset-y-0 w-[200%] bg-cover bg-center ${side === 'left' ? 'left-0' : 'right-0'}`}
+                  style={{ backgroundImage: `url(${DOORS})`, backgroundColor: TEAL }}
+                />
+              </div>
               {/* The leaf darkens as it turns away from the light. */}
               <motion.div
                 className="absolute inset-0 bg-black"
@@ -44,34 +56,12 @@ function TbilisiOpening({ onOpen }: OpeningProps) {
   );
 }
 
+/** The painted old town: carved balconies above the river, Narikala on the ridge. */
 function TbilisiHero({ start }: { start: boolean }) {
-  return (
-    <section className="relative flex min-h-[var(--hero-h,100svh)] flex-col items-center justify-center overflow-hidden bg-t-bg px-6 pb-28 pt-20">
-      {/* An arched window with a carved surround. */}
-      <motion.div
-        className="relative w-full max-w-[21rem] rounded-t-[999px] p-3"
-        style={{ background: WOOD.teal }}
-        initial={{ opacity: 0, y: 24 }}
-        animate={start ? { opacity: 1, y: 0 } : {}}
-        transition={{ duration: 1.3, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="absolute inset-0 overflow-hidden rounded-t-[999px] opacity-70">
-          <Fretwork />
-        </div>
-        <div className="relative rounded-t-[999px] bg-t-bg px-5 pb-10 pt-24">
-          <HeroText start={start} nameClassName="italic" />
-        </div>
-      </motion.div>
-
-      {/* The balcony rail running under the window. */}
-      <div className="absolute inset-x-0 bottom-6 text-t-accent/70">
-        <Balcony />
-      </div>
-    </section>
-  );
+  return <PaintedHero src="/art/tbilisi-hero.webp" start={start} nameClassName="italic" />;
 }
 
-/** Old Tbilisi: carved balconies, terracotta and teal, and wooden doors that swing open. */
+/** Old Tbilisi: painted balconies and pomegranates, terracotta and teal, and carved doors that swing open. */
 export const tbilisi: TemplateDef = {
   id: 'tbilisi',
   palette: {
@@ -83,9 +73,9 @@ export const tbilisi: TemplateDef = {
     accent: '#a4452c',
     accentSoft: '#d48b6a',
     line: '#c9a27f',
-    cta: WOOD.teal,
+    cta: TEAL,
     onCta: '#f5ebdd',
-    inverse: WOOD.teal,
+    inverse: TEAL,
     inverseInk: '#f5ebdd',
     inverseInkSoft: '#cfe0dc',
     inverseAccent: '#e8b27c',
@@ -112,5 +102,5 @@ export const tbilisi: TemplateDef = {
   Hero: TbilisiHero,
   Divider: RosetteDivider,
   Emblem: ({ size }) => <MonogramBadge size={size} shape="octagon" />,
-  Corner: FretCorner,
+  Corner: (props) => <PaintedCorner src="/art/tbilisi-pomegranate.webp" {...props} />,
 };

@@ -22,11 +22,14 @@ const rise = {
 export function HeroText({
   start,
   names = 'stacked',
+  cue = true,
   className = '',
   nameClassName = '',
 }: {
   start: boolean;
   names?: 'stacked' | 'line';
+  /** The prompt to scroll. A painted hero leaves it out: it would sit on the painting. */
+  cue?: boolean;
   className?: string;
   nameClassName?: string;
 }) {
@@ -56,27 +59,29 @@ export function HeroText({
         )}
       </motion.h1>
 
-      <motion.div custom={3} variants={rise} className="mt-12">
-        <a
-          href="#blessing"
-          className="inline-flex flex-col items-center gap-1 text-t-accent transition-colors hover:text-t-ink"
-        >
-          <span className="text-xs tracking-[0.28em]">{t.scrollDown}</span>
-          <motion.svg
-            width="26"
-            height="14"
-            viewBox="0 0 26 14"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            animate={{ y: [0, 5, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-            aria-hidden="true"
+      {cue ? (
+        <motion.div custom={3} variants={rise} className="mt-12">
+          <a
+            href="#blessing"
+            className="inline-flex flex-col items-center gap-1 text-t-accent transition-colors hover:text-t-ink"
           >
-            <path d="M2 2l11 10L24 2" strokeLinecap="round" strokeLinejoin="round" />
-          </motion.svg>
-        </a>
-      </motion.div>
+            <span className="text-xs tracking-[0.28em]">{t.scrollDown}</span>
+            <motion.svg
+              width="26"
+              height="14"
+              viewBox="0 0 26 14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              animate={{ y: [0, 5, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+              aria-hidden="true"
+            >
+              <path d="M2 2l11 10L24 2" strokeLinecap="round" strokeLinejoin="round" />
+            </motion.svg>
+          </a>
+        </motion.div>
+      ) : null}
     </motion.div>
   );
 }

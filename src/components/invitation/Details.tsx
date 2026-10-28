@@ -18,8 +18,8 @@ export function Details() {
       */}
       {Corner ? (
         <>
-          <Corner className="pointer-events-none absolute -right-4 -top-12 -z-10 w-32 sm:w-52" />
-          <Corner className="pointer-events-none absolute -bottom-14 -left-4 -z-10 w-28 rotate-180 sm:w-48" />
+          <Corner className="pointer-events-none absolute -right-6 -top-16 -z-10 w-32 sm:w-52" />
+          <Corner className="pointer-events-none absolute -bottom-24 -left-6 -z-10 w-24 rotate-180 sm:w-44" />
         </>
       ) : null}
 

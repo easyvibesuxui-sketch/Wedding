@@ -50,6 +50,11 @@ one guests see with `template` in [`src/lib/site-config.ts`](src/lib/site-config
 | `ribbon` | Blush and satin | The bow unties, the ribbons slide off, the lid lifts |
 | `kraft` | Kraft paper, twine, polaroid | The twine slips off and the envelope drops away |
 
+Vineyard, Riviera and Old Tbilisi are painted: their heroes, corner
+ornaments and (for Tbilisi) the opening doors are watercolours in
+`public/art/`, generated with Kling and cut out to transparency. The other
+designs are drawn in SVG.
+
 A design is one file in [`src/templates/`](src/templates): a palette, three
 faces, which surface each band sits on, the seam, the reveal, and its own
 opening, hero and ornaments ([`types.ts`](src/templates/types.ts) lists every

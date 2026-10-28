@@ -5,12 +5,12 @@ import { motion } from 'framer-motion';
 
 import { LineDivider, MonogramBadge } from '@/components/art/Ornaments';
 import { Gate } from '@/components/invitation/Gate';
-import { HeroText } from '@/components/invitation/HeroText';
+import { PaintedCorner, PaintedHero } from '@/components/invitation/PaintedHero';
 import { siteConfig } from '@/lib/site-config';
 import { STACKS } from '@/templates/style';
 import type { OpeningProps, TemplateDef } from '@/templates/types';
 
-import { LemonSprig, TileBand } from './art';
+import { TileBand } from './art';
 
 /** The card inside the envelope is the page's own white, so it can become the page. */
 const GLAZE = '#fbf8f1';
@@ -122,35 +122,12 @@ function Envelope({ opening }: { opening: boolean }) {
   );
 }
 
+/** The painted Amalfi coast, under a strip of the tiles. */
 function RivieraHero({ start }: { start: boolean }) {
   return (
-    <section className="relative flex min-h-[var(--hero-h,100svh)] items-center justify-center overflow-hidden bg-t-bg px-6 py-24">
-      <TileBand className="absolute inset-x-0 top-0 h-12" />
-      <TileBand className="absolute inset-x-0 bottom-0 h-12" />
-
-      <motion.div
-        className="absolute -left-8 top-8 w-44 sm:w-56"
-        initial={{ x: -40, opacity: 0 }}
-        animate={start ? { x: 0, opacity: 1 } : {}}
-        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <LemonSprig className="-scale-x-100" />
-      </motion.div>
-      <motion.div
-        className="absolute -right-8 top-8 w-44 sm:w-56"
-        initial={{ x: 40, opacity: 0 }}
-        animate={start ? { x: 0, opacity: 1 } : {}}
-        transition={{ duration: 1.4, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <LemonSprig />
-      </motion.div>
-
-      <div className="relative mt-16 w-full max-w-[20rem] rounded-t-[999px] border border-t-line p-2">
-        <div className="rounded-t-[999px] border border-t-line/60 px-4 pb-12 pt-24">
-          <HeroText start={start} />
-        </div>
-      </div>
-    </section>
+    <PaintedHero src="/art/riviera-hero.webp" start={start}>
+      <TileBand className="absolute inset-x-0 top-0 h-8" />
+    </PaintedHero>
   );
 }
 
@@ -195,5 +172,5 @@ export const riviera: TemplateDef = {
   Hero: RivieraHero,
   Divider: LineDivider,
   Emblem: ({ size }) => <MonogramBadge size={size} shape="scallop" />,
-  Corner: LemonSprig,
+  Corner: (props) => <PaintedCorner src="/art/riviera-lemon.webp" {...props} />,
 };
