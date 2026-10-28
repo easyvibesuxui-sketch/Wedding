@@ -2,20 +2,24 @@
 
 import { useEffect, useRef, useState } from 'react';
 
+import { useT } from '@/components/LanguageProvider';
 import { siteConfig } from '@/lib/site-config';
 
 /**
  * Floating play/pause for the background music. It only appears once the audio
- * file actually loads, so the button never shows when `public/music.mp3` is
- * missing. Playback starts on the first real user gesture (opening the
- * envelope), which is what browser autoplay policies require.
+ * file actually loads, so the button never shows when `siteConfig.music` is
+ * unset or its file is missing. Playback starts on the first real user gesture
+ * (opening the envelope), which is what browser autoplay policies require.
  */
 export function MusicToggle({ autoStart }: { autoStart: boolean }) {
+  const t = useT();
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [available, setAvailable] = useState(false);
   const [playing, setPlaying] = useState(false);
 
   useEffect(() => {
+    if (!siteConfig.music) return;
+
     const audio = new Audio(siteConfig.music);
     audio.loop = true;
     audio.volume = 0.45;
@@ -60,7 +64,7 @@ export function MusicToggle({ autoStart }: { autoStart: boolean }) {
     <button
       type="button"
       onClick={toggle}
-      aria-label={playing ? 'Pause music' : 'Play music'}
+      aria-label={playing ? t.pauseMusic : t.playMusic}
       className="fixed bottom-6 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-wine-500 text-cream-100 shadow-lg transition-colors hover:bg-wine-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2"
     >
       {playing ? (

@@ -1,7 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { startTransition, useActionState, useState, type FormEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { Flourish } from '@/components/art/Flourish';
@@ -10,14 +9,13 @@ import { submitRsvp, type RsvpState } from '@/app/actions';
 import { useT } from '@/components/LanguageProvider';
 import { siteConfig } from '@/lib/site-config';
 
-const initialState: RsvpState = { status: 'idle', message: '' };
+const initialState: RsvpState = { status: 'idle', message: null };
 
 const fieldClass =
   'w-full border-b border-gold-300/70 bg-transparent px-1 py-3 text-lg text-ink-600 placeholder:text-ink-300 focus:border-gold-400 focus:outline-none';
 
-function SubmitButton() {
+function SubmitButton({ pending }: { pending: boolean }) {
   const t = useT();
-  const { pending } = useFormStatus();
 
   return (
     <button
@@ -33,9 +31,18 @@ function SubmitButton() {
 /** The seal opens the form, the form collects the reply, the reply is thanked. */
 export function RsvpForm() {
   const t = useT();
-  const [state, formAction] = useFormState(submitRsvp, initialState);
+  const [state, formAction, pending] = useActionState(submitRsvp, initialState);
   const [open, setOpen] = useState(false);
   const [attending, setAttending] = useState<'yes' | 'no' | ''>('');
+
+  // Submitted by hand rather than through `action`: React resets a form once
+  // its action has run, which would wipe what the guest typed — and uncheck
+  // the reply radio behind its highlighted label — whenever an error comes back.
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    startTransition(() => formAction(formData));
+  }
 
   const sent = state.status === 'success';
 
@@ -51,12 +58,14 @@ export function RsvpForm() {
             >
               <p className="section-title text-3xl sm:text-4xl">{t.thankYou}</p>
               <Flourish className="mx-auto mt-4" />
-              <p className="mt-6 text-lg text-ink-500">{state.message}</p>
+              {state.message ? (
+                <p className="mt-6 text-lg text-ink-500">{t.rsvpMessages[state.message]}</p>
+              ) : null}
             </motion.div>
           ) : open ? (
             <motion.form
               key="form"
-              action={formAction}
+              onSubmit={handleSubmit}
               className="mt-12 space-y-9 text-left"
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
@@ -78,7 +87,7 @@ export function RsvpForm() {
                   className={`mt-2 ${fieldClass}`}
                 />
                 {state.fieldErrors?.fullName ? (
-                  <p className="mt-2 text-sm text-wine-500">{state.fieldErrors.fullName}</p>
+                  <p className="mt-2 text-sm text-wine-500">{t.rsvpMessages[state.fieldErrors.fullName]}</p>
                 ) : null}
               </div>
 
@@ -111,7 +120,7 @@ export function RsvpForm() {
                   ))}
                 </div>
                 {state.fieldErrors?.attending ? (
-                  <p className="mt-2 text-sm text-wine-500">{state.fieldErrors.attending}</p>
+                  <p className="mt-2 text-sm text-wine-500">{t.rsvpMessages[state.fieldErrors.attending]}</p>
                 ) : null}
               </fieldset>
 
@@ -140,7 +149,7 @@ export function RsvpForm() {
                       className={`mt-2 ${fieldClass}`}
                     />
                     {state.fieldErrors?.guestCount ? (
-                      <p className="mt-2 text-sm text-wine-500">{state.fieldErrors.guestCount}</p>
+                      <p className="mt-2 text-sm text-wine-500">{t.rsvpMessages[state.fieldErrors.guestCount]}</p>
                     ) : null}
                   </motion.div>
                 ) : null}
@@ -161,14 +170,14 @@ export function RsvpForm() {
                 />
               </div>
 
-              {state.status === 'error' && !state.fieldErrors ? (
+              {state.status === 'error' && !state.fieldErrors && state.message ? (
                 <p className="text-sm text-wine-500" role="alert">
-                  {state.message}
+                  {t.rsvpMessages[state.message]}
                 </p>
               ) : null}
 
               <div className="space-y-4 pt-2 text-center">
-                <SubmitButton />
+                <SubmitButton pending={pending} />
                 <p className="text-sm text-ink-400">{t.rsvpDeadline}</p>
               </div>
             </motion.form>

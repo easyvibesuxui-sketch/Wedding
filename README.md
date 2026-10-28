@@ -110,7 +110,7 @@ Three optional files you drop into `public/` and point at from that same file:
 | --- | --- |
 | `heroArt` | Swaps the hand-drawn SVG hero for your own illustration or photo (e.g. `/art/hero.png`). |
 | `couplePhoto` | Fills the framed placeholder in the closing section. |
-| `music` | Background music. The floating play button only appears once the file loads, so leaving it absent simply hides the control. |
+| `music` | Background music, e.g. `/music.mp3`. Off (`null`) by default. The floating play button only appears once the file loads, so a missing file simply hides the control. |
 | `introVideo` / `introVideoPoster` | Opening film for the envelope gate. The guest taps to play it and the invitation is revealed as it ends. If the file is missing or the browser cannot play it, the gate falls back to the drawn envelope — the page is never blocked by it. |
 
 The artwork itself lives in [`src/components/art/`](src/components/art) — the

@@ -8,8 +8,8 @@ import type { Database } from './types';
  * Supabase client for Server Components, Route Handlers and Server Actions.
  * Reads the session from cookies, so RLS sees the signed-in admin.
  */
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
 
   return createServerClient<Database>(
     SUPABASE_URL!,

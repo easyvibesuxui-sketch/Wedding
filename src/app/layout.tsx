@@ -7,12 +7,13 @@ import { coupleNames, siteConfig } from '@/lib/site-config';
 import { translations } from '@/lib/translations';
 import './globals.css';
 
-function currentLang() {
-  return resolveLang(cookies().get(LANG_COOKIE)?.value, headers().get('accept-language'));
+async function currentLang() {
+  const [cookieStore, headerList] = await Promise.all([cookies(), headers()]);
+  return resolveLang(cookieStore.get(LANG_COOKIE)?.value, headerList.get('accept-language'));
 }
 
-export function generateMetadata(): Metadata {
-  const t = translations[currentLang()];
+export async function generateMetadata(): Promise<Metadata> {
+  const t = translations[await currentLang()];
 
   return {
     title: `${coupleNames} — ${siteConfig.dateLabel}`,
@@ -24,10 +25,10 @@ export const viewport: Viewport = {
   themeColor: '#f8ece0',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
-      lang={currentLang()}
+      lang={await currentLang()}
       className={`${bodyFont.variable} ${cyrillicFont.variable} ${scriptFont.variable}`}
     >
       <body className="bg-cream-200 font-sans text-ink-600 antialiased">{children}</body>

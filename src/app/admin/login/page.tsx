@@ -8,11 +8,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default function LoginPage({
+export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: { redirectTo?: string };
+  searchParams: Promise<{ redirectTo?: string }>;
 }) {
+  const { redirectTo } = await searchParams;
+
   return (
     <main className="flex min-h-screen items-center justify-center bg-cream-200 px-6 py-16">
       <div className="w-full max-w-sm">
@@ -22,7 +24,7 @@ export default function LoginPage({
         </div>
 
         <div className="rounded-xl border border-cream-400 bg-white p-8 shadow-sm">
-          <LoginForm redirectTo={searchParams.redirectTo} />
+          <LoginForm redirectTo={redirectTo} />
         </div>
 
         <p className="mt-6 text-center text-xs text-ink-400">

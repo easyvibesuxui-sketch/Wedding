@@ -21,7 +21,7 @@ export async function signIn(_prevState: LoginState, formData: FormData): Promis
     return { error: 'Supabase is not configured for this deployment yet.' };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
 
   if (error) {
@@ -36,7 +36,7 @@ export async function signIn(_prevState: LoginState, formData: FormData): Promis
 export async function signOut() {
   if (!isSupabaseConfigured()) redirect('/admin/login');
 
-  const supabase = createClient();
+  const supabase = await createClient();
   await supabase.auth.signOut();
   redirect('/admin/login');
 }

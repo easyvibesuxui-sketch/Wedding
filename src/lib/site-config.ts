@@ -60,10 +60,11 @@ export const siteConfig = {
   venueArt: '/art/venue.webp' as string | null,
 
   /**
-   * Optional background music. Drop an .mp3 in `public/` and name it here; the
-   * floating play button only appears when the file actually loads.
+   * Optional background music. Drop an .mp3 in `public/` and name it here
+   * (e.g. `'/music.mp3'`); the floating play button only appears when the file
+   * actually loads. `null` requests nothing and shows no button.
    */
-  music: '/music.mp3',
+  music: null as string | null,
 } as const;
 
 export const coupleNames = `${siteConfig.couple.partnerOne} & ${siteConfig.couple.partnerTwo}`;

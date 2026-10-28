@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { startTransition, useActionState, type FormEvent } from 'react';
 
 import { signIn, type LoginState } from '@/app/admin/actions';
 
@@ -9,9 +9,7 @@ const initialState: LoginState = { error: null };
 const fieldClass =
   'w-full rounded-md border border-cream-500 bg-white px-4 py-2.5 text-sm text-ink-700 shadow-sm focus:border-gold-400 focus:outline-none focus:ring-1 focus:ring-gold-400';
 
-function SubmitButton() {
-  const { pending } = useFormStatus();
-
+function SubmitButton({ pending }: { pending: boolean }) {
   return (
     <button
       type="submit"
@@ -24,10 +22,18 @@ function SubmitButton() {
 }
 
 export function LoginForm({ redirectTo }: { redirectTo?: string }) {
-  const [state, formAction] = useFormState(signIn, initialState);
+  const [state, formAction, pending] = useActionState(signIn, initialState);
+
+  // Submitted by hand rather than through `action`, so a failed sign-in does
+  // not trigger React's post-action form reset and clear the email.
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    startTransition(() => formAction(formData));
+  }
 
   return (
-    <form action={formAction} className="space-y-5">
+    <form onSubmit={handleSubmit} className="space-y-5">
       <input type="hidden" name="redirectTo" value={redirectTo ?? ''} />
 
       <div>
@@ -64,7 +70,7 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
         </p>
       ) : null}
 
-      <SubmitButton />
+      <SubmitButton pending={pending} />
     </form>
   );
 }

@@ -53,10 +53,26 @@ export type Dictionary = {
   submit: string;
   submitting: string;
   thankYou: string;
+  /** Replies to a submitted RSVP. The server action only names one; the page words it. */
+  rsvpMessages: Record<RsvpMessage, string>;
 
   closingLine: string;
   photoPlaceholder: string;
+
+  playMusic: string;
+  pauseMusic: string;
 };
+
+export type RsvpMessage =
+  | 'nameRequired'
+  | 'nameTooLong'
+  | 'attendingRequired'
+  | 'guestCountRange'
+  | 'checkFields'
+  | 'notConnected'
+  | 'saveFailed'
+  | 'thanksAttending'
+  | 'thanksDeclining';
 
 const ka: Dictionary = {
   dateLong: 'შაბათი, 24 ოქტომბერი, 2026',
@@ -115,9 +131,23 @@ const ka: Dictionary = {
   submit: 'გაგზავნა',
   submitting: 'იგზავნება…',
   thankYou: 'გმადლობთ',
+  rsvpMessages: {
+    nameRequired: 'გთხოვთ, მიუთითოთ სახელი.',
+    nameTooLong: 'სახელი ძალიან გრძელია.',
+    attendingRequired: 'გთხოვთ, აღნიშნოთ დაესწრებით თუ არა.',
+    guestCountRange: 'მიუთითეთ რიცხვი 1-დან 10-მდე.',
+    checkFields: 'გთხოვთ, შეამოწმოთ მონიშნული ველები.',
+    notConnected: 'მოწვევა ჯერ ბაზასთან არაა დაკავშირებული, პასუხი ვერ შეინახა.',
+    saveFailed: 'პასუხის შენახვისას შეცდომა მოხდა. გთხოვთ, სცადოთ ხელახლა.',
+    thanksAttending: 'გმადლობთ — მოუთმენლად ველოდებით თქვენთან ერთად აღნიშვნას.',
+    thanksDeclining: 'გმადლობთ, რომ გვაცნობეთ. მოგვენატრებით.',
+  },
 
   closingLine: 'გელოდებით!',
   photoPlaceholder: 'აქ თქვენი ფოტო იქნება',
+
+  playMusic: 'მუსიკის ჩართვა',
+  pauseMusic: 'მუსიკის გაჩერება',
 };
 
 const en: Dictionary = {
@@ -176,9 +206,23 @@ const en: Dictionary = {
   submit: 'Send',
   submitting: 'Sending…',
   thankYou: 'Thank you',
+  rsvpMessages: {
+    nameRequired: 'Please enter your name.',
+    nameTooLong: 'That name is too long.',
+    attendingRequired: 'Please let us know whether you can come.',
+    guestCountRange: 'Enter a number from 1 to 10.',
+    checkFields: 'Please check the highlighted fields.',
+    notConnected: 'The invitation is not connected to its guest list yet, so your reply was not saved.',
+    saveFailed: 'Something went wrong saving your reply. Please try again.',
+    thanksAttending: 'Thank you — we cannot wait to celebrate with you.',
+    thanksDeclining: 'Thank you for letting us know. We will miss you.',
+  },
 
   closingLine: 'See you there!',
   photoPlaceholder: 'Your photo goes here',
+
+  playMusic: 'Play music',
+  pauseMusic: 'Pause music',
 };
 
 const ru: Dictionary = {
@@ -237,9 +281,23 @@ const ru: Dictionary = {
   submit: 'Отправить',
   submitting: 'Отправляем…',
   thankYou: 'Спасибо',
+  rsvpMessages: {
+    nameRequired: 'Пожалуйста, укажите имя.',
+    nameTooLong: 'Имя слишком длинное.',
+    attendingRequired: 'Пожалуйста, отметьте, придёте ли вы.',
+    guestCountRange: 'Укажите число от 1 до 10.',
+    checkFields: 'Пожалуйста, проверьте отмеченные поля.',
+    notConnected: 'Приглашение ещё не подключено к списку гостей, поэтому ответ не сохранился.',
+    saveFailed: 'Не удалось сохранить ответ. Пожалуйста, попробуйте ещё раз.',
+    thanksAttending: 'Спасибо — с нетерпением ждём праздника вместе с вами.',
+    thanksDeclining: 'Спасибо, что сообщили. Будем скучать.',
+  },
 
   closingLine: 'Ждём вас!',
   photoPlaceholder: 'Здесь будет ваше фото',
+
+  playMusic: 'Включить музыку',
+  pauseMusic: 'Выключить музыку',
 };
 
 export const translations: Record<Lang, Dictionary> = { ka, en, ru };

@@ -2,13 +2,19 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { isSupabaseConfigured } from '@/lib/supabase/env';
+import type { RsvpMessage } from '@/lib/translations';
 
+/**
+ * Messages are keys into `rsvpMessages`, not text: the guest may be reading in
+ * any of the three languages, and may switch after the reply comes back.
+ */
 export type RsvpState = {
   status: 'idle' | 'success' | 'error';
-  message: string;
-  fieldErrors?: Partial<Record<'fullName' | 'attending' | 'guestCount', string>>;
+  message: RsvpMessage | null;
+  fieldErrors?: Partial<Record<'fullName' | 'attending' | 'guestCount', RsvpMessage>>;
 };
 
+/** Keep in step with the form's `max` and the `guestCountRange` wording. */
 const MAX_GUESTS = 10;
 
 /**
@@ -24,13 +30,13 @@ export async function submitRsvp(_prevState: RsvpState, formData: FormData): Pro
   const fieldErrors: RsvpState['fieldErrors'] = {};
 
   if (!fullName) {
-    fieldErrors.fullName = 'გთხოვთ, მიუთითოთ სახელი.';
+    fieldErrors.fullName = 'nameRequired';
   } else if (fullName.length > 120) {
-    fieldErrors.fullName = 'სახელი ძალიან გრძელია.';
+    fieldErrors.fullName = 'nameTooLong';
   }
 
   if (attending !== 'yes' && attending !== 'no') {
-    fieldErrors.attending = 'გთხოვთ, აღნიშნოთ დაესწრებით თუ არა.';
+    fieldErrors.attending = 'attendingRequired';
   }
 
   const isAttending = attending === 'yes';
@@ -39,24 +45,21 @@ export async function submitRsvp(_prevState: RsvpState, formData: FormData): Pro
   if (isAttending) {
     const parsed = Number(guestCountRaw);
     if (!guestCountRaw || !Number.isInteger(parsed) || parsed < 1 || parsed > MAX_GUESTS) {
-      fieldErrors.guestCount = `მიუთითეთ რიცხვი 1-დან ${MAX_GUESTS}-მდე.`;
+      fieldErrors.guestCount = 'guestCountRange';
     } else {
       guestCount = parsed;
     }
   }
 
   if (Object.keys(fieldErrors).length > 0) {
-    return { status: 'error', message: 'გთხოვთ, შეამოწმოთ მონიშნული ველები.', fieldErrors };
+    return { status: 'error', message: 'checkFields', fieldErrors };
   }
 
   if (!isSupabaseConfigured()) {
-    return {
-      status: 'error',
-      message: 'მოწვევა ჯერ ბაზასთან არაა დაკავშირებული, პასუხი ვერ შეინახა.',
-    };
+    return { status: 'error', message: 'notConnected' };
   }
 
-  const supabase = createClient();
+  const supabase = await createClient();
   const { error } = await supabase.from('guests').insert({
     full_name: fullName,
     is_attending: isAttending,
@@ -66,16 +69,8 @@ export async function submitRsvp(_prevState: RsvpState, formData: FormData): Pro
 
   if (error) {
     console.error('RSVP insert failed:', error.message);
-    return {
-      status: 'error',
-      message: 'პასუხის შენახვისას შეცდომა მოხდა. გთხოვთ, სცადოთ ხელახლა.',
-    };
+    return { status: 'error', message: 'saveFailed' };
   }
 
-  return {
-    status: 'success',
-    message: isAttending
-      ? 'გმადლობთ — მოუთმენლად ველოდებით თქვენთან ერთად აღნიშვნას.'
-      : 'გმადლობთ, რომ გვაცნობეთ. მოგენატრებით.',
-  };
+  return { status: 'success', message: isAttending ? 'thanksAttending' : 'thanksDeclining' };
 }

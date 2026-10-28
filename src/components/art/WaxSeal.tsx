@@ -29,8 +29,9 @@ export function WaxSeal({
       width={size}
       height={size}
       className={className}
-      role="img"
-      aria-label={`Wax seal reading ${label}`}
+      // Decorative, like the painted stamp it stands in for: the seal always
+      // sits inside a control that names itself, or is purely ornamental.
+      aria-hidden="true"
     >
       <defs>
         <radialGradient id="wax-body" cx="38%" cy="32%" r="78%">
