@@ -3,16 +3,15 @@
 import { startTransition, useActionState, useState, type FormEvent } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { Flourish } from '@/components/art/Flourish';
-import { Seal } from '@/components/art/Seal';
 import { submitRsvp, type RsvpState } from '@/app/actions';
 import { useT } from '@/components/LanguageProvider';
+import { useTemplate } from '@/components/TemplateProvider';
 import { siteConfig } from '@/lib/site-config';
 
 const initialState: RsvpState = { status: 'idle', message: null };
 
 const fieldClass =
-  'w-full border-b border-gold-300/70 bg-transparent px-1 py-3 text-lg text-ink-600 placeholder:text-ink-300 focus:border-gold-400 focus:outline-none';
+  'w-full border-b border-t-line/70 bg-transparent px-1 py-3 text-lg text-t-ink placeholder:text-t-ink-soft/60 focus:border-t-accent focus:outline-none';
 
 function SubmitButton({ pending }: { pending: boolean }) {
   const t = useT();
@@ -21,7 +20,7 @@ function SubmitButton({ pending }: { pending: boolean }) {
     <button
       type="submit"
       disabled={pending}
-      className="w-full bg-wine-500 px-10 py-4 text-xs uppercase tracking-widest text-cream-100 transition-colors hover:bg-wine-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
+      className="w-full bg-t-cta px-10 py-4 text-xs uppercase tracking-widest text-t-on-cta transition-colors hover:bg-t-cta/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-t-accent focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-60"
     >
       {pending ? t.submitting : t.submit}
     </button>
@@ -31,6 +30,7 @@ function SubmitButton({ pending }: { pending: boolean }) {
 /** The seal opens the form, the form collects the reply, the reply is thanked. */
 export function RsvpForm() {
   const t = useT();
+  const { Divider, Emblem } = useTemplate();
   const [state, formAction, pending] = useActionState(submitRsvp, initialState);
   const [open, setOpen] = useState(false);
   const [attending, setAttending] = useState<'yes' | 'no' | ''>('');
@@ -57,9 +57,9 @@ export function RsvpForm() {
               role="status"
             >
               <p className="section-title text-3xl sm:text-4xl">{t.thankYou}</p>
-              <Flourish className="mx-auto mt-4" />
+              <Divider className="mx-auto mt-4" />
               {state.message ? (
-                <p className="mt-6 text-lg text-ink-500">{t.rsvpMessages[state.message]}</p>
+                <p className="mt-6 text-lg text-t-ink-soft">{t.rsvpMessages[state.message]}</p>
               ) : null}
             </motion.div>
           ) : open ? (
@@ -87,7 +87,7 @@ export function RsvpForm() {
                   className={`mt-2 ${fieldClass}`}
                 />
                 {state.fieldErrors?.fullName ? (
-                  <p className="mt-2 text-sm text-wine-500">{t.rsvpMessages[state.fieldErrors.fullName]}</p>
+                  <p className="mt-2 text-sm text-t-cta">{t.rsvpMessages[state.fieldErrors.fullName]}</p>
                 ) : null}
               </div>
 
@@ -102,8 +102,8 @@ export function RsvpForm() {
                       key={option.value}
                       className={`flex cursor-pointer items-center gap-3 border px-5 py-4 text-lg transition-colors ${
                         attending === option.value
-                          ? 'border-gold-400 bg-gold-100/45 text-ink-600'
-                          : 'border-gold-300/60 text-ink-500 hover:border-gold-400'
+                          ? 'border-t-accent bg-t-accent/10 text-t-ink'
+                          : 'border-t-line/60 text-t-ink-soft hover:border-t-accent'
                       }`}
                     >
                       <input
@@ -113,14 +113,14 @@ export function RsvpForm() {
                         required
                         checked={attending === option.value}
                         onChange={() => setAttending(option.value as 'yes' | 'no')}
-                        className="h-4 w-4 accent-wine-500"
+                        className="h-4 w-4 accent-[rgb(var(--t-cta))]"
                       />
                       {option.label}
                     </label>
                   ))}
                 </div>
                 {state.fieldErrors?.attending ? (
-                  <p className="mt-2 text-sm text-wine-500">{t.rsvpMessages[state.fieldErrors.attending]}</p>
+                  <p className="mt-2 text-sm text-t-cta">{t.rsvpMessages[state.fieldErrors.attending]}</p>
                 ) : null}
               </fieldset>
 
@@ -149,7 +149,7 @@ export function RsvpForm() {
                       className={`mt-2 ${fieldClass}`}
                     />
                     {state.fieldErrors?.guestCount ? (
-                      <p className="mt-2 text-sm text-wine-500">{t.rsvpMessages[state.fieldErrors.guestCount]}</p>
+                      <p className="mt-2 text-sm text-t-cta">{t.rsvpMessages[state.fieldErrors.guestCount]}</p>
                     ) : null}
                   </motion.div>
                 ) : null}
@@ -171,14 +171,14 @@ export function RsvpForm() {
               </div>
 
               {state.status === 'error' && !state.fieldErrors && state.message ? (
-                <p className="text-sm text-wine-500" role="alert">
+                <p className="text-sm text-t-cta" role="alert">
                   {t.rsvpMessages[state.message]}
                 </p>
               ) : null}
 
               <div className="space-y-4 pt-2 text-center">
                 <SubmitButton pending={pending} />
-                <p className="text-sm text-ink-400">{t.rsvpDeadline}</p>
+                <p className="text-sm text-t-ink-soft">{t.rsvpDeadline}</p>
               </div>
             </motion.form>
           ) : (
@@ -186,18 +186,18 @@ export function RsvpForm() {
               key="seal"
               type="button"
               onClick={() => setOpen(true)}
-              className="mx-auto mt-12 flex flex-col items-center gap-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-4"
+              className="mx-auto mt-12 flex flex-col items-center gap-3 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-t-accent focus-visible:ring-offset-4"
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.97 }}
             >
-              <Seal label="RSVP" size={124} script={false} />
+              <Emblem size={124} />
               <svg width="22" height="12" viewBox="0 0 22 12" fill="none" stroke="#c19a45" strokeWidth="1.5" aria-hidden="true">
                 <path d="M2 10L11 2l9 8" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              <span className="text-xs tracking-[0.28em] text-gold-600">{t.rsvpOpen}</span>
+              <span className="text-xs tracking-[0.28em] text-t-accent">{t.rsvpOpen}</span>
             </motion.button>
           )}
         </AnimatePresence>

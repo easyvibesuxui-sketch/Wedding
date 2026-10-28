@@ -1,56 +1,37 @@
 'use client';
 
-import Image from 'next/image';
-
-import { VineCorner } from '@/components/art/VineCorner';
 import { Reveal } from '@/components/Reveal';
+import { FramedImage } from '@/components/invitation/FramedImage';
+import { Section } from '@/components/invitation/Section';
 import { useT } from '@/components/LanguageProvider';
+import { useTemplate } from '@/components/TemplateProvider';
 import { coupleNames, siteConfig } from '@/lib/site-config';
 
 export function Closing() {
   const t = useT();
+  const { Divider } = useTemplate();
 
   return (
-    <footer className="paper grain relative overflow-hidden px-6 pb-16 pt-20 text-center">
+    <Section section="closing" as="footer" className="!pb-16 text-center">
       <Reveal>
-        <p className="section-title text-3xl sm:text-4xl">{t.closingLine}</p>
-        <p className="mt-4 text-2xl text-ink-500">{coupleNames}</p>
+        <p className="section-title !text-3xl sm:!text-4xl">{t.closingLine}</p>
+        <p className="mt-4 font-display text-4xl text-t-ink">{coupleNames}</p>
       </Reveal>
 
       <Reveal delay={0.1}>
-        <div className="relative mx-auto mt-12 max-w-sm">
+        <div className="mx-auto mt-12 max-w-sm">
           {siteConfig.couplePhoto ? (
-            <Image
-              src={siteConfig.couplePhoto}
-              alt={`${coupleNames}`}
-              width={1000}
-              height={1328}
-              // The painting's own cream is a shade off the page, so a hairline
-              // frame turns that edge into an intentional printed border.
-              className="w-full border border-gold-300/50"
-            />
+            <FramedImage src={siteConfig.couplePhoto} alt={coupleNames} width={1000} height={1328} />
           ) : (
-            <div className="flex aspect-[4/5] w-full items-center justify-center border border-gold-300/60 bg-cream-100">
-              <p className="max-w-[14rem] text-base leading-relaxed text-ink-400">
-                {t.photoPlaceholder}
-              </p>
+            <div className="flex aspect-[4/5] w-full items-center justify-center border border-t-line/60 bg-t-bg-alt">
+              <p className="max-w-[14rem] text-base leading-relaxed text-t-ink-soft">{t.photoPlaceholder}</p>
             </div>
-          )}
-
-          {/* The painted portrait carries its own vine garland; the drawn
-              corners only frame the empty placeholder. */}
-          {siteConfig.couplePhoto ? null : (
-            <>
-              <VineCorner corner="bottom-left" className="absolute -bottom-12 -left-14 w-40 sm:w-48" />
-              <VineCorner corner="bottom-right" className="absolute -bottom-12 -right-14 w-40 sm:w-48" />
-            </>
           )}
         </div>
       </Reveal>
 
-      <p className="mt-20 text-xs uppercase tracking-widest text-gold-600/70">
-        {siteConfig.dateLabel}
-      </p>
-    </footer>
+      <Divider className="mx-auto mt-16" />
+      <p className="mt-4 text-xs uppercase tracking-widest text-t-accent/80">{siteConfig.dateLabel}</p>
+    </Section>
   );
 }

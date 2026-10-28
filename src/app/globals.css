@@ -22,49 +22,103 @@
 
 @layer components {
   /*
-   * Aged-paper ground. Two very soft radial washes plus a fine grain overlay
-   * keep the large flat areas from looking like plain CSS colour.
+   * A band's ground. The surface sets `--s-bg`, which the band, its seam and
+   * anything that must match it (a ring around a node, a label sitting on a
+   * frame) all read, so an edge can never be a shade off the band it joins.
+   * `inverse` also swaps the ink for everything inside.
    */
-  .paper {
-    background-color: #f8ece0;
-    background-image:
-      radial-gradient(120% 80% at 15% 0%, rgba(255, 253, 245, 0.9), transparent 55%),
-      radial-gradient(100% 70% at 85% 100%, rgba(232, 220, 200, 0.75), transparent 60%);
+  .surface-base {
+    --s-bg: var(--t-bg);
   }
 
-  .paper-light {
-    background-color: #faf3e8;
-    background-image:
-      radial-gradient(110% 70% at 80% 0%, rgba(255, 255, 250, 0.95), transparent 55%),
-      radial-gradient(90% 60% at 10% 100%, rgba(236, 220, 198, 0.6), transparent 60%);
+  .surface-alt {
+    --s-bg: var(--t-bg-alt);
   }
 
-  .grain::after {
+  .surface-inverse {
+    --s-bg: var(--t-inverse);
+    --t-ink: var(--t-inverse-ink);
+    --t-ink-soft: var(--t-inverse-ink-soft);
+    --t-accent: var(--t-inverse-accent);
+    --t-accent-soft: var(--t-inverse-ink-soft);
+    --t-line: var(--t-inverse-line);
+  }
+
+  .surface-base,
+  .surface-alt,
+  .surface-inverse {
+    background-color: rgb(var(--s-bg));
+  }
+
+  /*
+   * Grain over a band, so large flat areas do not read as plain CSS colour.
+   * It is an even, tiling texture on purpose: a band's seam carries the same
+   * class, and anything positional (a light wash in one corner) would stop at
+   * the seam's edge and draw a line there.
+   */
+  .tex-paper::after,
+  .tex-linen::after,
+  .tex-kraft::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
+  }
+
+  .tex-paper::after {
     opacity: 0.5;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.055'/%3E%3C/svg%3E");
   }
 
-  /* Latin display lines (the couple's names, the closing greeting). */
-  .script-title {
-    @apply font-script text-4xl leading-[1.35] text-gold-500 sm:text-5xl;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+  .tex-linen::after {
+    opacity: 0.35;
+    background-image:
+      repeating-linear-gradient(0deg, rgb(0 0 0 / 0.035) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgb(0 0 0 / 0.03) 0 1px, transparent 1px 3px);
+  }
+
+  .tex-kraft::after {
+    opacity: 0.7;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6 0.08' numOctaves='3' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.24 0 0 0 0 0.12 0 0 0 0.16 0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23k)'/%3E%3C/svg%3E");
+  }
+
+  /* The couple's names and other Latin display lines. */
+  .display-title {
+    @apply font-display text-t-accent;
   }
 
   /*
-   * Georgian section headings. Great Vibes carries no Georgian glyphs, so
-   * these are set in the body face — light, generously letterspaced and gold,
-   * which is how the printed references handle their non-script lines.
+   * Section headings, in the template's heading face. The three styles are
+   * picked by the template; capitals are never applied to Georgian, where a
+   * case transform would swap in Mtavruli letters the design never meant.
    */
   .section-title {
-    @apply font-sans text-[1.35rem] font-light leading-snug tracking-[0.16em] text-gold-500 sm:text-[1.6rem];
+    @apply font-heading text-[1.4rem] leading-snug text-t-accent sm:text-[1.65rem];
+  }
+
+  [data-heading='spaced'] .section-title {
+    @apply font-light tracking-[0.16em];
+  }
+
+  [data-heading='italic'] .section-title {
+    @apply text-[1.75rem] italic sm:text-[2rem];
+  }
+
+  [data-heading='caps'] .section-title {
+    @apply text-[1.25rem] uppercase tracking-[0.22em] sm:text-[1.45rem];
+  }
+
+  [data-heading='plain'] .section-title {
+    @apply text-[2.1rem] sm:text-[2.4rem];
   }
 
   .eyebrow {
-    @apply text-[0.7rem] uppercase tracking-widest text-gold-600/80;
+    @apply text-[0.7rem] uppercase tracking-widest text-t-accent/80;
+  }
+
+  :lang(ka) .section-title,
+  :lang(ka) .eyebrow {
+    text-transform: none;
   }
 }
 

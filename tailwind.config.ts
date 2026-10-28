@@ -35,6 +35,24 @@ const config: Config = {
           600: '#5c4f42',
           700: '#43392f',
         },
+        /*
+         * The active invitation template's palette. Each template sets these
+         * channels as CSS variables, and a section's surface may swap them
+         * (an inverse band redefines ink and accent for its own children).
+         */
+        t: {
+          page: 'rgb(var(--t-page) / <alpha-value>)',
+          bg: 'rgb(var(--t-bg) / <alpha-value>)',
+          'bg-alt': 'rgb(var(--t-bg-alt) / <alpha-value>)',
+          surface: 'rgb(var(--s-bg) / <alpha-value>)',
+          ink: 'rgb(var(--t-ink) / <alpha-value>)',
+          'ink-soft': 'rgb(var(--t-ink-soft) / <alpha-value>)',
+          accent: 'rgb(var(--t-accent) / <alpha-value>)',
+          'accent-soft': 'rgb(var(--t-accent-soft) / <alpha-value>)',
+          line: 'rgb(var(--t-line) / <alpha-value>)',
+          cta: 'rgb(var(--t-cta) / <alpha-value>)',
+          'on-cta': 'rgb(var(--t-on-cta) / <alpha-value>)',
+        },
         sage: {
           200: '#cdd6c0',
           300: '#b3bfa3',
@@ -48,6 +66,11 @@ const config: Config = {
         // One text face for Georgian, Latin and digits alike.
         sans: ['var(--font-body)', 'var(--font-cyrillic)', 'Helvetica Neue', 'Arial', 'sans-serif'],
         serif: ['var(--font-body)', 'var(--font-cyrillic)', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        // The invitation template's three faces; each is a full stack that
+        // ends in a Georgian-capable face, so no script falls to the device.
+        display: ['var(--t-font-display)'],
+        heading: ['var(--t-font-heading)'],
+        body: ['var(--t-font-body)'],
       },
       letterSpacing: {
         widest: '0.22em',

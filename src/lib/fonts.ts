@@ -1,5 +1,16 @@
 import localFont from 'next/font/local';
-import { Great_Vibes, Inter } from 'next/font/google';
+import {
+  Caveat,
+  Cinzel,
+  Cormorant_Garamond,
+  Forum,
+  Great_Vibes,
+  Inter,
+  Jost,
+  Noto_Serif_Georgian,
+  Parisienne,
+  Playfair_Display,
+} from 'next/font/google';
 
 /**
  * Body / UI face — Helvetica Neue LT Georgian, self-hosted.
@@ -41,8 +52,112 @@ export const cyrillicFont = Inter({
 
 /** Display face for the couple's names, which are set in Latin script. */
 export const scriptFont = Great_Vibes({
-  subsets: ['latin'],
+  subsets: ['latin', 'cyrillic'],
   weight: '400',
   variable: '--font-script',
   display: 'swap',
 });
+
+/*
+ * Faces used by the other invitation templates. None is preloaded: the
+ * declarations are cheap, and the browser only downloads a face once text on
+ * screen actually asks for it — so a guest fetches the active template's
+ * faces and nothing else.
+ *
+ * The Latin faces skip Next's metric-matched fallback: it is a local face with
+ * no unicode-range, so it would sit ahead of the Georgian face in each stack
+ * and could catch Georgian letters before the face meant for them.
+ */
+
+/** Georgian serif. The Latin display faces carry no Georgian, so every serif
+ *  template's stack ends here and Georgian lines stay in one serif voice. */
+export const georgianSerif = Noto_Serif_Georgian({
+  subsets: ['georgian'],
+  weight: ['300', '400', '600'],
+  variable: '--font-ka-serif',
+  display: 'swap',
+  preload: false,
+});
+
+export const cormorant = Cormorant_Garamond({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-cormorant',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: false,
+});
+
+export const playfair = Playfair_Display({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '500', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-playfair',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: false,
+});
+
+/** Roman capitals for the Art Deco template. Latin only; Forum covers Cyrillic. */
+export const cinzel = Cinzel({
+  subsets: ['latin'],
+  weight: ['400', '600'],
+  variable: '--font-cinzel',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: false,
+});
+
+export const forum = Forum({
+  subsets: ['latin', 'cyrillic'],
+  weight: '400',
+  variable: '--font-forum',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: false,
+});
+
+export const parisienne = Parisienne({
+  subsets: ['latin'],
+  weight: '400',
+  variable: '--font-parisienne',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: false,
+});
+
+export const caveat = Caveat({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['400', '600'],
+  variable: '--font-caveat',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: false,
+});
+
+export const jost = Jost({
+  subsets: ['latin', 'cyrillic'],
+  weight: ['300', '400', '500'],
+  variable: '--font-jost',
+  display: 'swap',
+  preload: false,
+  adjustFontFallback: false,
+});
+
+/** Every font variable, for the root element. */
+export const fontVariables = [
+  bodyFont,
+  cyrillicFont,
+  scriptFont,
+  georgianSerif,
+  cormorant,
+  playfair,
+  cinzel,
+  forum,
+  parisienne,
+  caveat,
+  jost,
+]
+  .map((font) => font.variable)
+  .join(' ');

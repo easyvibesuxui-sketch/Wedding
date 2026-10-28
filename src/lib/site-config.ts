@@ -1,3 +1,5 @@
+import type { TemplateId } from '@/templates/types';
+
 /**
  * Everything couple-specific that does not depend on language: the names, the
  * date, the running order's clock times, the map query and the artwork.
@@ -10,6 +12,12 @@ export const siteConfig = {
     /** Stamped on the wax seal of the closed envelope. */
     monogram: 'T&D',
   },
+
+  /**
+   * The design guests see. Any of the ten in `src/templates/` — browse them
+   * all at /templates, or preview one with `/?t=<id>`.
+   */
+  template: 'vineyard' as TemplateId,
 
   /** Drives the countdown. Keep the venue's timezone offset. */
   date: '2026-10-24T15:00:00+04:00',

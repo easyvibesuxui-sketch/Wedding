@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Seal } from '@/components/art/Seal';
 import { useT } from '@/components/LanguageProvider';
 import { siteConfig } from '@/lib/site-config';
+import type { OpeningProps } from '@/templates/types';
 
 /** How long the drawn-envelope animation runs before the gate clears. */
 const PAPER_OPEN_MS = 1900;
@@ -18,11 +19,11 @@ const PAPER_OPEN_MS = 1900;
 const REVEAL_LEAD_S = 1.2;
 
 /**
- * How long the warm wash takes to cover the film. Kept short enough that the
- * invitation is already surfacing underneath when the wash lifts, so there is
- * no blank beat between the two.
+ * How long the film takes to dissolve into the page. The invitation is
+ * already drawn underneath, so the footage fades straight into the hero —
+ * there is no wash of plain colour, and so no blank beat, in between.
  */
-const WASH_MS = 1200;
+const DISSOLVE_MS = 1300;
 
 /**
  * If the film has not started within this long after the tap, fall through to
@@ -33,21 +34,21 @@ const WASH_MS = 1200;
 const FILM_START_TIMEOUT_MS = 1500;
 
 /**
- * The invitation opens from a sealed envelope. When an intro film is provided
- * it plays on tap and the page is revealed as it ends; otherwise the drawn
- * envelope below does the same job. Either way the page underneath cannot be
- * scrolled until the guest opens it, and that tap is the gesture the browser
- * needs before any music may start.
+ * The vineyard invitation opens from a sealed envelope. When an intro film is
+ * provided it plays on tap and dissolves into the page as it ends; otherwise
+ * the drawn envelope below does the same job. Either way the page underneath
+ * cannot be scrolled until the guest opens it, and that tap is the gesture
+ * the browser needs before any music may start.
  */
-export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
+export function VineyardOpening({ onOpen }: OpeningProps) {
   const t = useT();
   const [opening, setOpening] = useState(false);
   const [gone, setGone] = useState(false);
   // Set when the film is missing or the browser refuses it — we then draw the
   // envelope instead rather than trapping the guest behind a blank screen.
   const [filmFailed, setFilmFailed] = useState(false);
-  // The wash that carries the film into the page.
-  const [washing, setWashing] = useState(false);
+  // The film is dissolving into the page.
+  const [dissolving, setDissolving] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   // `timeupdate` fires several times a second, so the handover needs a latch
   // that does not wait on a state update to land. It also guards every other
@@ -110,16 +111,15 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
   }
 
   /**
-   * Hands the screen from the film to the invitation: the warm wash rises over
-   * the footage while the page fades up underneath it, and the gate leaves once
-   * the two have met.
+   * Hands the screen from the film to the invitation: the footage dissolves
+   * straight into the hero drawn underneath, and the gate leaves once it has.
    */
   const beginHandover = useCallback(() => {
     if (handedOver.current) return;
     handedOver.current = true;
-    setWashing(true);
+    setDissolving(true);
     reveal();
-    window.setTimeout(() => setGone(true), WASH_MS);
+    window.setTimeout(() => setGone(true), DISSOLVE_MS);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -144,9 +144,12 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
     <AnimatePresence>
       {gone ? null : (
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center overflow-hidden bg-cream-300"
+          className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden ${
+            useFilm ? 'bg-black' : 'bg-t-bg-alt'
+          }`}
+          animate={{ opacity: dissolving ? 0 : 1 }}
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.9, ease: 'easeOut' }}
+          transition={{ duration: dissolving ? DISSOLVE_MS / 1000 : 0.9, ease: [0.4, 0, 0.2, 1] }}
         >
           {useFilm ? (
             <video
@@ -172,21 +175,6 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
             <PaperEnvelope opening={opening} />
           )}
 
-          {/* The light coming out of the envelope becomes the page. */}
-          {useFilm ? (
-            <motion.div
-              className="pointer-events-none absolute inset-0"
-              style={{
-                background:
-                  'radial-gradient(120% 90% at 50% 55%, #fdf8ee 0%, #faf3e8 45%, #f8ece0 100%)',
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: washing ? 1 : 0 }}
-              transition={{ duration: WASH_MS / 1000, ease: [0.4, 0, 0.2, 1] }}
-              aria-hidden="true"
-            />
-          ) : null}
-
           {/*
             With the film, the envelope on screen already carries its own seal —
             drawing a second one over it just looks like a sticker. The whole
@@ -199,7 +187,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
             className={
               useFilm
                 ? 'absolute inset-0 z-10 flex items-end justify-center pb-16 focus:outline-none'
-                : 'group relative z-10 flex translate-y-[1vh] flex-col items-center gap-6 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-4 focus-visible:ring-offset-cream-300'
+                : 'group relative z-10 flex translate-y-[1vh] flex-col items-center gap-6 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-t-accent focus-visible:ring-offset-4'
             }
             animate={{ opacity: opening ? 0 : 1, scale: opening || useFilm ? 1 : 1 }}
             transition={{ duration: 0.7 }}
@@ -217,7 +205,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
                   aria-hidden="true"
                 />
                 <motion.span
-                  className="relative text-base tracking-[0.32em] text-cream-100 [text-shadow:0_1px_6px_rgba(24,18,14,0.7)]"
+                  className="relative text-base tracking-[0.32em] text-white [text-shadow:0_1px_6px_rgba(24,18,14,0.7)]"
                   animate={{ opacity: [0.65, 1, 0.65] }}
                   transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
                 >
@@ -238,7 +226,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
                 >
                   <Seal label={siteConfig.couple.monogram} size={148} priority />
                 </motion.span>
-                <span className="relative text-xs tracking-[0.3em] text-gold-600">
+                <span className="relative text-xs tracking-[0.3em] text-t-accent">
                   {t.rsvpOpen}
                 </span>
               </>
@@ -250,7 +238,7 @@ export function EnvelopeGate({ onOpen }: { onOpen: () => void }) {
             <button
               type="button"
               onClick={beginHandover}
-              className="absolute bottom-8 right-6 z-10 rounded-full border border-cream-100/70 px-4 py-2 text-xs tracking-[0.2em] text-cream-100 backdrop-blur-sm transition-colors hover:bg-cream-100/15"
+              className="absolute bottom-8 right-6 z-10 rounded-full border border-white/70 px-4 py-2 text-xs tracking-[0.2em] text-white backdrop-blur-sm transition-colors hover:bg-white/15"
             >
               {t.skipIntro}
             </button>

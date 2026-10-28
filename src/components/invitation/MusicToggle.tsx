@@ -65,7 +65,7 @@ export function MusicToggle({ autoStart }: { autoStart: boolean }) {
       type="button"
       onClick={toggle}
       aria-label={playing ? t.pauseMusic : t.playMusic}
-      className="fixed bottom-6 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-wine-500 text-cream-100 shadow-lg transition-colors hover:bg-wine-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-gold-400 focus-visible:ring-offset-2"
+      className="fixed bottom-6 right-5 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-t-cta text-t-on-cta shadow-lg transition-colors hover:bg-t-cta/90 focus:outline-none focus-visible:ring-2 focus-visible:ring-t-accent focus-visible:ring-offset-2"
     >
       {playing ? (
         <svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor" aria-hidden="true">

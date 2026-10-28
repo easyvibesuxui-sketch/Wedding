@@ -4,9 +4,11 @@ A digital wedding invitation — a mobile-first card you send over WhatsApp or
 Instagram — in Georgian, English and Russian, with a private RSVP dashboard
 behind it.
 
-- **Public** `/` — a sealed envelope the guest taps to open, then a single scroll:
-  hero, blessing, live countdown, schedule, location with map, dress code, an
-  RSVP form that writes to Supabase, and a closing photo.
+- **Public** `/` — an opening the guest taps (an envelope, doors, a ribbon…),
+  then a single scroll: hero, blessing, live countdown, schedule, location with
+  map, dress code, an RSVP form that writes to Supabase, and a closing photo.
+- **Designs** `/templates` — the same invitation in ten designs; `/?t=<id>`
+  previews one without changing what guests see.
 - **Admin** `/admin/login` → `/admin/dashboard` — Supabase email/password auth,
   RSVP stats and a filterable guest table.
 
@@ -16,18 +18,43 @@ Built with Next.js (App Router), Tailwind CSS, Framer Motion and Supabase.
 
 | Section | What it does |
 | --- | --- |
-| Envelope gate | A sealed envelope the guest taps to open — either the intro film, or the drawn embossed envelope whose flap lifts and floods the screen with warm light. The page cannot scroll until it is opened, and that tap is also the gesture browsers require before music may start. |
-| Hero | Garden arch, swans on a still lake and corner florals — all inline SVG, so it stays sharp on any phone and costs no image request. |
+| Opening | Each design's own: a film, an envelope, doors, a gatefold, a curtain… The page cannot scroll until it is opened, and that tap is also the gesture browsers require before music may start. The page is already drawn underneath, so the opening uncovers it rather than fading through a blank screen. |
+| Hero | Each design's own first screen. |
 | Blessing | Three script lines and the invitation paragraph. |
-| Countdown | Live days / hours / minutes / seconds to `date` in site-config. |
-| Schedule | Vertical spine with diamond nodes and a grape cluster that travels down it as you scroll. |
+| Countdown | Live days / hours / minutes / seconds to `date` in site-config; on the day and after it, a line and the date instead of a clock stuck at zero. |
+| Schedule | A vertical spine with a marker that travels down it as you scroll, or framed cards — per design. |
 | Location | Venue, a hand-drawn sketch, a live Google map in a gold frame, and an "Open in Maps" link. |
-| Dress code & gifts | Two blocks framed by florals that spill over the torn paper seam. |
-| RSVP | A wax seal reading RSVP; tapping it opens the form. |
+| Dress code & gifts | Two blocks, with the design's corner ornament spilling over the band's edge. |
+| RSVP | The design's emblem; tapping it opens the form. |
 | Closing | "Hope to see you there", the couple, and their photo. |
 
-Every band is separated by a torn-paper edge, petals drift over the whole page,
-and a floating button plays background music when you provide a file.
+Each band draws its design's edge over the one above (torn paper, scallops,
+waves, clouds, deco steps…), and a floating button plays background music when
+you provide a file.
+
+## Designs
+
+All ten share the same words and details — only the design changes. Pick the
+one guests see with `template` in [`src/lib/site-config.ts`](src/lib/site-config.ts).
+
+| id | Design | Opening |
+| --- | --- | --- |
+| `vineyard` | Watercolour vineyard, gold and wine | The envelope film dissolves into the painted hero |
+| `riviera` | Majolica blue, lemons | The flap lifts, the card rises and grows into the page |
+| `tbilisi` | Old Tbilisi balconies, terracotta and teal | Carved wooden doors swing open |
+| `midnight` | Deep green, fine gold frames, fireflies | The seal gives and the gatefold parts |
+| `botanical` | Sage and blush watercolour, eucalyptus | A vellum sheet lifts and the page comes into focus |
+| `deco` | Black and gold geometry | The medallion turns, the sunburst gates slide away |
+| `editorial` | Magazine type, black and white | A curtain rises |
+| `celestial` | Night sky, moon and constellations | The page opens out of the moon |
+| `ribbon` | Blush and satin | The bow unties, the ribbons slide off, the lid lifts |
+| `kraft` | Kraft paper, twine, polaroid | The twine slips off and the envelope drops away |
+
+A design is one file in [`src/templates/`](src/templates): a palette, three
+faces, which surface each band sits on, the seam, the reveal, and its own
+opening, hero and ornaments ([`types.ts`](src/templates/types.ts) lists every
+field). The sections themselves are shared and read the palette through the
+`t-*` colours, so a new design never touches them.
 
 ## 1. Install
 
@@ -122,8 +149,9 @@ are all plain SVG components you can recolour or redraw.
 ```
 src/
 ├─ app/
-│  ├─ page.tsx                 Invitation page (envelope gate + all sections)
-│  ├─ layout.tsx  globals.css  Shell, fonts, palette, paper textures
+│  ├─ page.tsx                 Invitation page (`?t=` previews a design)
+│  ├─ templates/page.tsx       Gallery of all ten designs
+│  ├─ layout.tsx  globals.css  Shell, fonts, surfaces, textures, heading styles
 │  ├─ actions.ts               `submitRsvp` server action (validate + insert)
 │  ├─ icon.svg                 Favicon
 │  ├─ admin/
@@ -131,15 +159,16 @@ src/
 │  │  ├─ login/page.tsx        Login page
 │  │  └─ dashboard/page.tsx    Stats + guest table (server-rendered)
 ├─ components/
-│  ├─ Reveal.tsx               Framer Motion scroll-reveal wrapper
-│  ├─ art/                     ArchScene, FloralSpray, WaxSeal, Flourish,
-│  │                           TornEdge, VenueSketch — all inline SVG
-│  ├─ invitation/              EnvelopeGate, Hero, Blessing, Countdown, Timeline,
-│  │                           Location, Details, RsvpSection, Closing,
-│  │                           MusicToggle, Petals
+│  ├─ Reveal.tsx               Scroll reveal, in the design's style
+│  ├─ TemplateProvider.tsx     The active design, as CSS variables
+│  ├─ art/                     Shared ornaments and the vineyard's drawn pieces
+│  ├─ gallery/                 The design gallery
+│  ├─ invitation/              Section, Seam, Gate, the shared sections,
+│  │                           LanguageSwitcher, MusicToggle, TemplateBar
 │  └─ admin/                   LoginForm, StatCard, GuestTable (filtering)
+├─ templates/                 One folder per design + registry, types, style
 ├─ lib/
-│  ├─ site-config.ts           Couple, date, venue, timeline, hero image
+│  ├─ site-config.ts           Couple, date, venue, timeline, art, design
 │  └─ supabase/                Browser / server / middleware clients + types
 └─ middleware.ts               Refreshes the session, guards `/admin/*`
 ```
@@ -160,7 +189,12 @@ deployed URL to **Supabase → Authentication → URL Configuration**.
 
 ## Design notes
 
-Type is Helvetica Neue LT Georgian for everything the guest reads — Georgian,
+Each design sets its own faces in [`src/templates/style.ts`](src/templates/style.ts):
+every stack ends in a Georgian-capable face — Helvetica Neue LT Georgian for
+sans designs, Noto Serif Georgian for serif and script ones — so Georgian never
+falls to the device. Only the active design's faces are downloaded.
+
+In the vineyard design, type is Helvetica Neue LT Georgian for everything the guest reads — Georgian,
 Latin and digits all come from that one family, so a line never switches face
 mid-sentence — with Great Vibes for the couple's names. The family carries no
 Cyrillic, so Inter's Cyrillic subset sits behind it for the Russian version and
@@ -168,10 +202,10 @@ the browser picks a face per glyph. Both are loaded through
 `next/font` so there is no layout shift, and the licensed `.woff2` files live in
 `src/fonts/` rather than `public/`, so they are only served through Next's
 hashed font pipeline. The font is commercially licensed: see the note in
-[`src/lib/fonts.ts`](src/lib/fonts.ts) before reusing this project elsewhere. The palette is warm
-cream (`#f8ece0`) with gold (`#c19a45`) for headings and deep wine (`#7a1f2b`)
-for the seals and primary buttons — defined once in
-[`tailwind.config.ts`](tailwind.config.ts).
+[`src/lib/fonts.ts`](src/lib/fonts.ts) before reusing this project elsewhere. Its palette is warm
+cream (`#f8ece0`) with gold (`#a8842f`) for headings and deep wine (`#7a1f2b`)
+for the seals and primary buttons — set, like every design's, in its template
+file.
 
-Motion respects `prefers-reduced-motion`: petals are hidden and animations are
-reduced to a single frame for anyone who asks for less movement.
+Motion respects `prefers-reduced-motion`: drifting petals and fireflies are
+hidden, and for anyone who asks for less movement blocks fade in without moving.

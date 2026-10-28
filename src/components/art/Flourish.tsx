@@ -3,7 +3,7 @@ export function Flourish({ className = '' }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 240 24"
-      className={`h-5 w-52 text-gold-300 ${className}`}
+      className={`h-5 w-52 text-t-accent/60 ${className}`}
       fill="none"
       stroke="currentColor"
       strokeWidth="1"

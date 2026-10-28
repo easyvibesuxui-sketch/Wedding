@@ -1,35 +1,41 @@
 'use client';
 
-import { Flourish } from '@/components/art/Flourish';
-import { VineCorner } from '@/components/art/VineCorner';
 import { Reveal } from '@/components/Reveal';
-import { TornEdge } from '@/components/art/TornEdge';
+import { Section } from '@/components/invitation/Section';
 import { useT } from '@/components/LanguageProvider';
+import { useTemplate } from '@/components/TemplateProvider';
 
 export function Details() {
   const t = useT();
+  const { Divider, Corner } = useTemplate();
 
   return (
-    <section className="paper grain relative overflow-hidden px-6 py-20 sm:py-24">
-      {/* The vine spills over the torn edges, as in the printed references. */}
-      <VineCorner corner="top-right" className="absolute -right-10 -top-12 w-48 sm:w-64" />
-      <VineCorner corner="bottom-left" className="absolute -bottom-10 -left-12 w-44 sm:w-60" />
+    <Section section="details">
+      {/*
+        The ornament spills over the band's edges, as in the printed
+        references. It is held inside the card's width so nothing is cut off
+        at the screen edge, and sits behind the text.
+      */}
+      {Corner ? (
+        <>
+          <Corner className="pointer-events-none absolute -right-4 -top-12 -z-10 w-32 sm:w-52" />
+          <Corner className="pointer-events-none absolute -bottom-14 -left-4 -z-10 w-28 rotate-180 sm:w-48" />
+        </>
+      ) : null}
 
-      <div className="relative mx-auto max-w-md space-y-14 text-center">
+      <div className="relative mx-auto max-w-md space-y-14 px-4 text-center">
         <Reveal>
           <h2 className="section-title">{t.dressCodeTitle}</h2>
-          <Flourish className="mx-auto mt-3" />
-          <p className="mt-6 text-lg leading-relaxed text-ink-500">{t.dressCode}</p>
+          <Divider className="mx-auto mt-3" />
+          <p className="mt-6 text-lg leading-relaxed text-t-ink-soft">{t.dressCode}</p>
         </Reveal>
 
         <Reveal delay={0.1}>
           <h2 className="section-title">{t.giftTitle}</h2>
-          <Flourish className="mx-auto mt-3" />
-          <p className="mt-6 text-lg leading-relaxed text-ink-500">{t.giftPreference}</p>
+          <Divider className="mx-auto mt-3" />
+          <p className="mt-6 text-lg leading-relaxed text-t-ink-soft">{t.giftPreference}</p>
         </Reveal>
       </div>
-
-      <TornEdge position="bottom" color="#faf3e8" />
-    </section>
+    </Section>
   );
 }

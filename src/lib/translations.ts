@@ -1,4 +1,5 @@
 import type { Lang } from '@/lib/i18n';
+import type { TemplateId } from '@/templates/types';
 
 /**
  * Every word the guest reads, in each language. The Georgian is the couple's
@@ -20,6 +21,8 @@ export type Dictionary = {
 
   countdownTitle: string;
   countdownTitleToday: string;
+  /** Replaces the clock once the day has passed. */
+  countdownTitlePast: string;
   countdownUnits: { days: string; hours: string; minutes: string; seconds: string };
 
   scheduleTitle: string;
@@ -61,6 +64,16 @@ export type Dictionary = {
 
   playMusic: string;
   pauseMusic: string;
+
+  /** The design gallery at /templates, and the bar shown while previewing one. */
+  galleryTitle: string;
+  galleryIntro: string;
+  galleryOpen: string;
+  galleryBack: string;
+  galleryCurrent: string;
+  galleryPrev: string;
+  galleryNext: string;
+  templates: Record<TemplateId, { name: string; mood: string }>;
 };
 
 export type RsvpMessage =
@@ -93,6 +106,7 @@ const ka: Dictionary = {
 
   countdownTitle: 'ზეიმამდე დარჩა',
   countdownTitleToday: 'დღეს არის ის დღე',
+  countdownTitlePast: 'ჩვენ დავქორწინდით!',
   countdownUnits: { days: 'დღე', hours: 'საათი', minutes: 'წუთი', seconds: 'წამი' },
 
   scheduleTitle: 'დღის განრიგი',
@@ -148,6 +162,26 @@ const ka: Dictionary = {
 
   playMusic: 'მუსიკის ჩართვა',
   pauseMusic: 'მუსიკის გაჩერება',
+
+  galleryTitle: 'მოსაწვევის დიზაინები',
+  galleryIntro: 'ათი დიზაინი, ერთი შინაარსი. გახსენით რომელიმე, რომ ნახოთ მისი გახსნა და ყველა სექცია.',
+  galleryOpen: 'ნახვა',
+  galleryBack: 'ყველა დიზაინი',
+  galleryCurrent: 'მიმდინარე',
+  galleryPrev: 'წინა დიზაინი',
+  galleryNext: 'შემდეგი დიზაინი',
+  templates: {
+    vineyard: { name: 'ვენახი', mood: 'აკვარელის ვენახი, ოქრო და ღვინისფერი, გახსნის ფილმი' },
+    riviera: { name: 'რივიერა', mood: 'ლურჯი მაიოლიკა და ლიმონები — ბარათი კონვერტიდან ამოდის' },
+    tbilisi: { name: 'ძველი თბილისი', mood: 'ჩუქურთმიანი აივნები, ტერაკოტა და ფირუზი — იღება ხის კარი' },
+    midnight: { name: 'შუაღამის ბაღი', mood: 'მუქი მწვანე და ოქროს წვრილი ჩარჩოები — დალუქული ბარათი ორად იხსნება' },
+    botanical: { name: 'ბოტანიკა', mood: 'სალბისფერი და ფერმკრთალი ვარდისფერი — კალკის ფურცელი იწევა' },
+    deco: { name: 'არ-დეკო', mood: 'შავი და ოქრო, გეომეტრია — მზის სხივების კარიბჭე იშლება' },
+    editorial: { name: 'ედიტორიალი', mood: 'ჟურნალის ტიპოგრაფია, შავ-თეთრი — ფარდა ზევით მიიწევს' },
+    celestial: { name: 'ვარსკვლავები', mood: 'ღამის ცა, მთვარე და თანავარსკვლავედები — გვერდი მთვარიდან იშლება' },
+    ribbon: { name: 'ლენტი', mood: 'ფერმკრთალი ვარდისფერი და ატლასი — ლენტი იხსნება, სახურავი იწევა' },
+    kraft: { name: 'კრაფტი', mood: 'კრაფტის ქაღალდი, თოკი და პოლაროიდი — თოკი სრიალით ეხსნება' },
+  },
 };
 
 const en: Dictionary = {
@@ -168,6 +202,7 @@ const en: Dictionary = {
 
   countdownTitle: 'The celebration begins in',
   countdownTitleToday: 'Today is the day',
+  countdownTitlePast: 'We are married!',
   countdownUnits: { days: 'Days', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds' },
 
   scheduleTitle: 'Order of the day',
@@ -223,6 +258,26 @@ const en: Dictionary = {
 
   playMusic: 'Play music',
   pauseMusic: 'Pause music',
+
+  galleryTitle: 'Invitation designs',
+  galleryIntro: 'Ten designs, one set of details. Open any of them to see its opening and every section.',
+  galleryOpen: 'Preview',
+  galleryBack: 'All designs',
+  galleryCurrent: 'Current',
+  galleryPrev: 'Previous design',
+  galleryNext: 'Next design',
+  templates: {
+    vineyard: { name: 'Vineyard', mood: 'Watercolour vineyard, gold and wine, an opening film' },
+    riviera: { name: 'Riviera', mood: 'Blue majolica and lemons — the card slides out of its envelope' },
+    tbilisi: { name: 'Old Tbilisi', mood: 'Carved balconies, terracotta and teal — the wooden doors swing open' },
+    midnight: { name: 'Midnight Garden', mood: 'Deep green with fine gold frames — the sealed card parts in two' },
+    botanical: { name: 'Botanical', mood: 'Sage and blush watercolour — a vellum sheet lifts away' },
+    deco: { name: 'Art Deco', mood: 'Black and gold geometry — the sunburst gates fold open' },
+    editorial: { name: 'Editorial', mood: 'Magazine type in black and white — a curtain wipes up' },
+    celestial: { name: 'Celestial', mood: 'Night sky, moon and constellations — the page opens out of the moon' },
+    ribbon: { name: 'Ribbon', mood: 'Blush and satin — the ribbon unties and the lid lifts' },
+    kraft: { name: 'Kraft & Twine', mood: 'Kraft paper, twine and a polaroid — the twine slips off' },
+  },
 };
 
 const ru: Dictionary = {
@@ -243,6 +298,7 @@ const ru: Dictionary = {
 
   countdownTitle: 'До праздника осталось',
   countdownTitleToday: 'Сегодня тот самый день',
+  countdownTitlePast: 'Мы поженились!',
   countdownUnits: { days: 'дней', hours: 'часов', minutes: 'минут', seconds: 'секунд' },
 
   scheduleTitle: 'Программа дня',
@@ -298,6 +354,26 @@ const ru: Dictionary = {
 
   playMusic: 'Включить музыку',
   pauseMusic: 'Выключить музыку',
+
+  galleryTitle: 'Дизайны приглашений',
+  galleryIntro: 'Десять дизайнов, одно содержание. Откройте любой, чтобы увидеть его открытие и все разделы.',
+  galleryOpen: 'Смотреть',
+  galleryBack: 'Все дизайны',
+  galleryCurrent: 'Текущий',
+  galleryPrev: 'Предыдущий дизайн',
+  galleryNext: 'Следующий дизайн',
+  templates: {
+    vineyard: { name: 'Виноградник', mood: 'Акварельный виноградник, золото и вино, вступительный фильм' },
+    riviera: { name: 'Ривьера', mood: 'Синяя майолика и лимоны — открытка выезжает из конверта' },
+    tbilisi: { name: 'Старый Тбилиси', mood: 'Резные балконы, терракота и бирюза — распахиваются деревянные двери' },
+    midnight: { name: 'Полночный сад', mood: 'Глубокий зелёный и тонкое золото — запечатанная открытка раскрывается' },
+    botanical: { name: 'Ботаника', mood: 'Шалфей и пудра — лист кальки приподнимается и уходит' },
+    deco: { name: 'Ар-деко', mood: 'Чёрное с золотом — веерные врата раскрываются' },
+    editorial: { name: 'Эдиториал', mood: 'Журнальная типографика, чёрно-белое — шторка уходит вверх' },
+    celestial: { name: 'Звёздное небо', mood: 'Ночное небо, луна и созвездия — страница раскрывается из луны' },
+    ribbon: { name: 'Лента', mood: 'Пудра и атлас — лента развязывается, крышка поднимается' },
+    kraft: { name: 'Крафт', mood: 'Крафт, бечёвка и полароид — бечёвка соскальзывает' },
+  },
 };
 
 export const translations: Record<Lang, Dictionary> = { ka, en, ru };
