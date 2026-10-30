@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 import { MonogramBadge, SprigDivider } from '@/components/art/Ornaments';
 import { Gate } from '@/components/invitation/Gate';
-import { HeroText } from '@/components/invitation/HeroText';
+import { PaintedCorner, PaintedHero } from '@/components/invitation/PaintedHero';
 import { Drift } from '@/components/invitation/Petals';
 import { STACKS } from '@/templates/style';
 import type { OpeningProps, TemplateDef } from '@/templates/types';
@@ -35,27 +35,6 @@ function Bow({ className = '' }: { className?: string }) {
       <path d="M104 62c24-22 56-28 66-18" fill="none" stroke="#fbe7e9" strokeOpacity="0.6" strokeWidth="2" />
       <rect x="88" y="52" width="24" height="26" rx="8" fill="#9a5560" />
       <rect x="92" y="55" width="8" height="20" rx="4" fill="#e3b2b8" opacity="0.5" />
-    </svg>
-  );
-}
-
-/** A string of pearls hung in an arc. */
-function Pearls({ className = '' }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 300 70" className={className} aria-hidden="true">
-      {Array.from({ length: 23 }, (_, i) => {
-        const tt = i / 22;
-        // Rounded: server and browser need not agree on a sine's last digit,
-        // and an unrounded one makes the markup differ.
-        const x = Math.round((10 + tt * 280) * 100) / 100;
-        const y = Math.round((10 + Math.sin(tt * Math.PI) * 48) * 100) / 100;
-        return (
-          <g key={i}>
-            <circle cx={x} cy={y} r={i % 2 ? 4 : 5.2} fill="#fffaf8" stroke="#e7cfcf" strokeWidth="0.8" />
-            <circle cx={x - 1.4} cy={y - 1.6} r="1.4" fill="#ffffff" />
-          </g>
-        );
-      })}
     </svg>
   );
 }
@@ -101,21 +80,9 @@ function RibbonOpening({ onOpen }: OpeningProps) {
   );
 }
 
+/** Peonies and roses with a satin ribbon running through them. */
 function RibbonHero({ start }: { start: boolean }) {
-  return (
-    <section className="relative flex min-h-[var(--hero-h,100svh)] flex-col items-center justify-center overflow-hidden bg-t-bg px-6 py-20">
-      <motion.div
-        className="w-44"
-        initial={{ opacity: 0, y: -20, rotate: -6 }}
-        animate={start ? { opacity: 1, y: 0, rotate: 0 } : {}}
-        transition={{ duration: 1.4, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <Bow />
-      </motion.div>
-      <Pearls className="mt-2 w-64" />
-      <HeroText start={start} className="-mt-4" />
-    </section>
-  );
+  return <PaintedHero src="/art/ribbon-hero.webp" start={start} />;
 }
 
 /** Blush and satin: a ribbon that unties and a lid that lifts. */
@@ -159,5 +126,6 @@ export const ribbon: TemplateDef = {
   Hero: RibbonHero,
   Divider: SprigDivider,
   Emblem: ({ size }) => <MonogramBadge size={size} shape="scallop" />,
+  Corner: (props) => <PaintedCorner src="/art/ribbon-corner.webp" {...props} />,
   Ambient: () => <Drift tints={['#f2c9ce', '#f7dede', '#e8b9be']} />,
 };

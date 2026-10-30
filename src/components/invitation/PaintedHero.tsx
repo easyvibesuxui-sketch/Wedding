@@ -48,7 +48,9 @@ export function PaintedHero({
       <HeroText
         start={start}
         cue={false}
-        className="px-6 pt-[11vh] [text-shadow:0_1px_2px_rgb(var(--t-bg)/0.9)]"
+        // Measured from the hero, not the window, so a gallery miniature sets
+        // the names exactly where a phone does.
+        className="px-6 pt-[calc(var(--hero-h,100svh)*0.11)] [text-shadow:0_1px_2px_rgb(var(--t-bg)/0.9)]"
         nameClassName={nameClassName}
       />
     </section>

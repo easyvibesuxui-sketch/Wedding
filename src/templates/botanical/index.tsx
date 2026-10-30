@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { MonogramBadge, SprigDivider } from '@/components/art/Ornaments';
 import { Gate } from '@/components/invitation/Gate';
-import { HeroText } from '@/components/invitation/HeroText';
+import { PaintedCorner, PaintedHero } from '@/components/invitation/PaintedHero';
 import { Drift } from '@/components/invitation/Petals';
 import { siteConfig } from '@/lib/site-config';
 import { STACKS } from '@/templates/style';
@@ -37,35 +37,6 @@ function Eucalyptus({ className = '' }: { className?: string }) {
   );
 }
 
-/** Soft watercolour blooms: pigment pooled at the edges, as on wet paper. */
-function Washes() {
-  const blooms = [
-    { c: '#e9c6bf', x: '8%', y: '10%', s: '62vw' },
-    { c: '#c9d6c0', x: '70%', y: '4%', s: '58vw' },
-    { c: '#f1dcd2', x: '78%', y: '72%', s: '66vw' },
-    { c: '#d3decb', x: '-6%', y: '68%', s: '60vw' },
-  ];
-  return (
-    <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-      {blooms.map((b, i) => (
-        <span
-          key={i}
-          className="absolute -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 blur-2xl"
-          style={{
-            left: b.x,
-            top: b.y,
-            width: b.s,
-            height: b.s,
-            maxWidth: 420,
-            maxHeight: 420,
-            background: `radial-gradient(circle, ${b.c} 0%, ${b.c}cc 45%, transparent 70%)`,
-          }}
-        />
-      ))}
-    </div>
-  );
-}
-
 /**
  * A sheet of frosted vellum lies over the invitation, the names pressed into
  * it beside a sprig. On a tap it lifts away and the page underneath — already
@@ -90,30 +61,9 @@ function BotanicalOpening({ onOpen }: OpeningProps) {
   );
 }
 
+/** An orangery overflowing with eucalyptus and blush roses. */
 function BotanicalHero({ start }: { start: boolean }) {
-  return (
-    <section className="relative flex min-h-[var(--hero-h,100svh)] items-center justify-center overflow-hidden bg-t-bg px-6 py-24">
-      <Washes />
-      <motion.div
-        className="absolute -left-10 -top-4 w-56 sm:w-72"
-        initial={{ rotate: -14, opacity: 0 }}
-        animate={start ? { rotate: 0, opacity: 1 } : {}}
-        transition={{ duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <Eucalyptus className="-scale-x-100" />
-      </motion.div>
-      <motion.div
-        className="absolute -bottom-6 -right-10 w-56 sm:w-72"
-        initial={{ rotate: 14, opacity: 0 }}
-        animate={start ? { rotate: 0, opacity: 1 } : {}}
-        transition={{ duration: 1.8, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <Eucalyptus className="rotate-180 -scale-x-100" />
-      </motion.div>
-
-      <HeroText start={start} nameClassName="italic" />
-    </section>
-  );
+  return <PaintedHero src="/art/botanical-hero.webp" start={start} nameClassName="italic" />;
 }
 
 /** Sage and blush watercolour, eucalyptus, and a vellum sheet that lifts away. */
@@ -157,6 +107,6 @@ export const botanical: TemplateDef = {
   Hero: BotanicalHero,
   Divider: SprigDivider,
   Emblem: ({ size }) => <MonogramBadge size={size} shape="arch" />,
-  Corner: Eucalyptus,
+  Corner: (props) => <PaintedCorner src="/art/botanical-corner.webp" {...props} />,
   Ambient: () => <Drift shape="leaf" tints={['#b7c6ae', '#9fb39a', '#e9c6bf']} />,
 };

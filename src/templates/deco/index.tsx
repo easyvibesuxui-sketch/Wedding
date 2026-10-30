@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { DecoDivider, MonogramBadge } from '@/components/art/Ornaments';
 import { Gate } from '@/components/invitation/Gate';
-import { HeroText } from '@/components/invitation/HeroText';
+import { PaintedHero } from '@/components/invitation/PaintedHero';
 import { siteConfig } from '@/lib/site-config';
 import { STACKS } from '@/templates/style';
 import type { OpeningProps, TemplateDef } from '@/templates/types';
@@ -95,22 +95,13 @@ function DecoOpening({ onOpen }: OpeningProps) {
   );
 }
 
+/** The ballroom staircase, framed in the gold rules of the band. */
 function DecoHero({ start }: { start: boolean }) {
   return (
-    <section className="relative flex min-h-[var(--hero-h,100svh)] items-center justify-center overflow-hidden bg-t-bg px-6 py-20">
-      <motion.div
-        className="absolute inset-x-0 top-[8%] text-t-accent"
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={start ? { opacity: 0.55, scale: 1 } : {}}
-        transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
-        style={{ transformOrigin: '50% 100%' }}
-      >
-        <Sunburst className="mx-auto w-[130%] max-w-none -translate-x-[11%]" rays={40} />
-      </motion.div>
-      <div className="absolute inset-4 border border-t-line/60" aria-hidden="true" />
-      <div className="absolute inset-6 border border-t-line/30" aria-hidden="true" />
-      <HeroText start={start} names="line" className="mt-24" nameClassName="uppercase" />
-    </section>
+    <PaintedHero src="/art/deco-hero.webp" start={start} nameClassName="uppercase">
+      <div className="pointer-events-none absolute inset-4 border border-t-line/60" aria-hidden="true" />
+      <div className="pointer-events-none absolute inset-6 border border-t-line/30" aria-hidden="true" />
+    </PaintedHero>
   );
 }
 

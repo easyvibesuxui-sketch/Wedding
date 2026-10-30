@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 
 import { LineDivider, MonogramBadge } from '@/components/art/Ornaments';
 import { Gate } from '@/components/invitation/Gate';
+import { PaintedCorner } from '@/components/invitation/PaintedHero';
 import { useT } from '@/components/LanguageProvider';
 import { coupleNames, siteConfig } from '@/lib/site-config';
 import { STACKS } from '@/templates/style';
@@ -113,8 +114,10 @@ export const editorial: TemplateDef = {
     schedule: 'base',
     location: 'alt',
     details: 'base',
-    rsvp: 'inverse',
-    closing: 'base',
+    // The ink ornament spills into the RSVP band, so that band stays light;
+    // the portrait closes the issue on black instead.
+    rsvp: 'alt',
+    closing: 'inverse',
   },
   seam: 'none',
   texture: 'none',
@@ -126,4 +129,5 @@ export const editorial: TemplateDef = {
   Hero: EditorialHero,
   Divider: LineDivider,
   Emblem: ({ size }) => <MonogramBadge size={size} shape="circle" />,
+  Corner: (props) => <PaintedCorner src="/art/editorial-corner.webp" {...props} />,
 };

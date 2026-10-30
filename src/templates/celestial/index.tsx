@@ -5,7 +5,7 @@ import { animate, motion, useMotionTemplate, useMotionValue } from 'framer-motio
 
 import { MonogramBadge, StarDivider } from '@/components/art/Ornaments';
 import { Gate } from '@/components/invitation/Gate';
-import { HeroText } from '@/components/invitation/HeroText';
+import { PaintedHero } from '@/components/invitation/PaintedHero';
 import { STACKS } from '@/templates/style';
 import type { OpeningProps, TemplateDef } from '@/templates/types';
 
@@ -110,25 +110,9 @@ function Iris({ opening }: { opening: boolean }) {
   );
 }
 
+/** Vineyard hills under the Milky Way, the moon low on the horizon. */
 function CelestialHero({ start }: { start: boolean }) {
-  return (
-    <section className="relative flex min-h-[var(--hero-h,100svh)] items-center justify-center overflow-hidden bg-t-bg px-6 py-20">
-      <Sky />
-      <Constellation className="absolute left-4 top-16 w-44 text-t-accent/80" />
-      <Constellation className="absolute bottom-20 right-2 w-40 rotate-180 text-t-accent/60" />
-      <div className="relative">
-        <motion.div
-          className="mx-auto mb-6 w-fit"
-          initial={{ opacity: 0, y: -12 }}
-          animate={start ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 1.4, delay: 0.2 }}
-        >
-          <Crescent size={80} />
-        </motion.div>
-        <HeroText start={start} nameClassName="italic" />
-      </div>
-    </section>
-  );
+  return <PaintedHero src="/art/celestial-hero.webp" start={start} nameClassName="italic" />;
 }
 
 /** A starlit night: moon, constellations, and a page that opens out of the moon. */

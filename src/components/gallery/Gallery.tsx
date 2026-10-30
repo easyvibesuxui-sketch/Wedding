@@ -11,8 +11,9 @@ import { siteConfig } from '@/lib/site-config';
 import { ALL_TEMPLATES, getTemplate } from '@/templates/registry';
 import type { TemplateDef } from '@/templates/types';
 
-/** The miniature is drawn at phone size and scaled down to the card. */
-const PHONE = { width: 390, height: 720 };
+/** The miniature is drawn at a real phone's size and scaled down to the card: a
+ * shorter frame would crop the painted heroes differently from a phone. */
+const PHONE = { width: 390, height: 844 };
 
 export function Gallery({ initialLang }: { initialLang: Lang }) {
   return (

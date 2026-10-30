@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 
 import { MonogramBadge, SprigDivider } from '@/components/art/Ornaments';
 import { Gate } from '@/components/invitation/Gate';
-import { HeroText } from '@/components/invitation/HeroText';
+import { PaintedHero } from '@/components/invitation/PaintedHero';
 import { Fireflies } from '@/components/invitation/Petals';
 import { siteConfig } from '@/lib/site-config';
 import { STACKS } from '@/templates/style';
@@ -107,22 +107,9 @@ function MidnightOpening({ onOpen }: OpeningProps) {
   );
 }
 
+/** A moonlit garden, fireflies among the roses, under the empty night. */
 function MidnightHero({ start }: { start: boolean }) {
-  return (
-    <section className="relative flex min-h-[var(--hero-h,100svh)] items-center justify-center overflow-hidden bg-t-bg px-6 py-20">
-      <Twinkle />
-      <motion.div
-        className="relative w-full max-w-[21rem] rounded-t-[999px] border border-t-line px-3 pt-3"
-        initial={{ opacity: 0, scale: 0.96 }}
-        animate={start ? { opacity: 1, scale: 1 } : {}}
-        transition={{ duration: 1.6, ease: [0.16, 1, 0.3, 1] }}
-      >
-        <div className="rounded-t-[999px] border border-t-line/50 px-4 pb-14 pt-28">
-          <HeroText start={start} />
-        </div>
-      </motion.div>
-    </section>
-  );
+  return <PaintedHero src="/art/midnight-hero.webp" start={start} />;
 }
 
 /** Midnight green with fine gold frames, fireflies, and a gatefold card that parts. */

@@ -3,10 +3,9 @@
 import { motion } from 'framer-motion';
 
 import { MonogramBadge } from '@/components/art/Ornaments';
-import { FramedImage } from '@/components/invitation/FramedImage';
 import { Gate } from '@/components/invitation/Gate';
-import { HeroText } from '@/components/invitation/HeroText';
-import { coupleNames, siteConfig } from '@/lib/site-config';
+import { PaintedCorner, PaintedHero } from '@/components/invitation/PaintedHero';
+import { siteConfig } from '@/lib/site-config';
 import { STACKS } from '@/templates/style';
 import type { OpeningProps, TemplateDef } from '@/templates/types';
 
@@ -89,25 +88,12 @@ function KraftOpening({ onOpen }: OpeningProps) {
   );
 }
 
+/** A barn at golden hour, strung with lights, in the wildflower meadow. */
 function KraftHero({ start }: { start: boolean }) {
-  return (
-    <section className="relative flex min-h-[var(--hero-h,100svh)] flex-col items-center justify-center overflow-hidden bg-t-bg px-6 py-16">
-      <HeroText start={start} />
-      {siteConfig.couplePhoto ? (
-        <motion.div
-          className="mt-4 w-full max-w-[16rem]"
-          initial={{ opacity: 0, y: 40, rotate: 6 }}
-          animate={start ? { opacity: 1, y: 0, rotate: 0 } : {}}
-          transition={{ duration: 1.3, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        >
-          <FramedImage src={siteConfig.couplePhoto} alt={coupleNames} width={1000} height={1328} frame="polaroid" />
-        </motion.div>
-      ) : null}
-    </section>
-  );
+  return <PaintedHero src="/art/kraft-hero.webp" start={start} />;
 }
 
-/** Kraft paper, twine and a polaroid — for a garden or barn wedding. */
+/** Kraft paper, twine, wildflowers and a polaroid — for a garden or barn wedding. */
 export const kraft: TemplateDef = {
   id: 'kraft',
   palette: {
@@ -131,12 +117,12 @@ export const kraft: TemplateDef = {
   headingStyle: 'plain',
   surfaces: {
     blessing: 'alt',
-    countdown: 'base',
+    countdown: 'inverse',
     schedule: 'alt',
     location: 'base',
-    details: 'inverse',
-    rsvp: 'alt',
-    closing: 'base',
+    details: 'alt',
+    rsvp: 'base',
+    closing: 'alt',
   },
   seam: 'torn',
   texture: 'kraft',
@@ -147,5 +133,6 @@ export const kraft: TemplateDef = {
   Opening: KraftOpening,
   Hero: KraftHero,
   Divider: Doodle,
+  Corner: (props) => <PaintedCorner src="/art/kraft-corner.webp" {...props} />,
   Emblem: ({ size }) => <MonogramBadge size={size} shape="circle" />,
 };

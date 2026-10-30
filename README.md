@@ -50,10 +50,12 @@ one guests see with `template` in [`src/lib/site-config.ts`](src/lib/site-config
 | `ribbon` | Blush and satin | The bow unties, the ribbons slide off, the lid lifts |
 | `kraft` | Kraft paper, twine, polaroid | The twine slips off and the envelope drops away |
 
-Vineyard, Riviera and Old Tbilisi are painted: their heroes, corner
-ornaments and (for Tbilisi) the opening doors are watercolours in
-`public/art/`, generated with Kling and cut out to transparency. The other
-designs are drawn in SVG.
+Every design but Editorial opens on a painted hero — a watercolour or
+gouache in `public/art/<id>-hero.webp`, generated with Kling, with empty sky
+left for the names — and most carry a painted corner ornament
+(`<id>-corner.webp`), cut out of its paper so it keeps its watercolour edge.
+Tbilisi's opening doors are painted too. Editorial stays typographic, with an
+ink drawing for its corner; the openings and the frames are drawn in SVG.
 
 A design is one file in [`src/templates/`](src/templates): a palette, three
 faces, which surface each band sits on, the seam, the reveal, and its own
