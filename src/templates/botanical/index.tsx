@@ -44,7 +44,7 @@ function Eucalyptus({ className = '' }: { className?: string }) {
  */
 function BotanicalOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={1700} promptClassName="text-[#6f8466]">
+    <Gate onOpen={onOpen} duration={1700}>
       {(opening) => (
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center bg-[#f4f1ea]/70 backdrop-blur-xl"

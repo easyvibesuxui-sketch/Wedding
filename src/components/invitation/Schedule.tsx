@@ -58,7 +58,7 @@ function Spine() {
       {siteConfig.scheduleTimes.map((time, index) => (
         <li key={time} className="relative grid grid-cols-[5.5rem_1.5rem_1fr] items-start py-6">
           <Reveal delay={index * 0.08} className="pr-3 text-right">
-            <span className="font-heading text-2xl text-t-ink sm:text-3xl">{time}</span>
+            <span className="font-heading text-2xl text-t-ink">{time}</span>
           </Reveal>
 
           <span
@@ -67,7 +67,7 @@ function Spine() {
           />
 
           <Reveal delay={index * 0.08 + 0.05} className="pl-4 text-left">
-            <span className="text-lg leading-snug text-t-ink-soft sm:text-xl">{t.schedule[index]}</span>
+            <span className="text-lg leading-snug text-t-ink-soft">{t.schedule[index]}</span>
           </Reveal>
         </li>
       ))}

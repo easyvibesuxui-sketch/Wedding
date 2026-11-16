@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 
 import { Seal } from '@/components/art/Seal';
+import { STAGE } from '@/components/invitation/stage';
 import { useT } from '@/components/LanguageProvider';
 import { siteConfig } from '@/lib/site-config';
 import type { OpeningProps } from '@/templates/types';
@@ -141,111 +142,115 @@ export function VineyardOpening({ onOpen }: OpeningProps) {
   }
 
   return (
-    <AnimatePresence>
-      {gone ? null : (
-        <motion.div
-          className={`fixed inset-0 z-50 flex items-center justify-center overflow-hidden ${
-            useFilm ? 'bg-black' : 'bg-t-bg-alt'
-          }`}
-          animate={{ opacity: dissolving ? 0 : 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: dissolving ? DISSOLVE_MS / 1000 : 0.9, ease: [0.4, 0, 0.2, 1] }}
-        >
-          {useFilm ? (
-            <video
-              ref={videoRef}
-              className="absolute inset-0 h-full w-full object-cover"
-              poster={siteConfig.introVideoPoster ?? undefined}
-              muted
-              playsInline
-              preload="auto"
-              onPlaying={onFilmProgress}
-              onTimeUpdate={onFilmProgress}
-              onEnded={onFilmEnded}
-              onError={() => (opening ? openWithPaper() : setFilmFailed(true))}
-            >
-              {siteConfig.introVideoWebm ? (
-                <source src={siteConfig.introVideoWebm} type="video/webm" />
-              ) : null}
-              {siteConfig.introVideo ? (
-                <source src={siteConfig.introVideo} type="video/mp4" />
-              ) : null}
-            </video>
-          ) : (
-            <PaperEnvelope opening={opening} />
-          )}
-
-          {/*
-            With the film, the envelope on screen already carries its own seal —
-            drawing a second one over it just looks like a sticker. The whole
-            frame is the tap target instead, with the prompt over a soft scrim
-            so it stays readable against the photograph.
-          */}
-          <motion.button
-            type="button"
-            onClick={open}
-            className={
-              useFilm
-                ? 'absolute inset-0 z-10 flex items-end justify-center pb-16 focus:outline-none'
-                : 'group relative z-10 flex translate-y-[1vh] flex-col items-center gap-6 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-t-accent focus-visible:ring-offset-4'
-            }
-            animate={{ opacity: opening ? 0 : 1, scale: opening || useFilm ? 1 : 1 }}
-            transition={{ duration: 0.7 }}
-            style={{ pointerEvents: opening ? 'none' : 'auto' }}
-            aria-label={t.openInvitation}
+    // The stage places the opening over the card; it stays click-through once
+    // the opening inside it has gone.
+    <div className={`${STAGE} pointer-events-none z-50`}>
+      <AnimatePresence>
+        {gone ? null : (
+          <motion.div
+            className={`pointer-events-auto absolute inset-0 flex items-center justify-center overflow-hidden ${
+              useFilm ? 'bg-black' : 'bg-t-bg-alt'
+            }`}
+            animate={{ opacity: dissolving ? 0 : 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: dissolving ? DISSOLVE_MS / 1000 : 0.9, ease: [0.4, 0, 0.2, 1] }}
           >
             {useFilm ? (
-              <>
-                <span
-                  className="absolute inset-x-0 bottom-0 h-56"
-                  style={{
-                    background:
-                      'linear-gradient(to top, rgba(38,30,24,0.82), rgba(38,30,24,0.42) 50%, transparent)',
-                  }}
-                  aria-hidden="true"
-                />
-                <motion.span
-                  className="relative text-base tracking-[0.32em] text-white [text-shadow:0_1px_6px_rgba(24,18,14,0.7)]"
-                  animate={{ opacity: [0.65, 1, 0.65] }}
-                  transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  {t.rsvpOpen}
-                </motion.span>
-              </>
+              <video
+                ref={videoRef}
+                className="absolute inset-0 h-full w-full object-cover"
+                poster={siteConfig.introVideoPoster ?? undefined}
+                muted
+                playsInline
+                preload="auto"
+                onPlaying={onFilmProgress}
+                onTimeUpdate={onFilmProgress}
+                onEnded={onFilmEnded}
+                onError={() => (opening ? openWithPaper() : setFilmFailed(true))}
+              >
+                {siteConfig.introVideoWebm ? (
+                  <source src={siteConfig.introVideoWebm} type="video/webm" />
+                ) : null}
+                {siteConfig.introVideo ? (
+                  <source src={siteConfig.introVideo} type="video/mp4" />
+                ) : null}
+              </video>
             ) : (
-              <>
-                <span
-                  className="absolute -inset-10 rounded-full opacity-70 blur-2xl"
-                  style={{ background: 'radial-gradient(circle, rgba(255,205,120,0.75), transparent 70%)' }}
-                  aria-hidden="true"
-                />
-                <motion.span
-                  className="relative"
-                  animate={{ scale: [1, 1.035, 1] }}
-                  transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-                >
-                  <Seal label={siteConfig.couple.monogram} size={148} priority />
-                </motion.span>
-                <span className="relative text-xs tracking-[0.3em] text-t-accent">
-                  {t.rsvpOpen}
-                </span>
-              </>
+              <PaperEnvelope opening={opening} />
             )}
-          </motion.button>
 
-          {/* Nobody should be stuck watching an intro they have already seen. */}
-          {opening && useFilm ? (
-            <button
+            {/*
+              With the film, the envelope on screen already carries its own seal —
+              drawing a second one over it just looks like a sticker. The whole
+              frame is the tap target instead, with the prompt over a soft scrim
+              so it stays readable against the photograph.
+            */}
+            <motion.button
               type="button"
-              onClick={beginHandover}
-              className="absolute bottom-8 right-6 z-10 rounded-full border border-white/70 px-4 py-2 text-xs tracking-[0.2em] text-white backdrop-blur-sm transition-colors hover:bg-white/15"
+              onClick={open}
+              className={
+                useFilm
+                  ? 'absolute inset-0 z-10 flex items-end justify-center pb-16 focus:outline-none'
+                  : 'group relative z-10 flex translate-y-[1vh] flex-col items-center gap-6 rounded-full focus:outline-none focus-visible:ring-2 focus-visible:ring-t-accent focus-visible:ring-offset-4'
+              }
+              animate={{ opacity: opening ? 0 : 1, scale: opening || useFilm ? 1 : 1 }}
+              transition={{ duration: 0.7 }}
+              style={{ pointerEvents: opening ? 'none' : 'auto' }}
+              aria-label={t.openInvitation}
             >
-              {t.skipIntro}
-            </button>
-          ) : null}
-        </motion.div>
-      )}
-    </AnimatePresence>
+              {useFilm ? (
+                <>
+                  <span
+                    className="absolute inset-x-0 bottom-0 h-56"
+                    style={{
+                      background:
+                        'linear-gradient(to top, rgba(38,30,24,0.82), rgba(38,30,24,0.42) 50%, transparent)',
+                    }}
+                    aria-hidden="true"
+                  />
+                  <motion.span
+                    className="relative text-base tracking-[0.32em] text-white [text-shadow:0_1px_6px_rgba(24,18,14,0.7)]"
+                    animate={{ opacity: [0.65, 1, 0.65] }}
+                    transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    {t.rsvpOpen}
+                  </motion.span>
+                </>
+              ) : (
+                <>
+                  <span
+                    className="absolute -inset-10 rounded-full opacity-70 blur-2xl"
+                    style={{ background: 'radial-gradient(circle, rgba(255,205,120,0.75), transparent 70%)' }}
+                    aria-hidden="true"
+                  />
+                  <motion.span
+                    className="relative"
+                    animate={{ scale: [1, 1.035, 1] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                  >
+                    <Seal label={siteConfig.couple.monogram} size={148} priority />
+                  </motion.span>
+                  <span className="relative text-xs tracking-[0.3em] text-t-accent">
+                    {t.rsvpOpen}
+                  </span>
+                </>
+              )}
+            </motion.button>
+
+            {/* Nobody should be stuck watching an intro they have already seen. */}
+            {opening && useFilm ? (
+              <button
+                type="button"
+                onClick={beginHandover}
+                className="absolute bottom-8 right-6 z-10 rounded-full border border-white/70 px-4 py-2 text-xs tracking-[0.2em] text-white backdrop-blur-sm transition-colors hover:bg-white/15"
+              >
+                {t.skipIntro}
+              </button>
+            ) : null}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
 

@@ -69,7 +69,7 @@ function Twinkle({ className = '' }: { className?: string }) {
  */
 function MidnightOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={1800} promptClassName="text-[#cfae6a]">
+    <Gate onOpen={onOpen} duration={1800}>
       {(opening) => (
         <div className="absolute inset-0" style={{ perspective: 1600 }}>
           {(['left', 'right'] as const).map((side) => (
@@ -109,7 +109,7 @@ function MidnightOpening({ onOpen }: OpeningProps) {
 
 /** A moonlit garden, fireflies among the roses, under the empty night. */
 function MidnightHero({ start }: { start: boolean }) {
-  return <PaintedHero src="/art/midnight-hero.webp" start={start} />;
+  return <PaintedHero src="/art/midnight-hero.webp" start={start} mist={0.45} />;
 }
 
 /** Midnight green with fine gold frames, fireflies, and a gatefold card that parts. */

@@ -18,7 +18,7 @@ const DOORS = '/art/tbilisi-doors.webp';
  */
 function TbilisiOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={1900} promptClassName="text-[#f5ebdd]" scrim>
+    <Gate onOpen={onOpen} duration={1900}>
       {(opening) => (
         <div className="absolute inset-0" style={{ perspective: 1100 }}>
           {(['left', 'right'] as const).map((side) => (

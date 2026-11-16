@@ -25,7 +25,7 @@ const enter = (delay: number) => ({
  */
 function EditorialOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={1400} promptClassName="text-white/80">
+    <Gate onOpen={onOpen} duration={1400}>
       {(opening) => (
         <motion.div
           className="absolute inset-0 flex flex-col items-center justify-center overflow-hidden"
@@ -60,7 +60,7 @@ function EditorialHero({ start }: { start: boolean }) {
         <span>{dateLabel}</span>
       </motion.div>
 
-      <motion.h1 {...enter(0.35)} animate={show} className="mt-8 font-display text-[4.6rem] italic leading-[0.9] text-t-ink sm:text-[6rem]">
+      <motion.h1 {...enter(0.35)} animate={show} className="mt-8 font-display text-[4.6rem] italic leading-[0.9] text-t-ink">
         {couple.partnerOne}
         <span className="block pl-10 font-body text-2xl not-italic tracking-[0.4em]">&amp;</span>
         <span className="block text-right">{couple.partnerTwo}</span>

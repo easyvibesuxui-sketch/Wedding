@@ -15,21 +15,20 @@ const rise = {
 };
 
 /**
- * The words every hero carries — eyebrow, date, the couple's names and the
- * prompt to scroll — rising in once the opening hands over. The template
- * chooses the setting: names stacked in a script, or on one line in capitals.
+ * The words every hero carries — eyebrow, date and the couple's names —
+ * rising in once the opening hands over.
+ *
+ * Everything is sized from the hero's height (`--H`, set by the hero), not
+ * from the window's width: a phone's browser bars take a fifth of the screen
+ * away, and lettering sized for the full screen then ran down into the
+ * painting. Sized this way the block always ends about two fifths down.
  */
 export function HeroText({
   start,
-  names = 'stacked',
-  cue = true,
   className = '',
   nameClassName = '',
 }: {
   start: boolean;
-  names?: 'stacked' | 'line';
-  /** The prompt to scroll. A painted hero leaves it out: it would sit on the painting. */
-  cue?: boolean;
   className?: string;
   nameClassName?: string;
 }) {
@@ -37,51 +36,33 @@ export function HeroText({
   const { couple, dateLabel } = siteConfig;
 
   return (
-    <motion.div className={`relative z-10 text-center ${className}`} initial="hidden" animate={start ? 'show' : 'hidden'}>
-      <motion.p custom={0} variants={rise} className="text-sm tracking-[0.35em] text-t-accent sm:text-base">
+    <motion.div
+      className={`relative z-10 text-center ${className}`}
+      // Clear of the language switcher on a short screen, airier on a tall one.
+      style={{ paddingTop: 'max(4.5rem, calc(var(--H, 100svh) * 0.085))' }}
+      initial="hidden"
+      animate={start ? 'show' : 'hidden'}
+    >
+      <motion.p custom={0} variants={rise} className="text-sm tracking-[0.35em] text-t-accent">
         {t.heroEyebrow}
       </motion.p>
-      <motion.p custom={1} variants={rise} className="mt-1 text-xl tracking-[0.3em] text-t-ink-soft sm:text-2xl">
+      <motion.p custom={1} variants={rise} className="mt-1 text-xl tracking-[0.3em] text-t-ink-soft">
         {dateLabel}
       </motion.p>
 
-      <motion.h1 custom={2} variants={rise} className={`mt-8 font-display text-t-accent ${nameClassName}`}>
-        {names === 'stacked' ? (
-          <>
-            <span className="block text-6xl leading-[1.05] sm:text-7xl">{couple.partnerOne}</span>
-            <span className="my-2 block text-4xl opacity-80 sm:text-5xl">&amp;</span>
-            <span className="block text-6xl leading-[1.05] sm:text-7xl">{couple.partnerTwo}</span>
-          </>
-        ) : (
-          <span className="block text-4xl leading-tight tracking-[0.12em] sm:text-5xl">
-            {couple.partnerOne} <span className="opacity-70">&amp;</span> {couple.partnerTwo}
-          </span>
-        )}
+      <motion.h1
+        custom={2}
+        variants={rise}
+        className={`font-display text-t-accent ${nameClassName}`}
+        style={{
+          marginTop: 'calc(var(--H, 100svh) * 0.03)',
+          fontSize: 'clamp(2.5rem, calc(var(--H, 100svh) * 0.068), 4.25rem)',
+        }}
+      >
+        <span className="block leading-[1.05]">{couple.partnerOne}</span>
+        <span className="my-[0.1em] block text-[0.6em] leading-[1.2] opacity-80">&amp;</span>
+        <span className="block leading-[1.05]">{couple.partnerTwo}</span>
       </motion.h1>
-
-      {cue ? (
-        <motion.div custom={3} variants={rise} className="mt-12">
-          <a
-            href="#blessing"
-            className="inline-flex flex-col items-center gap-1 text-t-accent transition-colors hover:text-t-ink"
-          >
-            <span className="text-xs tracking-[0.28em]">{t.scrollDown}</span>
-            <motion.svg
-              width="26"
-              height="14"
-              viewBox="0 0 26 14"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              animate={{ y: [0, 5, 0] }}
-              transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-              aria-hidden="true"
-            >
-              <path d="M2 2l11 10L24 2" strokeLinecap="round" strokeLinejoin="round" />
-            </motion.svg>
-          </a>
-        </motion.div>
-      ) : null}
     </motion.div>
   );
 }

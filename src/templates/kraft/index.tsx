@@ -42,7 +42,7 @@ function Knot({ className = '' }: { className?: string }) {
  */
 function KraftOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={2100} promptClassName="text-[#4a3424]">
+    <Gate onOpen={onOpen} duration={2100}>
       {(opening) => (
         <motion.div
           className="absolute inset-0 overflow-hidden"

@@ -56,7 +56,7 @@ export function RsvpForm() {
               className="mt-12"
               role="status"
             >
-              <p className="section-title text-3xl sm:text-4xl">{t.thankYou}</p>
+              <p className="section-title text-3xl">{t.thankYou}</p>
               <Divider className="mx-auto mt-4" />
               {state.message ? (
                 <p className="mt-6 text-lg text-t-ink-soft">{t.rsvpMessages[state.message]}</p>

@@ -59,7 +59,7 @@ function DecoFrame({ children }: { children: React.ReactNode }) {
  */
 function DecoOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={1900} promptClassName="text-[#d4af5a]">
+    <Gate onOpen={onOpen} duration={1900}>
       {(opening) => (
         <>
           {(['left', 'right'] as const).map((side) => (

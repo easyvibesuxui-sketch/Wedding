@@ -25,8 +25,8 @@ export function Details() {
         */
         Corner ? (
           <>
-            <Corner className="pointer-events-none absolute -right-6 -top-14 z-20 w-32 sm:w-52" />
-            <Corner className="pointer-events-none absolute -bottom-14 -left-6 z-20 w-28 -scale-x-100 sm:w-44" />
+            <Corner className="pointer-events-none absolute -right-6 -top-14 z-20 w-32" />
+            <Corner className="pointer-events-none absolute -bottom-14 -left-6 z-20 w-28 -scale-x-100" />
           </>
         ) : null
       }

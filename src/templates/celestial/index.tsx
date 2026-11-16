@@ -78,7 +78,7 @@ function Constellation({ className = '' }: { className?: string }) {
  */
 function CelestialOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={1700} promptClassName="text-[#e6d3a3]">
+    <Gate onOpen={onOpen} duration={1700}>
       {(opening) => <Iris opening={opening} />}
     </Gate>
   );
@@ -112,7 +112,7 @@ function Iris({ opening }: { opening: boolean }) {
 
 /** Vineyard hills under the Milky Way, the moon low on the horizon. */
 function CelestialHero({ start }: { start: boolean }) {
-  return <PaintedHero src="/art/celestial-hero.webp" start={start} nameClassName="italic" />;
+  return <PaintedHero src="/art/celestial-hero.webp" start={start} mist={0.7} nameClassName="italic" />;
 }
 
 /** A starlit night: moon, constellations, and a page that opens out of the moon. */

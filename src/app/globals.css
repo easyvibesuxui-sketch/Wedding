@@ -93,7 +93,7 @@
    * case transform would swap in Mtavruli letters the design never meant.
    */
   .section-title {
-    @apply font-heading text-[1.4rem] leading-snug text-t-accent sm:text-[1.65rem];
+    @apply font-heading text-[1.4rem] leading-snug text-t-accent;
   }
 
   [data-heading='spaced'] .section-title {
@@ -101,15 +101,15 @@
   }
 
   [data-heading='italic'] .section-title {
-    @apply text-[1.75rem] italic sm:text-[2rem];
+    @apply text-[1.75rem] italic;
   }
 
   [data-heading='caps'] .section-title {
-    @apply text-[1.25rem] uppercase tracking-[0.22em] sm:text-[1.45rem];
+    @apply text-[1.25rem] uppercase tracking-[0.22em];
   }
 
   [data-heading='plain'] .section-title {
-    @apply text-[2.1rem] sm:text-[2.4rem];
+    @apply text-[2.1rem];
   }
 
   .eyebrow {

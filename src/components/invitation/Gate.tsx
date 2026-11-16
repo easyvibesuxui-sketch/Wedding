@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 
+import { STAGE } from '@/components/invitation/stage';
 import { useT } from '@/components/LanguageProvider';
 
 /**
@@ -17,16 +18,11 @@ import { useT } from '@/components/LanguageProvider';
 export function Gate({
   onOpen,
   duration,
-  promptClassName = 'text-t-accent',
-  scrim = false,
   children,
 }: {
   onOpen: () => void;
   /** How long the opening plays after the tap, in ms. */
   duration: number;
-  promptClassName?: string;
-  /** Darkens the bottom edge so the prompt stays readable over artwork. */
-  scrim?: boolean;
   children: (opening: boolean) => React.ReactNode;
 }) {
   const t = useT();
@@ -54,7 +50,7 @@ export function Gate({
   if (gone) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-hidden" style={{ pointerEvents: opening ? 'none' : 'auto' }}>
+    <div className={`${STAGE} z-50 overflow-hidden`} style={{ pointerEvents: opening ? 'none' : 'auto' }}>
       {/* Its own stacking context, so no layer of the drawing can rise above the tap target. */}
       <div className="absolute inset-0 isolate">{children(opening)}</div>
 
@@ -62,17 +58,15 @@ export function Gate({
         type="button"
         onClick={open}
         aria-label={t.openInvitation}
-        className="absolute inset-0 z-20 flex items-end justify-center pb-[12vh] focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-t-accent"
+        className="group absolute inset-0 z-20 flex items-end justify-center pb-[12vh] focus:outline-none"
       >
-        {scrim ? (
-          <span
-            className="absolute inset-x-0 bottom-0 h-56 bg-gradient-to-t from-black/55 via-black/25 to-transparent"
-            aria-hidden="true"
-          />
-        ) : null}
+        {/*
+          The prompt sits on a chip in the template's own paper and ink, like
+          the other floating controls, so it reads over any artwork.
+        */}
         <motion.span
-          className={`relative text-sm tracking-[0.32em] ${promptClassName}`}
-          animate={opening ? { opacity: 0 } : { opacity: [0.55, 1, 0.55] }}
+          className="relative rounded-full border border-t-line/60 bg-t-bg/90 px-6 py-2.5 text-sm tracking-[0.28em] text-t-ink shadow-sm backdrop-blur-sm group-focus-visible:ring-2 group-focus-visible:ring-t-accent"
+          animate={opening ? { opacity: 0 } : { opacity: [0.75, 1, 0.75] }}
           transition={opening ? { duration: 0.3 } : { duration: 2.6, repeat: Infinity, ease: 'easeInOut' }}
         >
           {t.rsvpOpen}

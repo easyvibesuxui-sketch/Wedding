@@ -60,32 +60,32 @@ export function Countdown() {
 
         <Reveal delay={0.1}>
           {when === 'before' ? (
-            <dl className={`mt-10 flex items-start justify-center ${countdown === 'tiles' ? 'gap-2.5 sm:gap-4' : 'gap-3 sm:gap-6'}`}>
+            <dl className={`mt-10 flex items-start justify-center ${countdown === 'tiles' ? 'gap-2.5' : 'gap-3'}`}>
               {UNITS.map((key, i) =>
                 countdown === 'tiles' ? (
                   <div
                     key={key}
-                    className="flex w-[4.4rem] flex-col items-center rounded-sm border border-t-line/60 py-3 sm:w-24 sm:py-4"
+                    className="flex w-[4.4rem] flex-col items-center rounded-sm border border-t-line/60 py-3"
                   >
-                    <dd className="font-heading text-3xl tabular-nums text-t-accent sm:text-4xl">
+                    <dd className="font-heading text-3xl tabular-nums text-t-accent">
                       {left ? String(left[key]).padStart(2, '0') : '––'}
                     </dd>
-                    <dt className="mt-1 text-[0.7rem] tracking-wider text-t-ink-soft sm:text-xs">
+                    <dt className="mt-1 text-[0.7rem] tracking-wider text-t-ink-soft">
                       {t.countdownUnits[key]}
                     </dt>
                   </div>
                 ) : (
-                  <div key={key} className="flex items-start gap-3 sm:gap-6">
+                  <div key={key} className="flex items-start gap-3">
                     {i > 0 ? (
-                      <span aria-hidden="true" className="pt-1 text-4xl text-t-accent/50 sm:text-5xl">
+                      <span aria-hidden="true" className="pt-1 text-4xl text-t-accent/50">
                         :
                       </span>
                     ) : null}
-                    <div className="min-w-[3.4rem] sm:min-w-[4.5rem]">
-                      <dd className="font-heading text-4xl tabular-nums text-t-accent sm:text-5xl">
+                    <div className="min-w-[3.4rem]">
+                      <dd className="font-heading text-4xl tabular-nums text-t-accent">
                         {left ? String(left[key]).padStart(2, '0') : '––'}
                       </dd>
-                      <dt className="mt-1 text-xs tracking-wider text-t-ink-soft sm:text-sm">
+                      <dt className="mt-1 text-xs tracking-wider text-t-ink-soft">
                         {t.countdownUnits[key]}
                       </dt>
                     </div>
@@ -96,7 +96,7 @@ export function Countdown() {
           ) : (
             // Once the day has come, a clock stuck at zero reads as broken:
             // the date itself says it better.
-            <p className="mt-8 font-heading text-2xl tracking-[0.12em] text-t-ink sm:text-3xl">
+            <p className="mt-8 font-heading text-2xl tracking-[0.12em] text-t-ink">
               {t.dateLong}
             </p>
           )}

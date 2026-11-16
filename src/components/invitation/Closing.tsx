@@ -14,7 +14,7 @@ export function Closing() {
   return (
     <Section section="closing" as="footer" className="!pb-16 text-center">
       <Reveal>
-        <p className="section-title !text-3xl sm:!text-4xl">{t.closingLine}</p>
+        <p className="section-title !text-3xl">{t.closingLine}</p>
         <p className="mt-4 font-display text-4xl text-t-ink">{coupleNames}</p>
       </Reveal>
 

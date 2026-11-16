@@ -48,7 +48,7 @@ export function Section({
     <Tag
       id={id}
       data-surface={surface}
-      className={`${SURFACE_CLASS[surface]} ${TEXTURE_CLASS[template.texture]} relative ${contained ? 'isolate' : ''} overflow-x-clip px-6 py-20 sm:py-24 ${className}`}
+      className={`${SURFACE_CLASS[surface]} ${TEXTURE_CLASS[template.texture]} relative ${contained ? 'isolate' : ''} overflow-x-clip px-6 py-20 ${className}`}
     >
       <Seam />
       {decor}

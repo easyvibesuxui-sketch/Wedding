@@ -45,7 +45,7 @@ function Bow({ className = '' }: { className?: string }) {
  */
 function RibbonOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={1900} promptClassName="text-[#8a4f58]">
+    <Gate onOpen={onOpen} duration={1900}>
       {(opening) => (
         <motion.div
           className="absolute inset-0 overflow-hidden"
@@ -82,7 +82,7 @@ function RibbonOpening({ onOpen }: OpeningProps) {
 
 /** Peonies and roses with a satin ribbon running through them. */
 function RibbonHero({ start }: { start: boolean }) {
-  return <PaintedHero src="/art/ribbon-hero.webp" start={start} />;
+  return <PaintedHero src="/art/ribbon-hero.webp" start={start} mist={0.6} />;
 }
 
 /** Blush and satin: a ribbon that unties and a lid that lifts. */

@@ -13,6 +13,7 @@ import { Location } from '@/components/invitation/Location';
 import { MusicToggle } from '@/components/invitation/MusicToggle';
 import { RsvpSection } from '@/components/invitation/RsvpSection';
 import { Schedule } from '@/components/invitation/Schedule';
+import { CARD, STAGE } from '@/components/invitation/stage';
 import { TemplateBar } from '@/components/invitation/TemplateBar';
 import type { Lang } from '@/lib/i18n';
 import { getTemplate } from '@/templates/registry';
@@ -39,7 +40,7 @@ export function Invitation({
       <TemplateProvider template={template} className="min-h-screen bg-t-page">
         <Opening onOpen={() => setOpened(true)} />
 
-        <main className="mx-auto max-w-2xl overflow-x-clip bg-t-bg shadow-[0_0_60px_rgba(0,0,0,0.12)]">
+        <main className={`${CARD} overflow-x-clip bg-t-bg shadow-[0_0_60px_rgba(0,0,0,0.12)]`}>
           <Hero start={opened} />
           <Blessing />
           <Countdown />
@@ -50,10 +51,13 @@ export function Invitation({
           <Closing />
         </main>
 
-        {Ambient ? <Ambient /> : null}
-        <LanguageSwitcher visible={opened} />
-        <MusicToggle autoStart={opened} />
-        {previewing ? <TemplateBar current={templateId} visible={opened} /> : null}
+        {/* Everything that floats over the page is placed against the card, not the window. */}
+        <div className={`${STAGE} pointer-events-none z-40 overflow-hidden`}>
+          {Ambient ? <Ambient /> : null}
+          <LanguageSwitcher visible={opened} />
+          <MusicToggle autoStart={opened} />
+          {previewing ? <TemplateBar current={templateId} visible={opened} /> : null}
+        </div>
       </TemplateProvider>
     </LanguageProvider>
   );

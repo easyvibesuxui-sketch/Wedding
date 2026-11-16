@@ -50,7 +50,7 @@ export function Location() {
               What shows until the map draws — and instead of it, where Google
               Maps is blocked or slow — so the frame is never an empty box.
             */}
-            <div className="relative h-64 w-full sm:h-72">
+            <div className="relative h-64 w-full">
               <a
                 href={mapLinkUrl}
                 target="_blank"

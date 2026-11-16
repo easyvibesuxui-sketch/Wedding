@@ -86,7 +86,7 @@ export function Seam() {
   return (
     <div
       className={`pointer-events-none absolute inset-x-0 bottom-[calc(100%-1px)] bg-t-surface ${TEXTURE_CLASS[texture]} ${
-        tall ? 'h-10 sm:h-14' : 'h-6 sm:h-9'
+        tall ? 'h-10' : 'h-6'
       }`}
       style={maskFor(seam) ?? undefined}
       aria-hidden="true"

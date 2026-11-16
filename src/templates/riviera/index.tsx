@@ -23,7 +23,7 @@ const ENVELOPE = { back: '#e9dfcb', pocket: '#f3ead9', flap: '#efe5d1' };
  */
 function RivieraOpening({ onOpen }: OpeningProps) {
   return (
-    <Gate onOpen={onOpen} duration={2500} promptClassName="text-white" scrim>
+    <Gate onOpen={onOpen} duration={2500}>
       {(opening) => <Envelope opening={opening} />}
     </Gate>
   );
